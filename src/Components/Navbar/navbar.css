@@ -13,6 +13,7 @@
   color: #515151;
   transition: color 0.2s;
 }
+
 .nav-link:hover {
   color: #FF0000;
 }
