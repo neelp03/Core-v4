@@ -1,8 +1,7 @@
-
 const express = require('express');
-const router = express.Router();
 
 function initializeRoutes(routes){
+  const router = express.Router();
   routes.map((currentRoute) => {
     if (currentRoute.post) {
       router.post(currentRoute.route, (req, res) => {

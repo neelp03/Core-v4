@@ -69,6 +69,7 @@ describe('ApiGateway', () => {
           await test.sendGetRequest(route.url + route.route);
           expect(result).to.have.status(OK);
         });
+      } else {
         
       }
     })

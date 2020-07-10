@@ -1,6 +1,3 @@
-// lawrence
-const express = require('express');
-const router = express.Router();
 const { initializeRoutes } = require('../routes/util/initializeRoutes');
  
 const {
@@ -248,6 +245,5 @@ const routes = [
   }
 ];
 
-initializeRoutes(routes);
-
+const router = initializeRoutes(routes);
 module.exports = router;
