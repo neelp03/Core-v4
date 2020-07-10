@@ -49,7 +49,7 @@ export function parseRange(pages, maxPages) {
  */
 export async function printPage(data) {
   let status = new PrintApiResponse();
-  await axios.post(RPC_API_URL + '/SceRpcApi/Printer/sendPrintRequest', data)
+  await axios.post('/SceRpcApi/Printer/sendPrintRequest', data)
     .catch(() => {
       status.error = true;
     });

@@ -60,7 +60,7 @@ export async function print3DModel(printRequest) {
   const status = ApiResponse();
   const { raw, name, volume, copies } = printRequest;
   await axios
-    .post(RPC_API_URL + '/SceRpcApi/3dPrinter/print3dModel', {
+    .post('/SceRpcApi/3dPrinter/print3dModel', {
       raw,
       name,
       volume,
