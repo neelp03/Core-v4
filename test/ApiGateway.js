@@ -61,7 +61,7 @@ describe('ApiGateway', () => {
           setTokenStatus(false);
           const result = (route.post) ? await test.sendPostRequest(route.url + route.route) : 
             await test.sendGetRequest(route.url + route.route);
-          expect(result).to.have.status(NOT_FOUND);
+          expect(result).to.have.status(FORBIDDEN);
         });
         it('Should reuturn 200 when valid token is supplied', async () =>{
           setTokenStatus(true);

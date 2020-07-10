@@ -51,4 +51,4 @@ function initializeRoutes(routes){
   return router;
 }
 
-module.exports = initializeRoutes;
+module.exports = {initializeRoutes};
