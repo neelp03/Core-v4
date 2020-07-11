@@ -1,4 +1,5 @@
 const express = require('express');
+const axios = require('axios');
 
 function initializeRoutes(routes){
   let router = express.Router();
@@ -19,10 +20,8 @@ function initializeRoutes(routes){
             res.status(OK).send(result.data);
           })
           .catch((error) => {
-            res.sendStatus(error.status);
+            res.sendStatus(error.response.status);
           });
-        // return the blue box response back to the user
-        res.send(result);
       });
     } else {
       router.get(currentRoute.route, (req, res) => {
@@ -40,10 +39,8 @@ function initializeRoutes(routes){
             res.status(OK).send(result.data);
           })
           .catch((error) => {
-            res.sendStatus(error.status);
+            res.sendStatus(error.response.status);
           });
-        // return the blue box response back to the user
-        res.send(result);
       });
     }
   });

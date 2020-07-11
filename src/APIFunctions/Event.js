@@ -11,9 +11,11 @@ export async function getAllEvents() {
   await axios
     .get('api/event/getEvents')
     .then(res => {
+      console.log("hi evan xd");
       status.responseData = res.data;
     })
     .catch(err => {
+      console.log("crashing game night");
       status.responseData = err;
       status.error = true;
     });
