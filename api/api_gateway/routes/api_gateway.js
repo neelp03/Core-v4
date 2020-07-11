@@ -218,25 +218,31 @@ const routes = [
     post: true
   },
   {
-    route: 'User/getPagesPrintedCount',
+    route: '/User/getPagesPrintedCount',
     url: GENERAL_API_URL,
     protected: true,
     post: true
   },
   {
-    route: 'Calendar/getCalendarEvents',
+    route: '/Calendar/getCalendarEvents',
     url: MAILER_API_URL,
     protected: false,
     post: false
   },
   {
-    route: 'Mailer/sendVerificationEmail',
+    route: '/Mailer/sendVerificationEmail',
     url: MAILER_API_URL,
     protected: false,
     post: true
   },
   {
-    route: 'Mailer/getCalendarEvents',
+    route: '/Mailer/getCalendarEvents',
+    url: MAILER_API_URL,
+    protected: false,
+    post: false
+  },
+  {
+    route: '/',
     url: MAILER_API_URL,
     protected: false,
     post: false

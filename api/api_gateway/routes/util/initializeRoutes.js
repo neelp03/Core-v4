@@ -1,5 +1,7 @@
 const express = require('express');
 const axios = require('axios');
+const { STATUS_CODES } = require('../../../util/constants');
+const { FORBIDDEN, UNAUTHORIZED, OK } = STATUS_CODES;
 
 function initializeRoutes(routes){
   let router = express.Router();
@@ -36,7 +38,7 @@ function initializeRoutes(routes){
         axios
           .get(currentRoute.url + currentRoute.route)
           .then((result) => {
-            res.status(OK).send(result.data);
+            res.sendStatus(OK).send(result.data);
           })
           .catch((error) => {
             res.sendStatus(error.response.status);
