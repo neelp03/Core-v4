@@ -1,7 +1,7 @@
 const express = require('express');
 
 function initializeRoutes(routes){
-  const router = express.Router();
+  let router = express.Router();
   routes.map((currentRoute) => {
     if (currentRoute.post) {
       router.post(currentRoute.route, (req, res) => {
@@ -26,7 +26,7 @@ function initializeRoutes(routes){
       });
     } else {
       router.get(currentRoute.route, (req, res) => {
-        if (currentRoute.protected) {       
+        if (currentRoute.protected) {
           if (!checkIfTokenSent(req)) {
             return res.sendStatus(FORBIDDEN);
           } else if (!checkIfTokenValid(req)) {
