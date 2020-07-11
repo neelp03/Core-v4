@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { ApiResponse } from './ApiResponses';
+import { MAIN_API_URL } from '../config/config';
 
 /**
  * Retrieve all events.
@@ -7,9 +8,10 @@ import { ApiResponse } from './ApiResponses';
  * request or the list of events
  */
 export async function getAllEvents() {
+  console.log('here we dog');
   let status = new ApiResponse();
   await axios
-    .get('api/event/getEvents')
+    .get(MAIN_API_URL + '/api/event/getEvents')
     .then(res => {
       status.responseData = res.data;
     })
@@ -51,7 +53,7 @@ export async function createNewEvent(newEvent, token) {
     imageURL: newEvent.imageURL
   };
   await axios
-    .post('api/event/createEvent', { token, ...eventToAdd })
+    .post(MAIN_API_URL + '/api/event/createEvent', { token, ...eventToAdd })
     .then(res => {
       status.responseData = res.data;
     })
@@ -99,7 +101,7 @@ export async function editEvent(eventToUpdate, token) {
     imageURL: eventToUpdate.imageURL
   };
   await axios
-    .post('api/event/editEvent', { token, ...eventToEdit })
+    .post(MAIN_API_URL + '/api/event/editEvent', { token, ...eventToEdit })
     .then(res => {
       status.responseData = res.data;
     })
@@ -122,7 +124,8 @@ export async function editEvent(eventToUpdate, token) {
 export async function deleteEvent(eventToDelete, token) {
   let status = new ApiResponse();
   await axios
-    .post('/api/event/deleteEvent', { token, id: eventToDelete._id })
+    .post(MAIN_API_URL + '/api/event/deleteEvent',
+      { token, id: eventToDelete._id })
     .then(res => {
       status.responseData = res.data;
     })

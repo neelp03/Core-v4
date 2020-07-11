@@ -23,7 +23,9 @@ class SceHttpServer {
    */
   constructor(pathToEndpoints, port, prefix = '/api/') {
     const testEnv = process.env.NODE_ENV === 'test';
+    const dockerEnv = process.env.DOCKER === 'true';
     this.runningInProduction = process.env.NODE_ENV === 'production';
+    this.mongoDbUrl = dockerEnv ? 'mongo' : 'localhost';
     this.database = testEnv ? 'sce_core_test' : 'sce_core';
     this.port = port;
     this.pathToEndpoints = pathToEndpoints;
@@ -78,14 +80,19 @@ class SceHttpServer {
    */
   connectToMongoDb() {
     this.mongoose = mongoose;
+    console.log(`mongodb://${this.mongoDbUrl}/${this.database}`,
+      'connect to that');
+
     this.mongoose
-      .connect(`mongodb://localhost/${this.database}`, {
+      .connect(`mongodb://${this.mongoDbUrl}/${this.database}`, {
         promiseLibrary: require('bluebird'),
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useCreateIndex: true
       })
-      .then(() => {})
+      .then(() => {
+        console.debug('Connected to MongoDB');
+      })
       .catch(error => {
         throw error;
       });

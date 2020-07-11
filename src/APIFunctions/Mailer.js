@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { GOOGLE_API_URL } from '../config/config';
 import { ApiResponse } from './ApiResponses';
 import { MAILER_API_URL } from '../config/config.json';
 
@@ -12,7 +13,7 @@ import { MAILER_API_URL } from '../config/config.json';
 export async function sendVerificationEmail(email, firstName) {
   let status = new ApiResponse();
   await axios
-    .post(MAILER_API_URL + '/api/Mailer/sendVerificationEmail', {
+    .post(GOOGLE_API_URL + '/api/mailer/sendVerificationEmail', {
       recipientEmail: email,
       recipientName: firstName
     })

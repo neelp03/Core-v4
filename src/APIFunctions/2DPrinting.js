@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { PrintApiResponse } from './ApiResponses';
-import { RPC_API_URL } from '../config/config.json';
+import { RPC_API_URL, MAIN_API_URL } from '../config/config';
 
 /**
  * Return an array similar to python's range() function
@@ -68,7 +68,7 @@ export async function printPage(data) {
 export async function getPagesPrinted(email, token, totalPages, copies) {
   let status = new PrintApiResponse();
   await axios
-    .post('api/user/getPagesPrintedCount', {
+    .post(MAIN_API_URL + '/api/user/getPagesPrintedCount', {
       email,
       token
     })

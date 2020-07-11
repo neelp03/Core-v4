@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { ApiResponse } from './ApiResponses';
-import { RPC_API_URL } from '../config/config.json';
+import { RPC_API_URL, LOGGING_API_URL } from '../config/config';
 
 /**
  * Checks to see if the sign is accepting requests. This is done
@@ -30,7 +30,7 @@ export async function healthCheck(officerName) {
 export async function getAllSignLogs() {
   let result = new ApiResponse();
   await axios
-    .get('api/SignLog/getSignLogs')
+    .get(LOGGING_API_URL + '/api/SignLog/getSignLogs')
     .then(res => {
       result.responseData = res.data;
     })

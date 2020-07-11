@@ -31,10 +31,10 @@ router.post('/register', async (req, res) => {
         message: registrationStatus.message
       });
     } else {
-      res.status(CONFLICT).send({ message: registrationStatus.message });
+      return res.status(CONFLICT).send({ message: registrationStatus.message });
     }
   } else {
-    res.sendStatus(OK);
+    return res.sendStatus(OK);
   }
 });
 
@@ -54,7 +54,7 @@ router.post('/login', function(req, res) {
       }
 
       if (!user) {
-        res
+        return res
           .status(UNAUTHORIZED)
           .send({
             message: 'Username or password does not match our records.'
@@ -105,9 +105,9 @@ router.post('/login', function(req, res) {
             const token = jwt.sign(
               userToBeSigned, config.secretKey, jwtOptions
             );
-            res.status(OK).send({ token: 'JWT ' + token });
+            return res.status(OK).send({ token: 'JWT ' + token });
           } else {
-            res.status(UNAUTHORIZED).send({
+            return res.status(UNAUTHORIZED).send({
               message: 'Username or password does not match our records.'
             });
           }
@@ -130,7 +130,7 @@ router.post('/setEmailToVerified', (req, res) => {
         errorDescription: error
       };
       addErrorLog(info);
-      res.status(BAD_REQUEST).send({ message: 'Bad Request.' });
+      return res.status(BAD_REQUEST).send({ message: 'Bad Request.' });
     }
 
     if (result.nModified < 1) {
@@ -154,9 +154,9 @@ router.post('/verify', function(req, res) {
   }
   const decoded = checkIfTokenValid(req);
   if (!decoded) {
-    res.sendStatus(UNAUTHORIZED);
+    return res.sendStatus(UNAUTHORIZED);
   } else {
-    res.status(OK).send(decoded);
+    return res.status(OK).send(decoded);
   }
 });
 
@@ -191,15 +191,15 @@ router.post('/generateHashedId', async (req, res) => {
     bcrypt.genSalt(10, function(error, salt) {
       if (error) {
         // reject('Bcrypt failed')
-        res.sendStatus(BAD_REQUEST);
+        return res.sendStatus(BAD_REQUEST);
       }
 
       bcrypt.hash(hashedId, salt, function(error, hash) {
         if (error) {
-          res.sendStatus(BAD_REQUEST);
+          return res.sendStatus(BAD_REQUEST);
         }
         hashedId = hash;
-        res.status(OK).send({ hashedId });
+        return res.status(OK).send({ hashedId });
       });
     });
   });
@@ -208,30 +208,30 @@ router.post('/generateHashedId', async (req, res) => {
 router.post('/validateVerificationEmail', async (req, res) =>{
   User.findOne({ email: req.body.email}, async function(error, result){
     if (error){
-      res.sendStatus(BAD_REQUEST);
+      return res.sendStatus(BAD_REQUEST);
     }
     if (!result){
-      res.sendStatus(NOT_FOUND);
+      return res.sendStatus(NOT_FOUND);
     }
 
     bcrypt.compare(String(result._id), req.body.hashedId, async function(
       error,
       isMatch) {
       if (error) {
-        res.sendStatus(BAD_REQUEST);
+        return res.sendStatus(BAD_REQUEST);
       }
       if (isMatch) {
-        result.emailVerified = true;
+        return result.emailVerified = true;
         await result
           .save()
           .then(_ => {
-            res.sendStatus(OK);
+            return res.sendStatus(OK);
           })
           .catch(err => {
-            res.sendStatus(BAD_REQUEST);
+            return res.sendStatus(BAD_REQUEST);
           });
       } else {
-        res.sendStatus(BAD_REQUEST);
+        return res.sendStatus(BAD_REQUEST);
       }
     });
   });
