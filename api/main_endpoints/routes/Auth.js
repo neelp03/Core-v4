@@ -39,82 +39,93 @@ router.post('/register', async (req, res) => {
 });
 
 // User Login
-router.post('/login', function(req, res) {
-  if (!req.body.email || !req.body.password) {
-    return res.sendStatus(BAD_REQUEST);
-  }
-
-  User.findOne(
-    {
-      email: req.body.email.toLowerCase()
-    },
-    function(error, user) {
-      if (error) {
-        return res.status(BAD_REQUEST).send({ message: 'Bad Request.' });
-      }
-
-      if (!user) {
-        res
-          .status(UNAUTHORIZED)
-          .send({
-            message: 'Username or password does not match our records.'
-          });
-      } else {
-        // Check if password matches database
-        user.comparePassword(req.body.password, function(error, isMatch) {
-          if (isMatch && !error) {
-            if (user.accessLevel === membershipState.BANNED) {
-              return res
-                .status(UNAUTHORIZED)
-                .send({ message: 'User is banned.' });
-            }
-            // If the username and password matches the database, assign and
-            // return a jwt token
-            const jwtOptions = {
-              expiresIn: '2h'
-            };
-
-            // check here to see if we should reset the pagecount. If so, do it
-            if (checkIfPageCountResets(user.lastLogin)) {
-              User.updateOne(
-                // query
-                { email: user.email },
-                // update this field
-                { pagesPrinted: 0 },
-                function(error, result) {
-                  if (error) {
-                    return res.sendStatus(BAD_REQUEST);
-                  }
-
-                  if (result.nModified < 1) {
-                    return res.sendStatus(NOT_FOUND);
-                  }
-                }
-              );
-            }
-
-            // Include fields from the User model that should
-            // be passed to the JSON Web Token (JWT)
-            const userToBeSigned = {
-              firstName: user.firstName,
-              lastName: user.lastName,
-              email: user.email,
-              accessLevel: user.accessLevel,
-              pagesPrinted: user.pagesPrinted
-            };
-            const token = jwt.sign(
-              userToBeSigned, config.secretKey, jwtOptions
-            );
-            res.status(OK).send({ token: 'JWT ' + token });
-          } else {
-            res.status(UNAUTHORIZED).send({
+router.post('/login', async function(req, res) {
+  try{
+    
+    if (!req.body.email || !req.body.password) {
+      return res.sendStatus(BAD_REQUEST);
+    }
+    console.log("about to find user");
+    return User.findOne(
+      {
+        email: req.body.email.toLowerCase()
+      },
+      function(error, user) {
+        if (error) {
+          console.log('yeet');
+          return res.status(BAD_REQUEST).send({ message: 'Bad Request.' });
+        }
+  
+        if (!user) {
+          console.log('returning unauthorized in when password is wrong');
+          return res
+            .status(UNAUTHORIZED)
+            .send({
               message: 'Username or password does not match our records.'
             });
-          }
-        });
+        } else {
+          // Check if password matches database
+          user.comparePassword(req.body.password, function(error, isMatch) {
+            if (isMatch && !error) {
+              if (user.accessLevel === membershipState.BANNED) {
+                console.log('returning unauthorized in compare password');
+                return res
+                  .status(UNAUTHORIZED)
+                  .send({ message: 'User is banned.' });
+              }
+              // If the username and password matches the database, assign and
+              // return a jwt token
+              const jwtOptions = {
+                expiresIn: '2h'
+              };
+  
+              // check here to see if we should reset the pagecount. If so, do it
+              if (checkIfPageCountResets(user.lastLogin)) {
+                User.updateOne(
+                  // query
+                  { email: user.email },
+                  // update this field
+                  { pagesPrinted: 0 },
+                  // function(error, result) {
+                  //   if (error) {
+                  //     console.log('returning bad request in page count reset');
+                  //     return res.sendStatus(BAD_REQUEST);
+                  //   }
+  
+                  //   if (result.nModified < 1) {
+                  //     console.log("console.log('returning not found in page count reset');");
+                  //     return res.sendStatus(NOT_FOUND);
+                  //   }
+                  // }
+                );
+              }
+              // Include fields from the User model that should
+              // be passed to the JSON Web Token (JWT)
+              const userToBeSigned = {
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+                accessLevel: user.accessLevel,
+                pagesPrinted: user.pagesPrinted
+              };
+              const token = jwt.sign(
+                userToBeSigned, config.secretKey, jwtOptions
+              );
+              return res.status(OK).send({ token: 'JWT ' + token });
+            } else {
+              return res.status(UNAUTHORIZED).send({
+                message: 'Username or password does not match our records.'
+              });
+            }
+          });
+        }
       }
-    }
-  );
+    );
+    console.log("we found it");
+  }
+  catch(e){
+    console.log(e);
+  }
 });
 
 // Edit/Update a member record

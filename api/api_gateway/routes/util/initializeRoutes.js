@@ -2,6 +2,7 @@ const express = require('express');
 const axios = require('axios');
 const { STATUS_CODES } = require('../../../util/constants');
 const { FORBIDDEN, UNAUTHORIZED, OK } = STATUS_CODES;
+const {checkIfTokenSent, checkIfTokenValid} = require('../../../main_endpoints/util/token-functions')
 
 function initializeRoutes(routes){
   let router = express.Router();
@@ -16,13 +17,15 @@ function initializeRoutes(routes){
           }
         }
         // forward it to one of the blue boxes
+        console.log("hello evan xd \n\n\n", req.body);
+        console.log(currentRoute.url + currentRoute.route);
         axios
-          .post(currentRoute.url + currentRoute.route)
+          .post(currentRoute.url + currentRoute.route, req.body)
           .then((result) => {
-            res.status(OK).send(result.data);
+            return res.status(OK).send(result.data);
           })
           .catch((error) => {
-            res.sendStatus(error.response.status);
+            return res.sendStatus(error.response.status);
           });
       });
     } else {
@@ -36,12 +39,12 @@ function initializeRoutes(routes){
         }
         // forward it to one of the blue boxes
         axios
-          .get(currentRoute.url + currentRoute.route)
+          .get(currentRoute.url + currentRoute.route, req.params)
           .then((result) => {
-            res.sendStatus(OK).send(result.data);
+            return res.sendStatus(OK).send(result.data);
           })
           .catch((error) => {
-            res.sendStatus(error.response.status);
+            return res.sendStatus(error.response.status);
           });
       });
     }

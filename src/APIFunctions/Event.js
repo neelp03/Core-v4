@@ -124,7 +124,7 @@ export async function editEvent(eventToUpdate, token) {
 export async function deleteEvent(eventToDelete, token) {
   let status = new ApiResponse();
   await axios
-    .post('/api/event/deleteEvent', { token, id: eventToDelete._id })
+    .post('/api_gateway/event/deleteEvent', { token, id: eventToDelete._id })
     .then(res => {
       status.responseData = res.data;
     })

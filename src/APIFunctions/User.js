@@ -11,7 +11,7 @@ export async function getAllUsers(token) {
   let status = new UserApiResponse();
   await axios
     // get all user!
-    .post('/api/User/users', {
+    .post('/api_gateway/User/users', {
       // don't need email
       token
     })
@@ -73,7 +73,7 @@ export async function editUser(userToEdit, token) {
     lastLogin
   } = userToEdit;
   await axios
-    .post('/api/User/edit', {
+    .post('/api_gateway/User/edit', {
       firstName,
       lastName,
       email,
@@ -105,7 +105,7 @@ export async function editUser(userToEdit, token) {
 export async function deleteUserByEmail(email, token) {
   let status = new UserApiResponse();
   axios
-    .post('/api/User/delete', {
+    .post('/api_gateway/User/delete', {
       token,
       email
     })
@@ -125,7 +125,7 @@ export async function deleteUserByEmail(email, token) {
 export async function searchUserByEmail(email, token) {
   let status = new UserApiResponse();
   await axios
-    .post('/api/User/search', {
+    .post('/api_gateway/User/search', {
       token,
       email
     })
@@ -146,7 +146,7 @@ export async function searchUserByEmail(email, token) {
  */
 export async function checkIfUserExists(email) {
   let status = new UserApiResponse();
-  await axios.post('/api/User/checkIfUserExists', { email }).catch(() => {
+  await axios.post('/api_gateway/User/checkIfUserExists', { email }).catch(() => {
     status.error = true;
   });
   return status;

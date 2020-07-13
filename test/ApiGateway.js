@@ -52,13 +52,9 @@ describe('ApiGateway', () => {
   afterEach(() => {
     resetMock();
   });
-
-  describe('protectedRoute', () => {
-
-    testEndpoints.map((route) => {
-      describe('Route: ' + route.route + ', Post: ' + route.post +
-        ', Protected: ' + route.protected);
-      if (route.protected) {
+  testEndpoints.map((route) => {
+    if (route.protected) {
+        describe('Protected Route: ' + route.route);
         it('Should return 403 when an invalid token is supplied', async () => {
           setTokenStatus(false);
           const result = (route.post) ?
@@ -73,7 +69,29 @@ describe('ApiGateway', () => {
             await test.sendGetRequest(route.url + route.route);
           expect(result).to.have.status(OK);
         });
-      }
-    });
+    }
+    if (route.post) {
+      describe('Post Request: ' + route.route);
+      it('Should return 200 when trying to send a post request', async () =>{
+        const result = await test.sendPostRequest(route.url + route.route);
+        expect(result).to.have.status(OK);
+      });
+      it('Should return 404 when trying to send a get request', async () =>{
+        const result = await test.sendGetRequest(route.url + route.route);
+        expect(result).to.have.status(NOT_FOUND);
+      });
+    }
+    if (route.get) {
+      describe('Get Request: ' + route.route);
+      it('Should return 200 when trying to send a get request', async () =>{
+        const result = await test.sendGetRequest(route.url + route.route);
+        expect(result).to.have.status(OK);
+      });
+      it('Should return 404 when trying to send a get request', async () =>{
+        const result = await test.sendPostRequest(route.url + route.route);
+        expect(result).to.have.status(NOT_FOUND);
+      });
+    }
   });
+  
 });
