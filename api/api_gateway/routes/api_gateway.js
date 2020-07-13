@@ -4,6 +4,7 @@ const {
   GENERAL_API_URL,
   LOGGING_API_URL,
   MAILER_API_URL,
+  RPC_API_URL
 } = require('../../config/config.json');
 
 const routes = [
@@ -246,7 +247,38 @@ const routes = [
     url: MAILER_API_URL + '/api',
     protected: false,
     post: false
-  }
+  },
+  {
+    route: '/Printer/sendPrintRequest',
+    url: RPC_API_URL + '/SceRpcApi',
+    protected: false,
+    post: true
+  },
+  //THIS ROUTE IS NOT IN MASTER, BUT IS IN A PR 
+  // {
+  //   route: '/Printer/healthCheck',
+  //   url: RPC_API_URL + '/SceRpcApi',
+  //   protected: false,
+  //   post: true
+  // },
+  {
+    route: '/3dPriner/print3dModel',
+    url: RPC_API_URL + '/SceRpcApi',
+    protected: false,
+    post: true
+  },
+  {
+    route: '/LedSign/healthCheck',
+    url: RPC_API_URL + '/SceRpcApi',
+    protected: false,
+    post: true
+  },
+  {
+    route: '/LedSign/updateSignText',
+    url: RPC_API_URL + '/SceRpcApi',
+    protected: false,
+    post: true
+  },
 ];
 
 const router = initializeRoutes(routes);

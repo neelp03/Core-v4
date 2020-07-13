@@ -23,8 +23,10 @@ const {
   initializeMock
 } = require('./util/mocks/TokenValidFunctions');
 const testEndpoints = [
-  { route: '/api/', url: '', protected: true, post: true },
-  { route: '/api/Fake/unauthRoute', url: '', protected: false, post: true }
+  { route: '/api/Fake/ProtectedPost', url: '', protected: true, post: true },
+  { route: '/api/Fake/UnprotectedPost', url: '', protected: false, post: true },
+  { route: '/api/Fake/ProtectedGet', url: '', protected: true, post: false },
+  { route: '/api/Fake/UnprotectedGet', url: '', protected: false, post: false }
 ];
 
 chai.should();
