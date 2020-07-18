@@ -1,10 +1,18 @@
-const express = require('express');
-const axios = require('axios');
-const { STATUS_CODES } = require('../../../util/constants');
-const { FORBIDDEN, UNAUTHORIZED, OK } = STATUS_CODES;
-const {checkIfTokenSent, checkIfTokenValid} = require('../../../main_endpoints/util/token-functions')
+const express = require("express");
+const axios = require("axios");
+const { STATUS_CODES } = require("../../../util/constants");
+const { 
+  OK,
+  BAD_REQUEST,
+  UNAUTHORIZED,
+  FORBIDDEN,
+  NOT_FOUND } = STATUS_CODES;
+const {
+  checkIfTokenSent,
+  checkIfTokenValid,
+} = require("../../../main_endpoints/util/token-functions");
 
-function initializeRoutes(routes){
+function initializeRoutes(routes) {
   let router = express.Router();
   routes.map((currentRoute) => {
     if (currentRoute.post) {
@@ -17,19 +25,20 @@ function initializeRoutes(routes){
           }
         }
         // forward it to one of the blue boxes
-        console.log("hello evan xd \n\n\n", req.body);
-        console.log(currentRoute.url + currentRoute.route);
         axios
           .post(currentRoute.url + currentRoute.route, req.body)
           .then((result) => {
+            console.log("we good in post!");
             return res.status(OK).send(result.data);
           })
           .catch((error) => {
+            console.log("we bad in post");
             return res.sendStatus(error.response.status);
           });
       });
     } else {
       router.get(currentRoute.route, (req, res) => {
+        console.log("hi welcome87876876876876876\n\n\n\n", currentRoute);
         if (currentRoute.protected) {
           if (!checkIfTokenSent(req)) {
             return res.sendStatus(FORBIDDEN);
@@ -39,17 +48,20 @@ function initializeRoutes(routes){
         }
         // forward it to one of the blue boxes
         axios
-          .get(currentRoute.url + currentRoute.route, req.params)
+          .get(currentRoute.url + currentRoute.route, req.body)
           .then((result) => {
+            console.log("============GET OK\n\n\n\n", result.data); //this prints
             return res.sendStatus(OK).send(result.data);
           })
           .catch((error) => {
-            return res.sendStatus(error.response.status);
+            console.log("============not ok :(\n\n\n\n\n"); //and this prints in one api call
+            return res.sendStatus(NOT_FOUND).send(error);
           });
+        
       });
     }
   });
   return router;
 }
 
-module.exports = {initializeRoutes};
+module.exports = { initializeRoutes };

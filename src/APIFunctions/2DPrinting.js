@@ -68,7 +68,7 @@ export async function printPage(data) {
 export async function getPagesPrinted(email, token, totalPages, copies) {
   let status = new PrintApiResponse();
   await axios
-    .post('api/user/getPagesPrintedCount', {
+    .post('/api_gateway/user/getPagesPrintedCount', {
       email,
       token
     })

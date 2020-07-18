@@ -120,11 +120,16 @@ if (typeof module !== 'undefined' && !module.parent) {
   const loggingApiEndpoints = __dirname + '/../logging_api/routes/';
   const mailerApiEndpoints = __dirname + '/../google_api/routes/';
   const apiGatewayEndpoints = __dirname + '/../api_gateway/routes/';
+  const testEndpoints = __dirname + '/../AAAAAAAA/';
+  const testGatewayEndpoints = __dirname + '/../AAAAAAAA/';
 
   const generalServer = new SceHttpServer(generalApiEndpoints, 8080);
   const loggingServer = new SceHttpServer(loggingApiEndpoints, 8081);
   const mailerServer = new SceHttpServer(mailerApiEndpoints, 8082);
   const apiGateway = new SceHttpServer(apiGatewayEndpoints, 8084, '/');
+  // const testServer = new SceHttpServer(testEndpoints, 9000);
+  // const testGateway = new SceHttpServer(testGatewayEndpoints, 9001, '/');
+
 
   generalServer.initializeEndpoints().then(() => {
     generalServer.openConnection();
@@ -138,6 +143,12 @@ if (typeof module !== 'undefined' && !module.parent) {
   apiGateway.initializeEndpoints().then(() => {
     apiGateway.openConnection();
   });
+  // testServer.initializeEndpoints().then(() => {
+  //   testServer.openConnection();
+  // });
+  // testGateway.initializeEndpoints().then(() => {
+  //   testGateway.openConnection();
+  // });
 }
 
 module.exports = { SceHttpServer };

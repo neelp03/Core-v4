@@ -8,7 +8,7 @@ import { ApiResponse } from './ApiResponses';
 export async function getAllErrorLogs() {
   let status = new ApiResponse();
   await axios
-    .get('api/ErrorLog/getErrorLogs')
+    .get('/api_gateway/ErrorLog/getErrorLogs')
     .then(res => {
       status.responseData = res.data;
     })
@@ -30,7 +30,7 @@ export async function getAllErrorLogs() {
  */
 export async function addErrorLog(newError) {
   let status = new ApiResponse();
-  await axios.post('api/ErrorLog/addErrorLog', { ...newError }).catch(err => {
+  await axios.post('/api_gateway/ErrorLog/addErrorLog', { ...newError }).catch(err => {
     status.error = true;
     status.responseData = err;
   });

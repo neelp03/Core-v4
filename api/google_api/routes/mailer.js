@@ -4,7 +4,8 @@ const { SceGoogleApiHandler } = require('../util/SceGoogleApiHandler');
 const verification = require('../email_templates/verification');
 const {
   OK,
-  BAD_REQUEST
+  BAD_REQUEST,
+  NOT_FOUND
 } = require('../../util/constants').STATUS_CODES;
 const { googleApiKeys } = require('../../config/config.json');
 const { USER } = googleApiKeys;

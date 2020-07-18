@@ -9,7 +9,7 @@ const {
 
 const routes = [
   {
-    route: '/Event/createEevent',
+    route: '/event/createEevent',
     url: GENERAL_API_URL + '/api',
     protected: true,
     post: true,
@@ -21,13 +21,13 @@ const routes = [
     post: false,
   },
   {
-    route: '/Event/editEvent',
+    route: '/event/editEvent',
     url: GENERAL_API_URL + '/api',
     protected: true,
     post: true,
   },
   {
-    route: '/Event/deleteEvent',
+    route: '/event/deleteEvent',
     url: GENERAL_API_URL + '/api',
     protected: true,
     post: true,

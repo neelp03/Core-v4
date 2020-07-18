@@ -15,17 +15,18 @@ const {
 const addErrorLog = require ('../util/logging-helpers');
 
 router.get('/getEvents', (req, res) => {
+  console.log('inside get events woowoo\n\n\n\n\n\n\n');
+  let event = [];
   Event.find()
     .sort({ eventDate: -1, startTime: -1 }) // Sort By date in descending order
-    .then(items => res.status(OK).send(items))
-    .catch(error => {
-      const info = {
-        errorTime: new Date(),
-        apiEndpoint: 'Event/getEvents',
-        errorDescription: error
-      };
-      addErrorLog(info);
-      res.status(BAD_REQUEST).send({ error, message: 'Getting event failed' });
+    .then(items => {
+      console.log("hello thai \n\n\n");
+      event = items;
+      res.status(OK).send(event)
+    })
+    .catch(error =>{
+      console.log('something went wrong');
+      res.status(NOT_FOUND).send(error);
     });
 });
 

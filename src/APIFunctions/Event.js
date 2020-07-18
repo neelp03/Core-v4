@@ -9,9 +9,10 @@ import { ApiResponse } from './ApiResponses';
 export async function getAllEvents() {
   let status = new ApiResponse();
   await axios
-    .get('api/event/getEvents')
+    .get('/api_gateway/event/getEvents')
     .then(res => {
       console.log("hi evan xd");
+      console.log(res.data);
       status.responseData = res.data;
     })
     .catch(err => {
@@ -53,7 +54,7 @@ export async function createNewEvent(newEvent, token) {
     imageURL: newEvent.imageURL
   };
   await axios
-    .post('api/event/createEvent', { token, ...eventToAdd })
+    .post('/api_gateway/event/createEvent', { token, ...eventToAdd })
     .then(res => {
       status.responseData = res.data;
     })
@@ -101,7 +102,7 @@ export async function editEvent(eventToUpdate, token) {
     imageURL: eventToUpdate.imageURL
   };
   await axios
-    .post('api/event/editEvent', { token, ...eventToEdit })
+    .post('/api_gateway/event/editEvent', { token, ...eventToEdit })
     .then(res => {
       status.responseData = res.data;
     })
