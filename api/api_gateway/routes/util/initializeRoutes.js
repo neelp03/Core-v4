@@ -47,17 +47,19 @@ function initializeRoutes(routes) {
           }
         }
         // forward it to one of the blue boxes
+        let status = {responseData: null, error: false};
         axios
           .get(currentRoute.url + currentRoute.route, req.body)
           .then((result) => {
             console.log("============GET OK\n\n\n\n", result.data); //this prints
-            return res.sendStatus(OK).send(result.data);
+            status.responseData = result.data;
           })
           .catch((error) => {
             console.log("============not ok :(\n\n\n\n\n"); //and this prints in one api call
-            return res.sendStatus(NOT_FOUND).send(error);
+            status.error = true;
+            status.responseData = error;
           });
-        
+        return status;
       });
     }
   });
