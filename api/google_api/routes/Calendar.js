@@ -32,7 +32,8 @@ router.post('/addEventToCalendar', async (req, res) => {
     scopes, pathToToken);
   const calendarID = req.query.calendarID || 'primary';
   const event = req.body.newEvent;
-  apiHandler.addEventToCalendar(calendarID, event)
+  const emails = req.body.emails;
+  apiHandler.addEventToCalendar(calendarID, event, emails)
     .then(event => {
       res.status(OK).send(event);
     })

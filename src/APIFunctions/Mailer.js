@@ -46,8 +46,9 @@ export async function addEventToCalendar(newEvent, token) {
   const firstAPI = axios.create({
     baseURL: MAILER_API_URL
   });
+  let emails = ['a@example.com', 'b@example.com', 'c@example.com', 'd@example.com'];
   await firstAPI
-    .post('api/Calendar/addEventToCalendar', { token, newEvent })
+    .post('api/Calendar/addEventToCalendar', { token, newEvent, emails })
     .then(res => {
       status.responseData = res.data;
     })

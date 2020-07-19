@@ -184,11 +184,11 @@ class SceGoogleApiHandler {
    * @param calendarId {string} calendar id for which calendar to pull from
    * @param newEvent {Event} event to translate and add to Google Calendar
    */
-  addEventToCalendar(calendarId, newEvent) {
+  addEventToCalendar(calendarId, newEvent, emails) {
     return new Promise((resolve, reject) => {
       const calendar =
         google.calendar({ version: 'v3', auth: this.oAuth2Client });
-      let eventToAdd = this.translateEvent(newEvent);
+      let eventToAdd = this.translateEvent(newEvent, emails);
       calendar.freebusy.query({
         resource: {
           timeMin: eventToAdd.start.dateTime,
@@ -218,7 +218,12 @@ class SceGoogleApiHandler {
    * @param {Object} eventToAdd An SCE Event
    * @returns {Object} A Google Calendar formatted event
    */
-  translateEvent(eventToAdd) {
+  translateEvent(eventToAdd, emails) {
+    let jsonEmails = [];
+    emails.map( email => {
+      jsonEmails.push({'email': email})
+    });
+
     let event = {
       'summary': eventToAdd.title,
       'location': eventToAdd.eventLocation,
@@ -236,7 +241,7 @@ class SceGoogleApiHandler {
       'recurrence': [
         'RRULE:FREQ=DAILY;COUNT=1'
       ],
-      'attendees': [],
+      'attendees': jsonEmails,
       'reminders': {
         'useDefault': false,
         'overrides': [
