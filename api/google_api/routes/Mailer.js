@@ -29,9 +29,6 @@ router.post('/sendVerificationEmail', async (req, res) => {
         .sendEmail(template)
         .then((_) => {
           res.sendStatus(OK);
-        })
-        .catch((_) => {
-          res.sendStatus(BAD_REQUEST);
         });
     })
     .catch((_) => {
@@ -57,9 +54,6 @@ router.post('/sendBlastEmail', async (req, res) => {
         .sendEmail(template)
         .then((_) => {
           res.sendStatus(OK);
-        })
-        .catch((_) => {
-          res.sendStatus(BAD_REQUEST);
         });
     })
     .catch((_) => {
