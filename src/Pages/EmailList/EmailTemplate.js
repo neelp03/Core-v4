@@ -114,7 +114,7 @@ export default class EmailTemplate extends Component {
           responseData.startTime.replace(/ /g, '') +
           '-' +
           responseData.endTime.replace(/ /g, '') +
-          '</span><br /><span style="font-size: 10pt;"><strong>Where: ' +
+          '</span><br /><span style="font-size: 10pt;"><strong>Where:' +
           '</strong>&nbsp;' +
           responseData.eventLocation +
           '</span></p>\n<p><img style="max-height: 192px;' +
