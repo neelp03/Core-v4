@@ -109,6 +109,18 @@ export default function Editor(props) {
     fetchDoorCode();
   },[user.email, props.token]);
 
+  useEffect(() => {
+    // All the getDoor() logic in here
+    setDoorCode("None Assigned");
+    async function fetchDoorCode() {
+      let data = await getPersonsDoorCode(user.email, props.token);
+      if(!data.error){
+        setDoorCode(data.responseData.doorCode.doorCode);
+      }
+    }
+    fetchDoorCode();
+  },[user.email, props.token]);
+
   return (
     <div className="center">
       <ul className="profileInfo">
