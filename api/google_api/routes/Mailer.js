@@ -45,9 +45,9 @@ router.post('/sendBlastEmail', async (req, res) => {
 
   await blastEmail(
     USER,
-    req.body.recipientEmail,
-    req.body.blastSubject,
-    req.body.blastContent
+    req.body.emailList,
+    req.body.subject,
+    req.body.content
   )
     .then((template) => {
       apiHandler

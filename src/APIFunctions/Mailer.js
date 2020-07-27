@@ -38,9 +38,9 @@ export async function sendBlastEmail(emailList, subject, content) {
   let status = new ApiResponse();
   await axios
     .post(MAILER_API_URL + '/api/Mailer/sendBlastEmail', {
-      recipientEmail: emailList,
-      blastSubject: subject,
-      blastContent: content,
+      emailList,
+      subject,
+      content,
     })
     .then((response) => {
       status.responseData = response;
