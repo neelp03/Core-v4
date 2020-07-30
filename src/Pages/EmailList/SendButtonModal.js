@@ -17,7 +17,7 @@ export default function SendButtonModal(props) {
     confirmText: 'Obey me, pleb',
     confirmColor: 'primary',
     cancelText: 'You right, cancel',
-    customConfirmButtonCSS: 'email-conf-button',
+    confirmButtonCSS: 'email-conf-button',
     toggle: () => setToggle(!toggle),
     handleConfirmation: () => {
       setToggle(!toggle);
