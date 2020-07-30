@@ -3,9 +3,10 @@ import './email-template.css';
 import { getAllEvents } from '../../APIFunctions/Event';
 import { Button } from 'reactstrap';
 import BlastMailForm from './BlastMailForm.js';
-import ConfirmationModal from './ConfirmationModal.js';
+import SendButtonModal from './SendButtonModal.js';
 import { sendBlastEmail } from '../../APIFunctions/Mailer';
 import { getAllUsers, filterUsers } from '../../APIFunctions/User';
+
 
 export default class EmailTemplate extends Component {
   constructor(props) {
@@ -270,7 +271,7 @@ export default class EmailTemplate extends Component {
           >
             Load Template
           </Button>
-          <ConfirmationModal
+          <SendButtonModal
             handleSend={this.handleSend}
             checkEmptyInputs={this.checkEmptyInputs}
           />

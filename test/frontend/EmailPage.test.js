@@ -12,8 +12,8 @@ Enzyme.configure({ adapter: new Adapter() });
 describe('<EmailPage />', () => {
   const wrapper = mount(<EmailPage />);
 
-  it('Should render 3 NavItems', () => {
-    expect(wrapper.find(Button)).to.have.lengthOf(3);
+  it('Should render 5 NavItems', () => {
+    expect(wrapper.find(Button)).to.have.lengthOf(5);
   });
 
   it('Should render 2 tab panels', () => {

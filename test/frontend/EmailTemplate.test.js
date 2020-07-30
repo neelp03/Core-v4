@@ -12,8 +12,8 @@ Enzyme.configure({ adapter: new Adapter() });
 describe('<EmailTemplate />', () => {
   const wrapper = mount(<EmailTemplate />);
 
-  it('Should render 1 button', () => {
-    expect(wrapper.find(Button)).to.have.lengthOf(1);
+  it('Should render 3 buttons', () => {
+    expect(wrapper.find(Button)).to.have.lengthOf(3);
   });
 
   it('Should render 2 additional <div> tags if there are two events', () => {
