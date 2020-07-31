@@ -20,5 +20,4 @@ describe('<EmailTemplate />', () => {
   it('Should render BlastMailForm', () => {
     expect(wrapper.find(BlastMailForm)).to.have.lengthOf(1);
   });
-
 });
