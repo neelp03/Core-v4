@@ -36,6 +36,7 @@ export default function Routing({ appProps }) {
     userIsAuthenticated &&
     appProps.user &&
     appProps.user.accessLevel >= membershipState.OFFICER;
+
   const signedInRoutes = [
 
     {

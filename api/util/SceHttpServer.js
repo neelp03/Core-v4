@@ -2,7 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const http = require('http');
+const https = require('https')
 const mongoose = require('mongoose');
+const fs = require('fs')
+const path = require('path')
 mongoose.Promise = require('bluebird');
 
 const { PathParser } = require('./PathParser');
@@ -92,6 +95,29 @@ class SceHttpServer {
   }
 
   /**
+   * Create the https server, connect to MongoDB and start listening on
+   * the supplied port.
+   */
+  httpsOpenConnection() {
+    const options = {
+      key: fs.readFileSync(path.join(__dirname, 'key')),
+      cert: fs.readFileSync(path.join(__dirname, 'cert'))
+    };
+
+    this.server = https.createServer(options, this.app);
+    this.connectToMongoDb();
+    this.server.listen(443, function() {
+      console.debug(`Now listening on port ${443}`);
+    });
+
+    this.app.use(express.static(path.join(__dirname, 'build')));
+
+    this.app.get('/*', function(req, res) {
+      res.sendFile(path.join(__dirname, '../../build/index.html'));
+    });
+  }
+
+  /**
    * Return the current instance of the HTTP server. This function is useful
    * for making chai HTTP requests in our API testing files.
    * @returns {http.Server} The current instance of the HTTP server.
@@ -120,6 +146,7 @@ if (typeof module !== 'undefined' && !module.parent) {
   const cloudApiEndpoints = __dirname + '/../cloud_api/routes/';
 
   const generalServer = new SceHttpServer(generalApiEndpoints, 8080);
+  const httpsServer = new SceHttpServer(generalApiEndpoints, 443);
   const loggingServer = new SceHttpServer(loggingApiEndpoints, 8081);
   const cloudServer = new SceHttpServer(cloudApiEndpoints, 8082);
 
@@ -131,6 +158,9 @@ if (typeof module !== 'undefined' && !module.parent) {
   });
   cloudServer.initializeEndpoints().then(() => {
     cloudServer.openConnection();
+  });
+  cloudServer.initializeEndpoints().then(() => {
+    httpsServer.httpsOpenConnection();
   });
 }
 
