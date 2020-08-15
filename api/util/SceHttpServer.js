@@ -2,7 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const http = require('http');
+const https = require('https')
 const mongoose = require('mongoose');
+const fs = require('fs')
+const path = require('path')
 mongoose.Promise = require('bluebird');
 
 const { PathParser } = require('./PathParser');
@@ -47,6 +50,7 @@ class SceHttpServer {
         extended: true,
       })
     );
+    //this.app.use(redirectToHTTPS([/localhost:(\d{4})/], 301));
   }
 
   /**
@@ -54,10 +58,13 @@ class SceHttpServer {
    * variable and resolving API endpoints from it.
    */
   async initializeEndpoints() {
-    const requireList = await PathParser.parsePath(this.pathToEndpoints);
-    requireList.map((route) => {
-      this.app.use(this.prefix + route.endpointName, require(route.filePath));
-    });
+    this.pathToEndpoints.map(async(endpoint) => {
+      const requireList = await PathParser.parsePath(endpoint);
+      requireList.map((route) => {
+        this.app.use(this.prefix + route.endpointName, require(route.filePath));
+      });
+    }) 
+    
   }
 
   /**
@@ -68,6 +75,11 @@ class SceHttpServer {
     this.server = http.createServer(this.app);
     this.connectToMongoDb();
     const { port } = this;
+
+    this.app.get("*", function (req, res, next) {
+      res.redirect("https://" + req.headers.host + req.path);
+    });
+
     this.server.listen(port, function() {
       console.debug(`Now listening on port ${port}`);
     });
@@ -89,6 +101,29 @@ class SceHttpServer {
       .catch((error) => {
         throw error;
       });
+  }
+
+  /**
+   * Create the https server, connect to MongoDB and start listening on
+   * the supplied port.
+   */
+  httpsOpenConnection() {
+    const options = {
+      key: fs.readFileSync(path.join(__dirname, '../../sce.key')),
+      cert: fs.readFileSync(path.join(__dirname, '../../sce_engr_sjsu_edu.cer'))
+    };
+  
+    this.app.use(express.static(path.join(__dirname, '../../build')));
+    this.app.get('*', function(req, res) {
+      res.sendFile(path.join(__dirname, '../../build/index.html'));
+    });
+
+    this.server = https.createServer(options, this.app);
+    this.connectToMongoDb();
+    
+    this.server.listen(443, function() {
+      console.debug(`Now listening on port ${443}`);
+    });
   }
 
   /**
@@ -119,19 +154,22 @@ if (typeof module !== 'undefined' && !module.parent) {
   const loggingApiEndpoints = __dirname + '/../logging_api/routes/';
   const cloudApiEndpoints = __dirname + '/../cloud_api/routes/';
 
-  const generalServer = new SceHttpServer(generalApiEndpoints, 8080);
-  const loggingServer = new SceHttpServer(loggingApiEndpoints, 8081);
-  const cloudServer = new SceHttpServer(cloudApiEndpoints, 8082);
-
+  const generalServer = new SceHttpServer([generalApiEndpoints, loggingApiEndpoints, cloudApiEndpoints], 80);
+  const httpsServer = new SceHttpServer([generalApiEndpoints, loggingApiEndpoints, cloudApiEndpoints], 443);
+ 
+  
   generalServer.initializeEndpoints().then(() => {
     generalServer.openConnection();
   });
-  loggingServer.initializeEndpoints().then(() => {
-    loggingServer.openConnection();
+  httpsServer.initializeEndpoints().then(() => {
+    httpsServer.httpsOpenConnection();
   });
-  cloudServer.initializeEndpoints().then(() => {
-    cloudServer.openConnection();
-  });
+  // loggingServer.initializeEndpoints().then(() => {
+  //   loggingServer.openConnection();
+  // });
+  // cloudServer.initializeEndpoints().then(() => {
+  //   cloudServer.openConnection();
+  // });
 }
 
 module.exports = { SceHttpServer };
