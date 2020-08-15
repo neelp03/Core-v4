@@ -2,7 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const http = require('http');
+const https = require('https')
 const mongoose = require('mongoose');
+const fs = require('fs');
 mongoose.Promise = require('bluebird');
 
 const { PathParser } = require('./PathParser');
@@ -74,6 +76,29 @@ class SceHttpServer {
   }
 
   /**
+   * Create the https server, connect to MongoDB and start listening on
+   * the supplied port.
+   */
+  httpsOpenConnection() {
+    const options = {
+      key: fs.readFileSync("key.key"),
+      cert: fs.readFileSync("crt.crt")
+    };
+
+    this.server = https.createServer(options, this.app);
+    this.connectToMongoDb();
+    this.server.listen(443, function() {
+      console.debug(`Now listening on port ${443}`);
+    });
+
+    app.use(express.static(path.join(__dirname, 'build')));
+
+    app.get('/*', function(req, res) {
+      res.sendFile("Hello W");
+    });
+  }
+
+  /**
    * Initialize a connection to MongoDB.
    */
   connectToMongoDb() {
@@ -122,6 +147,7 @@ if (typeof module !== 'undefined' && !module.parent) {
   const generalServer = new SceHttpServer(generalApiEndpoints, 8080);
   const loggingServer = new SceHttpServer(loggingApiEndpoints, 8081);
   const cloudServer = new SceHttpServer(cloudApiEndpoints, 8082);
+  const httpsServer = new SceHttpServer(cloudApiEndpoints, 443);
 
   generalServer.initializeEndpoints().then(() => {
     generalServer.openConnection();
@@ -131,6 +157,9 @@ if (typeof module !== 'undefined' && !module.parent) {
   });
   cloudServer.initializeEndpoints().then(() => {
     cloudServer.openConnection();
+  });
+  httpsServer.initializeEndpoints().then(() => {
+    httpsServer.httpsOpenConnection();
   });
 }
 
