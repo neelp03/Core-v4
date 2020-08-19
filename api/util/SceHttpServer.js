@@ -100,21 +100,27 @@ class SceHttpServer {
    */
   httpsOpenConnection() {
     const options = {
-      key: fs.readFileSync(path.join(__dirname, 'key')),
-      cert: fs.readFileSync(path.join(__dirname, 'cert'))
+      key: fs.readFileSync(path.join(__dirname, '../../sce.key')),
+      cert: fs.readFileSync(path.join(__dirname, '../../sce_engr_sjsu_edu.cer'))
     };
+    //this.app.get('/backend', (req, res) => res.send('Hello World!'))
+  
+  this.app.use(express.static(path.join(__dirname, '../../build')));
 
+  this.app.get('*', function(req, res) {
+    res.sendFile(path.join(__dirname, '../../build/index.html'));
+  });
     this.server = https.createServer(options, this.app);
     this.connectToMongoDb();
     this.server.listen(443, function() {
       console.debug(`Now listening on port ${443}`);
     });
+    /*
+    this.app.use(express.static(path.join(__dirname, '../../build')));
 
-    this.app.use(express.static(path.join(__dirname, 'build')));
-
-    this.app.get('/*', function(req, res) {
+    this.app.get('*', function(req, res) {
       res.sendFile(path.join(__dirname, '../../build/index.html'));
-    });
+    });*/
   }
 
   /**
@@ -149,9 +155,12 @@ if (typeof module !== 'undefined' && !module.parent) {
   const httpsServer = new SceHttpServer(generalApiEndpoints, 443);
   const loggingServer = new SceHttpServer(loggingApiEndpoints, 8081);
   const cloudServer = new SceHttpServer(cloudApiEndpoints, 8082);
-
-  generalServer.initializeEndpoints().then(() => {
-    generalServer.openConnection();
+  
+  // generalServer.initializeEndpoints().then(() => {
+  //   generalServer.openConnection();
+  // });
+  httpsServer.initializeEndpoints().then(() => {
+    httpsServer.httpsOpenConnection();
   });
   loggingServer.initializeEndpoints().then(() => {
     loggingServer.openConnection();
@@ -159,9 +168,7 @@ if (typeof module !== 'undefined' && !module.parent) {
   cloudServer.initializeEndpoints().then(() => {
     cloudServer.openConnection();
   });
-  cloudServer.initializeEndpoints().then(() => {
-    httpsServer.httpsOpenConnection();
-  });
+  
 }
 
 module.exports = { SceHttpServer };
