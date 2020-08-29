@@ -50,6 +50,7 @@ class SceHttpServer {
         extended: true,
       })
     );
+    //this.app.use(redirectToHTTPS([/localhost:(\d{4})/], 301));
   }
 
   /**
@@ -71,6 +72,11 @@ class SceHttpServer {
     this.server = http.createServer(this.app);
     this.connectToMongoDb();
     const { port } = this;
+
+    this.app.get("*", function (req, res, next) {
+      res.redirect("https://" + req.headers.host + req.path);
+    });
+
     this.server.listen(port, function() {
       console.debug(`Now listening on port ${port}`);
     });
@@ -103,24 +109,18 @@ class SceHttpServer {
       key: fs.readFileSync(path.join(__dirname, '../../sce.key')),
       cert: fs.readFileSync(path.join(__dirname, '../../sce_engr_sjsu_edu.cer'))
     };
-    //this.app.get('/backend', (req, res) => res.send('Hello World!'))
   
-  this.app.use(express.static(path.join(__dirname, '../../build')));
+    this.app.use(express.static(path.join(__dirname, '../../build')));
+    this.app.get('*', function(req, res) {
+      res.sendFile(path.join(__dirname, '../../build/index.html'));
+    });
 
-  this.app.get('*', function(req, res) {
-    res.sendFile(path.join(__dirname, '../../build/index.html'));
-  });
     this.server = https.createServer(options, this.app);
     this.connectToMongoDb();
+    
     this.server.listen(443, function() {
       console.debug(`Now listening on port ${443}`);
     });
-    /*
-    this.app.use(express.static(path.join(__dirname, '../../build')));
-
-    this.app.get('*', function(req, res) {
-      res.sendFile(path.join(__dirname, '../../build/index.html'));
-    });*/
   }
 
   /**
@@ -151,14 +151,14 @@ if (typeof module !== 'undefined' && !module.parent) {
   const loggingApiEndpoints = __dirname + '/../logging_api/routes/';
   const cloudApiEndpoints = __dirname + '/../cloud_api/routes/';
 
-  const generalServer = new SceHttpServer(generalApiEndpoints, 8080);
+  const generalServer = new SceHttpServer(generalApiEndpoints, 80);
   const httpsServer = new SceHttpServer(generalApiEndpoints, 443);
   const loggingServer = new SceHttpServer(loggingApiEndpoints, 8081);
   const cloudServer = new SceHttpServer(cloudApiEndpoints, 8082);
   
-  // generalServer.initializeEndpoints().then(() => {
-  //   generalServer.openConnection();
-  // });
+  generalServer.initializeEndpoints().then(() => {
+    generalServer.openConnection();
+  });
   httpsServer.initializeEndpoints().then(() => {
     httpsServer.httpsOpenConnection();
   });
@@ -168,7 +168,6 @@ if (typeof module !== 'undefined' && !module.parent) {
   cloudServer.initializeEndpoints().then(() => {
     cloudServer.openConnection();
   });
-  
 }
 
 module.exports = { SceHttpServer };
