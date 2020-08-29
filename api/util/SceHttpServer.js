@@ -118,9 +118,6 @@ class SceHttpServer {
       res.sendFile(path.join(__dirname, '../../build/index.html'));
     });
 
-  this.app.get('*', function(req, res) {
-    res.sendFile(path.join(__dirname, '../../build/index.html'));
-  });
     this.server = https.createServer(options, this.app);
     this.connectToMongoDb();
     
