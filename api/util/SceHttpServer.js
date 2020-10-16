@@ -48,7 +48,7 @@ class SceHttpServer {
       })
     );
   }
-
+  
   /**
    * This function is responsible for taking the pathToEndpoints instance
    * variable and resolving API endpoints from it.
@@ -137,6 +137,9 @@ class SceHttpServer {
 // This if statement checks if the module was require()'d or if it was run
 // by node server.js. If we are not requiring it and are running it from the
 // command line, we create a server instance and start listening for requests.
+  
+  console.log(process.argv.slice(2));
+
 if (typeof module !== 'undefined' && !module.parent) {
   const generalApiEndpoints = __dirname + '/../main_endpoints/routes/';
   const loggingApiEndpoints = __dirname + '/../logging_api/routes/';
