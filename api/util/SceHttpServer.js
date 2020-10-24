@@ -174,17 +174,6 @@ if (typeof module !== 'undefined' && !module.parent) {
     cloudServer.openConnection();
   });
   }
-
-  // frontendServer.openFrontend(true);
-  // generalServer.initializeEndpoints().then(() => {
-  //   generalServer.openConnection();
-  // });
-  // loggingServer.initializeEndpoints().then(() => {
-  //   loggingServer.openConnection();
-  // });
-  // cloudServer.initializeEndpoints().then(() => {
-  //   cloudServer.openConnection();
-  // });
 }
 
 module.exports = { SceHttpServer };
