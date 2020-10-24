@@ -148,9 +148,24 @@ if (typeof module !== 'undefined' && !module.parent) {
   const loggingServer = new SceHttpServer(loggingApiEndpoints, 8081, '/logapi/');
   const cloudServer = new SceHttpServer(cloudApiEndpoints, 8082, '/cloudapi/');
 
-  frontendServer.openFrontend(true);
-  generalServer.initializeEndpoints().then(() => {
-    generalServer.openConnection();
+  if(process.argv.slice(2) == 'frontend'){
+    frontendServer.openFrontend(true);
+  }else if (process.argv.slice(2) == 'api-endpoints'){
+    generalServer.initializeEndpoints().then(() => {
+      generalServer.openConnection();
+  });
+  }else if (process.argv.slice(2) == 'logging-api'){
+    loggingServer.initializeEndpoints().then(() => {
+      loggingServer.openConnection();
+    });
+  }else if (process.argv.slice(2) == 'cloud-api'){
+    cloudServer.initializeEndpoints().then(() => {
+      cloudServer.openConnection();
+    });
+  }else{
+    frontendServer.openFrontend(true);
+    generalServer.initializeEndpoints().then(() => {
+      generalServer.openConnection();
   });
   loggingServer.initializeEndpoints().then(() => {
     loggingServer.openConnection();
@@ -158,6 +173,18 @@ if (typeof module !== 'undefined' && !module.parent) {
   cloudServer.initializeEndpoints().then(() => {
     cloudServer.openConnection();
   });
+  }
+
+  // frontendServer.openFrontend(true);
+  // generalServer.initializeEndpoints().then(() => {
+  //   generalServer.openConnection();
+  // });
+  // loggingServer.initializeEndpoints().then(() => {
+  //   loggingServer.openConnection();
+  // });
+  // cloudServer.initializeEndpoints().then(() => {
+  //   cloudServer.openConnection();
+  // });
 }
 
 module.exports = { SceHttpServer };
