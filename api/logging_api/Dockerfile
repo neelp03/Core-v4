@@ -5,7 +5,7 @@ FROM node:8.10.0-alpine
 WORKDIR /app
 #all commands will run in this directory
 
-COPY package.json .
+COPY ./package.json .
 #copies all the dependenices into work directory (./app) (since you set the work dir before)
 
 RUN npm install --production
@@ -16,7 +16,7 @@ COPY ./logging_api /app/logging_api
 
 COPY ./util /app/util
 
-COPY ./config/config.js /app/config/config.js
+COPY ./config/config.json /app/config/config.json
 
 EXPOSE 8081
 
