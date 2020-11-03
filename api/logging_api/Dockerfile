@@ -8,7 +8,7 @@ WORKDIR /app
 COPY ./package.json .
 #copies all the dependenices into work directory (./app) (since you set the work dir before)
 
-RUN npm install --production
+RUN npm install 
 #installs packages
 
 COPY ./logging_api /app/logging_api
