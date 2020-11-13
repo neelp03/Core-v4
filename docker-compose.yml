@@ -7,6 +7,18 @@ services:
     volumes:
       - '/data/db1:/data/db'
     command: 'mongod --auth'
+  sce-main-endpoints-api:
+    container_name: sce-main-endpoints-api
+    build:
+      context: ./api
+      dockerfile: ./main_endpoints/Dockerfile
+    ports:
+      - '8080:8080'
+    restart: 'on-failure'
+    links:
+      - mongo
+    networks:
+      - sce-local
   sce-logging-api:
     container_name: sce-logging-api
     build:
