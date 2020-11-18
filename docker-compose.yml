@@ -1,12 +1,42 @@
 version: '3'
 services:
-  db:
-    image: 'mongo'
+  # db:
+  #   image: 'mongo'
+  #   ports:
+  #     - '27017:27017'
+  #   volumes:
+  #     - '/data/db:/data/db'
+  #   command: 'mongod --auth'
+  mongo-db:
+    container_name: mongo-db
+    build:
+      context: ./docker
+      dockerfile: ./Dockerfile-mongo
     ports:
       - '27017:27017'
-    volumes:
-      - '/data/db1:/data/db'
-    command: 'mongod --auth'
+    restart: 'on-failure'
+
+  sce-frontend:
+    container_name: sce-frontend
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile-frontend
+    ports:
+      - '8079:8079'
+    restart: 'on-failure'
+    links:
+      - mongo
+  sce-main-endpoints:
+    container_name: sce-google-api
+    build:
+      context: ./api
+      dockerfile: ./main_endpoints/Dockerfile
+    ports:
+      - '8080:8080'
+    restart: 'on-failure'
+    links:
+      - mongo-db
+    
   sce-logging-api:
     container_name: sce-logging-api
     build:
@@ -17,8 +47,7 @@ services:
     restart: 'on-failure'
     links:
       - mongo
-    networks:
-      - sce-local
+   
   sce-cloud-api:
     container_name: sce-cloud-api
     build:
@@ -29,38 +58,39 @@ services:
     restart: 'on-failure'
     links:
       - mongo
-    networks:
-      - sce-local
+   
   #goto mackintoshHD or whereever your data directory for Mongo is and go in it and clone the db and rename it as db1.
   #When running mongo, it doesn't like it when the container and mongod accesses the db so we make a copy of it and run the container from it on start.
 
   #use docker-compose up --build after changing the dockerfiles in docker folder.
   #use docker-compose up to run the container
-  app:
-    image: 'coretest:latest'
-    build:
-      context: .
-      dockerfile: ./docker/Dockerfile-serverjs
-    ports:
-      - '8080:8080'
-    restart: 'on-failure'
-    depends_on:
-      - db
-    links:
-      - db
+  # app:
+  #   image: 'coretest:latest'
+  #   build:
+  #     context: .
+  #     dockerfile: ./docker/Dockerfile-serverjs
+  #   ports:
+  #     - '8080:8080'
+  #   restart: 'on-failure'
+  #   depends_on:
+  #     - db
+  #   links:
+  #     - db
+  # I believe lines 63-74 should be deleted? 
   
   #when you sping up more than 1 container, increase the ports above. Implement a port range, 8080:8085
   #when you implement a port range, window.location.hostname for the log in page. 
   #need something in front of the docker container (load balancer) in nginx container.
-  frontend:
-    image: 'corefront:latest'
-    build:
-      context: .
-      dockerfile: ./docker/Dockerfile-ScePage
-    ports:
-      - '3000:3000'
-    restart: 'on-failure'
-    command: 'npm start'
-    links:
-      - app
+  # frontend:
+  #   image: 'corefront:latest'
+  #   build:
+  #     context: .
+  #     dockerfile: ./docker/Dockerfile-ScePage
+  #   ports:
+  #     - '3000:3000'
+  #   restart: 'on-failure'
+  #   command: 'npm start'
+  #   links:
+  #     - app
+  #don't think we need this one either  
   #app will ALWAYS fail until mongodb starts so when you do docker-compose up, be patient and wait a while.
