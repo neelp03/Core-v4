@@ -25,9 +25,9 @@ services:
       - '8079:8079'
     restart: 'on-failure'
     links:
-      - mongo
+      - mongo-db
   sce-main-endpoints:
-    container_name: sce-google-api
+    container_name: sce-main-endpoints
     build:
       context: ./api
       dockerfile: ./main_endpoints/Dockerfile
@@ -46,7 +46,7 @@ services:
       - '8081:8081'
     restart: 'on-failure'
     links:
-      - mongo
+      - mongo-db
    
   sce-cloud-api:
     container_name: sce-cloud-api
@@ -57,7 +57,7 @@ services:
       - '8082:8082'
     restart: 'on-failure'
     links:
-      - mongo
+      - mongo-db
    
   #goto mackintoshHD or whereever your data directory for Mongo is and go in it and clone the db and rename it as db1.
   #When running mongo, it doesn't like it when the container and mongod accesses the db so we make a copy of it and run the container from it on start.
