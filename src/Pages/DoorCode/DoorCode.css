@@ -1,7 +1,7 @@
 .layout-inv{
     padding-top: 32px;
     margin: 10px auto;
-    width:1000px;
+    max-width: 1000px;
 }
 
 .button-inv{
@@ -10,7 +10,7 @@
     border: solid 1px;
     border-color: rgb(151, 196, 204);
     font-weight: bold;
-    width: 100px;
+    width: 80px;
     padding: 10px;
     border-radius: 4px;
     margin-left: 15px;
@@ -22,7 +22,7 @@
     border: solid 1px;
     border-color: rgb(214, 146, 146);
     font-weight: bold;
-    width: 100px;
+    width: 80px;
     padding: 10px;
     border-radius: 4px;
     margin-left: 15px;
@@ -32,10 +32,10 @@
     border-collapse: collapse;
     margin: 25px 0;
     font-size: 0.9em;
-    min-width: 400px;
     border-radius: 5px 5px 0 0;
-    overflow: hidden;
+    overflow: auto;
     box-shadow: 0 0 20px rbga(0, 0, 0, 0.15);
+    white-space: nowrap;
 }
 
 .content-table-inv thead tr {
@@ -65,6 +65,16 @@
 .content-table-inv tbody tr.active-row {
     font-weight: bold;
     color: #009879;
+}
+
+.content-table-emails {
+    max-width: 200px;
+}
+
+@media only screen and (max-width: 1000px) {
+    .input-overview-inv {
+        width: 60% !important;
+    }
 }
 
 .input-overview-inv{

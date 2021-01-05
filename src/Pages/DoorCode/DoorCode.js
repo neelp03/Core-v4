@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './DoorCode.css';
-import InventoryProfile from './DoorCodeProfile';
+import DoorCodeProfile from './DoorCodeProfile';
 import {
   Button,
   FormGroup,
@@ -10,6 +10,7 @@ import {
   Label,
   ModalBody,
   ModalFooter,
+  Table,
 } from 'reactstrap';
 import {
   getAllDoorCodes,
@@ -189,7 +190,7 @@ export default class DoorCodeTable extends Component {
             </button>
           </div>
 
-          <table className='content-table-inv' id='users'>
+          <Table responsive className='content-table-inv' id='users'>
             <thead>
               <tr>
                 {[
@@ -199,6 +200,10 @@ export default class DoorCodeTable extends Component {
                   'Delete',
                   'Edit'
                 ].map((ele, ind) => {
+                  if (ele === 'User Emails') {
+                    return <th className='content-table-emails'
+                      key={ind}>{ele}</th>;
+                  }
                   return <th key={ind}>{ele}</th>;
                 })}
               </tr>
@@ -207,14 +212,18 @@ export default class DoorCodeTable extends Component {
             <tbody>
               {this.state.queryResult.length > 0
                 ? this.state.queryResult.map((code, index) => {
+                  let emailOutput = code.userEmails.join(', ');
+                  if (emailOutput === '') {
+                    emailOutput = 'None Assigned';
+                  }
                   return (
-                    <InventoryProfile
+                    <DoorCodeProfile
                       key={index}
                       code={code}
                       doorcode={code.doorCode}
                       expire={this.convertDateFormat(
                         code.doorCodeValidUntil.split('T')[0])}
-                      emails={ code.userEmails.join(', ') }
+                      emails={ emailOutput }
                       deleteDoor={this.deleteDoor.bind(this)}
                       updateQuery={() => {
                         this.setState(
@@ -226,14 +235,18 @@ export default class DoorCodeTable extends Component {
                   );
                 })
                 : this.state.doorCodes.map((code, index) => {
+                  let emailOutput = code.userEmails.join(', ');
+                  if (emailOutput === '') {
+                    emailOutput = 'None Assigned';
+                  }
                   return (
-                    <InventoryProfile
+                    <DoorCodeProfile
                       key={index}
                       code={code}
                       doorcode={code.doorCode}
                       expire={this.convertDateFormat(
                         code.doorCodeValidUntil.split('T')[0])}
-                      emails={ code.userEmails.join(', ') }
+                      emails={ emailOutput }
                       deleteDoor={this.deleteDoor.bind(this)}
                       editDoor={this.editDoor.bind(this)}
                       updateQuery={() => {
@@ -246,7 +259,7 @@ export default class DoorCodeTable extends Component {
                   );
                 })}
             </tbody>
-          </table>
+          </Table>
 
           <Modal isOpen={this.state.toggleMult}>
             <ModalBody>

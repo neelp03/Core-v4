@@ -37,7 +37,7 @@ export default function DoorCodeProfile(props) {
     <tr>
       <td>{ props.doorcode }</td>
       <td>{ props.expire }</td>
-      <td>{ props.emails }</td>
+      <td className = 'content-table-emails'>{ props.emails }</td>
       <td>
         <button
           onClick={() => {
