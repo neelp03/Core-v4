@@ -7,18 +7,19 @@ services:
     volumes:
       - '~/data/db:/data/db'
     command: 'mongod --auth'
-  # sce-logging-api:
-  #   container_name: sce-logging-api
-  #   build:
-  #     context: ./api
-  #     dockerfile: ./logging_api/Dockerfile
-  #   ports:
-  #     - '8081:8081'
-  #   restart: 'on-failure'
-  #   links:
-  #     - mongo
-  #   networks:
-  #     - sce-local
+  sce-logging-api:
+    container_name: sce-logging-api
+    build:
+      context: ./api
+      dockerfile: ./logging_api/Dockerfile
+    ports:
+      - '8081:8081'
+    restart: 'on-failure'
+    stdin_open: true
+    links:
+      - db
+    depends_on:
+      - db
   sce-cloud-api:
     container_name: sce-cloud-api
     image: cloudapi:latest
@@ -69,15 +70,19 @@ services:
   #when you sping up more than 1 container, increase the ports above. Implement a port range, 8080:8085
   #when you implement a port range, window.location.hostname for the log in page. 
   #need something in front of the docker container (load balancer) in nginx container.
-  # frontend:
-  #   image: 'corefront:latest'
-  #   build:
-  #     context: .
-  #     dockerfile: ./docker/Dockerfile-ScePage
-  #   ports:
-  #     - '3000:3000'
-  #   restart: 'on-failure'
-  #   command: 'npm start'
-  #   links:
-  #     - app
+  frontend:
+    image: 'corefront:latest'
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile-frontend
+    ports:
+      - '3000:3000'
+    restart: 'on-failure'
+    command: 'npm start'
+    restart: 'on-failure'
+    stdin_open: true
+    links:
+      - db
+    depends_on:
+      - db
   #app will ALWAYS fail until mongodb starts so when you do docker-compose up, be patient and wait a while.
