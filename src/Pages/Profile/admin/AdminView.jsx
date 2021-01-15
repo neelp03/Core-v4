@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Button,
   Modal,
-} from "reactstrap";
-import Display from './Profile.js'
-import EditForm from './EditorForm'
-import { editUser } from "../../../APIFunctions/User.js";
+} from 'reactstrap';
+import Display from './Profile.js';
+import EditForm from './EditorForm';
+import { editUser } from '../../../APIFunctions/User.js';
 import { getPersonsDoorCode } from '../../../APIFunctions/DoorCode';
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcryptjs');
 
 export default function Editor(props) {
   const [firstName, setFirstName] = useState('');
@@ -99,7 +99,7 @@ export default function Editor(props) {
 
   useEffect(() => {
     // All the getDoor() logic in here
-    setDoorCode("None Assigned");
+    setDoorCode('None Assigned');
     async function fetchDoorCode() {
       let data = await getPersonsDoorCode(user.email, props.token);
       if(!data.error){
@@ -107,11 +107,11 @@ export default function Editor(props) {
       }
     }
     fetchDoorCode();
-  },[user.email, props.token]);
+  }, [user.email, props.token]);
 
   useEffect(() => {
     // All the getDoor() logic in here
-    setDoorCode("None Assigned");
+    setDoorCode('None Assigned');
     async function fetchDoorCode() {
       let data = await getPersonsDoorCode(user.email, props.token);
       if(!data.error){
@@ -119,14 +119,14 @@ export default function Editor(props) {
       }
     }
     fetchDoorCode();
-  },[user.email, props.token]);
+  }, [user.email, props.token]);
 
   return (
     <div className="center">
       <ul className="profileInfo">
 
         <Display
-          user={{...user,membershipValidUntil}}
+          user={{...user, membershipValidUntil}}
           email={user.email}
           token={props.token}
           doorCode={doorCode}

@@ -43,8 +43,6 @@ router.get('/getAvailableDoorCode', (req, res) => {
 });
 
 router.post('/getPersonsDoorCode', (req, res) => {
-<<<<<<< HEAD
-=======
   if (!checkIfTokenSent(req)) {
     return res.sendStatus(FORBIDDEN);
   } else if (!checkIfTokenValid(req)) {
@@ -67,7 +65,6 @@ router.post('/getPersonsDoorCode', (req, res) => {
 });
 
 router.post('/addCode', (req, res) => {
->>>>>>> 8e932e0... email changes
   if (!checkIfTokenSent(req)) {
     return res.sendStatus(FORBIDDEN);
   } else if (!checkIfTokenValid(req)) {
