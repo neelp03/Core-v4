@@ -64,27 +64,27 @@ router.post('/getPersonsDoorCode', (req, res) => {
   });
 });
 
-router.post('/addCode', (req, res) => {
-  if (!checkIfTokenSent(req)) {
-    return res.sendStatus(FORBIDDEN);
-  } else if (!checkIfTokenValid(req)) {
-    return res.sendStatus(UNAUTHORIZED);
-  }
+// router.post('/addCode', (req, res) => {
+//   if (!checkIfTokenSent(req)) {
+//     return res.sendStatus(FORBIDDEN);
+//   } else if (!checkIfTokenValid(req)) {
+//     return res.sendStatus(UNAUTHORIZED);
+//   }
 
-  const {
-    email,
-  } = req.body;
+//   const {
+//     email,
+//   } = req.body;
 
-  DoorCode.findOne({userEmails: email }).then((doorCode) => {
-    if(doorCode) {
-      res.status(OK).send({doorCode});
-    } else {
-      res.status(NOT_FOUND).send({ message: 'No codes found.' });
-    }
-  }).catch(() => {
-    res.status(NOT_FOUND).send({ message: 'No codes found.' });
-  });
-});
+//   DoorCode.findOne({userEmails: email }).then((doorCode) => {
+//     if(doorCode) {
+//       res.status(OK).send({doorCode});
+//     } else {
+//       res.status(NOT_FOUND).send({ message: 'No codes found.' });
+//     }
+//   }).catch(() => {
+//     res.status(NOT_FOUND).send({ message: 'No codes found.' });
+//   });
+// });
 
 router.post('/addCode', (req, res) => {
   if (!checkIfTokenSent(req)) {

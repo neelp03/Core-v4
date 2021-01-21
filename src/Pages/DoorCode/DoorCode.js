@@ -35,6 +35,7 @@ export default class DoorCodeTable extends Component {
       inputSeq: '',
       inputMult: '',
       inputDate: '',
+      codeInputError: '',
     };
     this.headerProps = {
       title: 'Door Codes'
@@ -102,8 +103,9 @@ export default class DoorCodeTable extends Component {
   }
 
   createDoor = async (input, dateInput) => {
+    let inputWithDash = input.slice(0, 3) + '-' + input.slice(3, 7);
     const VALID_NEW_CODE = {
-      doorCode: input,
+      doorCode: inputWithDash,
       doorCodeValidUntil: new Date(dateInput),
       userEmails: [],
     };
@@ -269,10 +271,13 @@ export default class DoorCodeTable extends Component {
                   <Input
                     type='textarea'
                     rows={10}
-                    placeholder='###-#### add multiple by line'
+                    placeholder='####### add multiple by line'
                     onChange={this.handleMult}
                     // defaultValue='###-####'
                   />
+                  <Label className='code-error'>
+                    { this.state.codeInputError }
+                  </Label>
                 </FormGroup>
                 <FormGroup>
                   <Label>Expire Date</Label>
