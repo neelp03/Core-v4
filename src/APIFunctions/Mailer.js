@@ -55,7 +55,7 @@ export async function sendBlastEmail(emailList, subject, content) {
 export async function sendDoorCodeEmail(email, doorCode, firstName) {
   let status = new ApiResponse();
   await axios
-    .post(MAILER_API_URL + '/api/Mailer/sendDoorCodeEmail', {
+    .post(MAILER_API_URL + '/Mailer/sendDoorCodeEmail', {
       recipientEmail: email,
       recipientName: firstName,
       recipientDoorCode: doorCode
