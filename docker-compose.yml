@@ -9,33 +9,33 @@ services:
       - '/data/db:/data/db' 
       # - '~/data/db:/data/db'  # use this command instead for mac users
     command: 'mongod'
-  # sce-logging-api:
-  #   container_name: sce-logging-api
-  #   build:
-  #     context: ./api
-  #     dockerfile: ./logging_api/Dockerfile
-  #   ports:
-  #     - '8081:8081'
-  #   restart: 'on-failure'
-  #   stdin_open: true
-  #   links:
-  #     - db
-  #   depends_on:
-  #     - db
-  # sce-cloud-api:
-  #   container_name: sce-cloud-api
-  #   image: cloudapi:latest
-  #   build:
-  #     context: ./api
-  #     dockerfile: ./cloud_api/Dockerfile
-  #   ports:
-  #     - '8082:8082'
-  #   restart: 'on-failure'
-  #   stdin_open: true
-  #   links:
-  #     - db
-  #   depends_on:
-  #     - db
+  sce-logging-api:
+    container_name: sce-logging-api
+    build:
+      context: ./api
+      dockerfile: ./logging_api/Dockerfile
+    ports:
+      - '8081:8081'
+    restart: 'on-failure'
+    stdin_open: true
+    links:
+      - db
+    depends_on:
+      - db
+  sce-cloud-api:
+    container_name: sce-cloud-api
+    image: cloudapi:latest
+    build:
+      context: ./api
+      dockerfile: ./cloud_api/Dockerfile
+    ports:
+      - '8082:8082'
+    restart: 'on-failure'
+    stdin_open: true
+    links:
+      - db
+    depends_on:
+      - db
 
   mainendpoints:
     container_name: mainendpoints
@@ -52,20 +52,34 @@ services:
     depends_on:
       - db
   
-  # frontend:
-  #   image: 'corefront:latest'
-  #   build:
-  #     context: .
-  #     dockerfile: ./docker/Dockerfile-frontend
-  #   ports:
-  #     - '3000:3000'
-  #   restart: 'on-failure'
-  #   command: 'npm run deploy-production-frontend'
-  #   stdin_open: true
-  #   links:
-  #     - db
-  #   depends_on:
-  #     - db
+  frontend:
+    image: 'corefront:latest'
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile-frontend
+    ports:
+      - '3000:3000'
+    restart: 'on-failure'
+    command: 'npm run deploy-production-frontend'
+    stdin_open: true
+    links:
+      - db
+    depends_on:
+      - db
+
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: my-jenkins-3
+    privileged: true
+    environment:
+      - JENKINS_OPTS="--prefix=/jenkins"
+    user: root
+    ports:
+      - 8079:8080
+      - 50000:50000
+    volumes:
+      - ~/jenkins_data:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
 
   web:
     image: 'nginx'
@@ -80,15 +94,4 @@ services:
     restart: 'on-failure'
     depends_on:
       - frontend
-
-  jenkins:
-    image: jenkins/jenkins:lts
-    privileged: true
-    user: root
-    ports:
-      - 8079:8080
-      - 50000:50000
-    container_name: my-jenkins-3
-    volumes:
-      - ~/jenkins_data:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock
+      - jenkins
