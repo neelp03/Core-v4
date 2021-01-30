@@ -115,28 +115,19 @@ export default function UserNavBar(props) {
               </DropdownItem>
               {props.user && props.user.accessLevel >=
                 membershipState.MEMBER && (
-                <React.Fragment>
-                  <DropdownItem tag='h1' className='dropdown-submenu drp-item'>
-                    <DropdownItem className='drp-item' id='btndrp-text'>
-                        Printing
+                <DropdownItem tag='h1' className='dropdown-submenu drp-item'>
+                  <DropdownItem className='drp-item' id='btndrp-text'>
+                      Printing
+                  </DropdownItem>
+                  <DropdownMenu className='drp-menu'>
+                    <DropdownItem className='drp-item' href='/2DPrinting'>
+                        2D Printing
                     </DropdownItem>
-                    <DropdownMenu className='drp-menu'>
-                      <DropdownItem className='drp-item' href='/2DPrinting'>
-                          2D Printing
-                      </DropdownItem>
-                      <DropdownItem className='drp-item' href='/3DPrintingForm'>
-                          3D Printing
-                      </DropdownItem>
-                    </DropdownMenu>
-                  </DropdownItem>
-                  <DropdownItem className='drp-item'>
-                    <NavItem>
-                      <NavLink id='btndrp-text' href='/courses'>
-                        Courses
-                      </NavLink>
-                    </NavItem>
-                  </DropdownItem>
-                </React.Fragment>
+                    <DropdownItem className='drp-item' href='/3DPrintingForm'>
+                        3D Printing
+                    </DropdownItem>
+                  </DropdownMenu>
+                </DropdownItem>
               )}
               {unauthedRoutes.map((link, index) => {
                 return (

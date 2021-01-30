@@ -32,7 +32,7 @@ const CourseSchema = new Schema(
       type: String
     },
     lessons: [{ type: mongoose.Schema.Types.ObjectId, ref: "Lesson" }],
-    link: {
+    imageURL: {
       type: String,
       required: true
     }

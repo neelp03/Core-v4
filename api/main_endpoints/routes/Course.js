@@ -42,7 +42,7 @@ router.post("/createCourse", (req, res) => {
     author: req.body.author,
     description: req.body.description,
     lessons: [],
-    link: req.body.link
+    imageURL: req.body.imageURL
   });
 
   Course.create(createCourse, (error, post) => {
@@ -59,7 +59,7 @@ router.post("/editCourse", (req, res) => {
   } else if (!checkIfTokenValid(req)) {
     return res.sendStatus(UNAUTHORIZED);
   }
-  const { title, author, description, lessons, link } = req.body;
+  const { title, author, description, lessons, imageURL } = req.body;
 
   const newLesson = new Lesson({
     _id: new mongoose.Types.ObjectId()
@@ -72,7 +72,7 @@ router.post("/editCourse", (req, res) => {
       course.description = description || course.description;
       course.lessons.push(newLesson._id);
       // course.lessons = lessons || course.lessons;
-      course.link = link || course.link;
+      course.imageURL = imageURL || course.imageURL;
       course
         .save()
         .then(ret => {
