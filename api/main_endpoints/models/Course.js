@@ -1,6 +1,23 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const { DEFAULT_PHOTO_URL } = require('../../util/constants');
+
+const LessonSchema = new Schema(
+  {
+    _id: {
+      type: Schema.Types.ObjectId,
+      required: true
+    },
+    title: {
+      type: String,
+      required: true
+    },
+    link: {
+      type: String,
+      required: true
+    }
+  },
+  { collection: "Lesson" }
+);
 
 const CourseSchema = new Schema(
   {
@@ -9,26 +26,19 @@ const CourseSchema = new Schema(
       required: true
     },
     author: {
-      type: String,
-      required: true
-    },
-    description: {
-      type: String,
-      required: true
-    },
-    imageURL: {
       type: String
     },
-    lessons: {
-      type: Array,
-      default: []
+    description: {
+      type: String
     },
-    summary: {
+    lessons: [{ type: mongoose.Schema.Types.ObjectId, ref: "Lesson" }],
+    link: {
       type: String,
-      default: ''
+      required: true
     }
   },
-  { collection: 'Course' }
+  { collection: "Course" }
 );
 
-module.exports = mongoose.model('Course', CourseSchema);
+module.exports = mongoose.model("Lesson", LessonSchema);
+module.exports = mongoose.model("Course", CourseSchema);

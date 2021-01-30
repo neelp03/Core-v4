@@ -173,7 +173,7 @@ export async function checkIfUserExists(email) {
 export function filterUsers(users, filterID) {
   let filteredUsers = users.filter((user) => {
     if (filterID === userFilterType.VALID) {
-      return (user.accessLevel >= membershipState.MEMBER);
+      return (user.accessLevel >= membershipState.ALUMNI);
     } else if (filterID === userFilterType.NON_VALID) {
       return (
         user.accessLevel === membershipState.NON_MEMBER ||
@@ -185,6 +185,7 @@ export function filterUsers(users, filterID) {
   });
   return filteredUsers;
 }
+
 export async function connectToDiscord(email, token) {
   let status = new UserApiResponse();
   await axios.post(GENERAL_API_URL+'/user/connectToDiscord', { email, token })

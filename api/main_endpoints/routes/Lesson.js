@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Lesson = require('../models/Lesson');
+const Lesson = require('../models/Course');
 const {
   checkIfTokenSent,
   checkIfTokenValid
@@ -89,9 +89,11 @@ router.post('/deleteLesson', (req, res) => {
       res.status(OK).json({ lesson: 'lesson successfully deleted' });
     })
     .catch(error => {
-      res.status(BAD_REQUEST)
-        .send({ error, message: 'deleting lesson failed' });
+      res.status(BAD_REQUEST).send({ error, message: 'deleting lesson failed' });
     });
+
+    //have to find a way to get the course that the deleted lesson was in and delete it from there
+    // cannot do it in courses
 });
 
 module.exports = router;

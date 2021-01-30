@@ -81,12 +81,8 @@ export default function UserNavBar(props) {
     setMenuIsOpen(!menuIsOpen);
   };
 
-  useEffect(() => {
-    // eslint-disable-next-line
-  }, [])
-
   return (
-    <div className='user-nav'>
+    <div className={'user-nav'}>
       <Navbar light expand='md'>
         <NavbarBrand href='/'>
           <div>
@@ -224,8 +220,8 @@ export default function UserNavBar(props) {
                 );
               })}
             </NavItem>
-            {props.user && props.user.accessLevel >= membershipState.MEMBER && (
-              <React.Fragment>
+            {props.user && props.user.accessLevel >= membershipState.MEMBER
+              && (
                 <UncontrolledDropdown nav inNavbar>
                   <DropdownToggle id='navlink-text' nav caret>
                     Printing
@@ -239,13 +235,7 @@ export default function UserNavBar(props) {
                     </DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>
-                <NavItem>
-                  <NavLink id='navlink-text' href='/courses'>
-                    Courses
-                  </NavLink>
-                </NavItem>
-              </React.Fragment>
-            )}
+              )}
             {unauthedRoutes.map((link, index) => {
               return (
                 <NavItem key={index}>

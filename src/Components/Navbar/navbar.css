@@ -1,9 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap");
-
 .user-nav {
   font-size: 18px;
   background-color: #87b0c7;
   width: 100%;
+  top: 0px;
+  position: fixed;
   z-index: 4;
 }
 
@@ -28,6 +29,11 @@
   background-color: #648cc0;
   color: rgba(255, 255, 255);
   text-decoration: none;
+  min-height: 73px;
+  top: 0px;
+  position: fixed !important;
+  width: 100%;
+  z-index: 4;
 }
 
 .nav-admin-link {
