@@ -31,6 +31,10 @@ const CourseSchema = new Schema(
     description: {
       type: String
     },
+    summary: {
+      type: String,
+      required: true
+    },
     lessons: [{ type: mongoose.Schema.Types.ObjectId, ref: "Lesson" }],
     imageURL: {
       type: String,

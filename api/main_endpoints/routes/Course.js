@@ -41,6 +41,7 @@ router.post("/createCourse", (req, res) => {
     title: req.body.title,
     author: req.body.author,
     description: req.body.description,
+    summary: req.body.summary,
     lessons: [],
     imageURL: req.body.imageURL
   });
@@ -59,10 +60,12 @@ router.post("/editCourse", (req, res) => {
   } else if (!checkIfTokenValid(req)) {
     return res.sendStatus(UNAUTHORIZED);
   }
-  const { title, author, description, lessons, imageURL } = req.body;
+  const { title, author, description, summary, lessons, imageURL } = req.body;
 
   const newLesson = new Lesson({
-    _id: new mongoose.Types.ObjectId()
+    _id: new mongoose.Types.ObjectId(),
+    title: req.body.lessons.title,
+    link: req.body.lessons.link
   })
 
   Course.findOne({ _id: req.body.id })
@@ -70,6 +73,7 @@ router.post("/editCourse", (req, res) => {
       course.title = title || course.title;
       course.author = author || course.author;
       course.description = description || course.description;
+      course.summary = summary || course.summary;
       course.lessons.push(newLesson._id);
       // course.lessons = lessons || course.lessons;
       course.imageURL = imageURL || course.imageURL;
