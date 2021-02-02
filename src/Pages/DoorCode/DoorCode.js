@@ -65,10 +65,6 @@ export default class DoorCodeTable extends Component {
   }
 
   updateQuery(value) {
-    // taking care of empty values
-    // value = typeof value === 'undefined' ? '' : value;
-    // value = value.trim().toLowerCase();
-
     const doorcodeExists = code => {
       return (
         code.doorCode.includes(value) ||

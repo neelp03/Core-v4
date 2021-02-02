@@ -98,7 +98,6 @@ export default function Editor(props) {
   ];
 
   useEffect(() => {
-    // All the getDoor() logic in here
     setDoorCode('None Assigned');
     async function fetchDoorCode() {
       let data = await getPersonsDoorCode(user.email, props.token);
@@ -110,7 +109,6 @@ export default function Editor(props) {
   }, [user.email, props.token]);
 
   useEffect(() => {
-    // All the getDoor() logic in here
     setDoorCode('None Assigned');
     async function fetchDoorCode() {
       let data = await getPersonsDoorCode(user.email, props.token);

@@ -122,7 +122,6 @@ export function cancelEditSymbol(setToggle) {
 
 export function sunIcon() {
   return (
-    // paste the <svg> and body from the website
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="24"

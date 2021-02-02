@@ -32,7 +32,6 @@ export default function OverviewProfile(props) {
     return bool ? svg.checkMark() : svg.xMark();
   }
   useEffect(() => {
-    // All the getDoor() logic in here
     setDoorCode('None Assigned');
     async function fetchDoorCode() {
       let data = await getPersonsDoorCode(props.user.email, props.token);
