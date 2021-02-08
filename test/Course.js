@@ -59,9 +59,12 @@ describe("Course", () => {
 
   const token = "";
   let courseId = "5555";
+  
   const DUMMY_LESSON = {
+    _id: "12345",
     title: "div blocks",
-    link: "www.divblock.com"
+    link: "www.divblock.com",
+    courseID: courseId
   };
   const VALID_NEW_COURSE = {
     title: "intro to react",

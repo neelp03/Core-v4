@@ -71,37 +71,37 @@ describe("Lesson", () => {
     link: "https://google.com"
   };
 
-  describe("/POST createLesson", () => {
-    it("Should return 403 when an invalid token is supplied", async () => {
-      const result = await test.sendPostRequest(
-        "/api/lesson/createLesson",
-        LESSON_WITH_INVALID_TOKEN
-      );
-      expect(result).to.have.status(UNAUTHORIZED);
-    });
-    it("Should return 400 when the required fields aren't filled in", async () => {
-      setTokenStatus(true);
-      const result = await test.sendPostRequestWithToken(
-        token,
-        "/api/lesson/createLesson",
-        LESSON_WITHOUT_REQUIRED_FIELDS
-      );
-      expect(result).to.have.status(BAD_REQUEST);
-    });
-    it(
-      "Should return statusCode 200 when all required " +
-        "fields are filled in",
-      async () => {
-        setTokenStatus(true);
-        const result = await test.sendPostRequestWithToken(
-          token,
-          "/api/lesson/createLesson",
-          VALID_NEW_LESSON
-        );
-        expect(result).to.have.status(OK);
-      }
-    );
-  });
+  // describe("/POST createLesson", () => {
+  //   it("Should return 403 when an invalid token is supplied", async () => {
+  //     const result = await test.sendPostRequest(
+  //       "/api/lesson/createLesson",
+  //       LESSON_WITH_INVALID_TOKEN
+  //     );
+  //     expect(result).to.have.status(UNAUTHORIZED);
+  //   });
+  //   it("Should return 400 when the required fields aren't filled in", async () => {
+  //     setTokenStatus(true);
+  //     const result = await test.sendPostRequestWithToken(
+  //       token,
+  //       "/api/lesson/createLesson",
+  //       LESSON_WITHOUT_REQUIRED_FIELDS
+  //     );
+  //     expect(result).to.have.status(BAD_REQUEST);
+  //   });
+  //   it(
+  //     "Should return statusCode 200 when all required " +
+  //       "fields are filled in",
+  //     async () => {
+  //       setTokenStatus(true);
+  //       const result = await test.sendPostRequestWithToken(
+  //         token,
+  //         "/api/lesson/createLesson",
+  //         VALID_NEW_LESSON
+  //       );
+  //       expect(result).to.have.status(OK);
+  //     }
+  //   );
+  // });
 
   describe("/GET getLessons", () => {
     it("Should return an object of all lessons", async () => {

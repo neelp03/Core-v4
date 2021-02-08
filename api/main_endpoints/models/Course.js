@@ -14,6 +14,11 @@ const LessonSchema = new Schema(
     link: {
       type: String,
       required: true
+    },
+    courseID:{
+      type: Schema.Types.ObjectId,
+      ref: "Course",
+      required: true
     }
   },
   { collection: "Lesson" }
@@ -35,7 +40,7 @@ const CourseSchema = new Schema(
       type: String,
       required: true
     },
-    lessons: [{ type: mongoose.Schema.Types.ObjectId, ref: "Lesson" }],
+    lessons: [{ type: Schema.Types.ObjectId, ref: "Lesson" }],
     imageURL: {
       type: String,
       required: true

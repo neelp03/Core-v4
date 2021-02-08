@@ -17,17 +17,20 @@ const addErrorLog = require("../util/logging-helpers");
 const mongoose = require("mongoose");
 
 router.get("/getCourses", (req, res) => {
-  Course.find()
-    .then(items => res.status(OK).send(items))
-    .catch(error => {
-      const info = {
-        errorTime: new Date(),
-        apiEndpoint: "Course/getCourses",
-        errorDescription: error
-      };
-      addErrorLog(info);
-      res.status(BAD_REQUEST).send({ error, message: "Getting course failed" });
-    });
+  Course.find({}),
+    populate("lessons")
+      .then(items => res.status(OK).send(items))
+      .catch(error => {
+        const info = {
+          errorTime: new Date(),
+          apiEndpoint: "Course/getCourses",
+          errorDescription: error
+        };
+        addErrorLog(info);
+        res
+          .status(BAD_REQUEST)
+          .send({ error, message: "Getting course failed" });
+      });
 });
 
 router.post("/createCourse", (req, res) => {
@@ -65,8 +68,9 @@ router.post("/editCourse", (req, res) => {
   const newLesson = new Lesson({
     _id: new mongoose.Types.ObjectId(),
     title: req.body.lessons.title,
-    link: req.body.lessons.link
-  })
+    link: req.body.lessons.link,
+    courseID: req.body.id
+  });
 
   Course.findOne({ _id: req.body.id })
     .then(course => {
@@ -74,8 +78,7 @@ router.post("/editCourse", (req, res) => {
       course.author = author || course.author;
       course.description = description || course.description;
       course.summary = summary || course.summary;
-      course.lessons.populate(newLesson._id);
-      // course.lessons.push(newLesson._id);
+      course.lessons.push(newLesson);
       course.imageURL = imageURL || course.imageURL;
       course
         .save()
