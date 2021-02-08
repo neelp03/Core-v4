@@ -74,8 +74,8 @@ router.post("/editCourse", (req, res) => {
       course.author = author || course.author;
       course.description = description || course.description;
       course.summary = summary || course.summary;
-      course.lessons.push(newLesson._id);
-      // course.lessons = lessons || course.lessons;
+      course.lessons.populate(newLesson._id);
+      // course.lessons.push(newLesson._id);
       course.imageURL = imageURL || course.imageURL;
       course
         .save()

@@ -67,8 +67,9 @@ describe("Course", () => {
     title: "intro to react",
     author: "Big Chungus",
     description: "a workshop about react",
-    lessons: [],
-    link: "https://google.com"
+    summary: "a small summary about react",
+    imageURL: "www.image.com",
+    lessons: []
   };
   const COURSE_WITH_INVALID_TOKEN = {
     token: "invalid"
@@ -83,8 +84,9 @@ describe("Course", () => {
     title: "intro to react",
     author: "Big Chungus",
     description: "a workshop about react",
-    lessons: [DUMMY_LESSON],
-    link: "https://google.com"
+    summary: "a small summary about react",
+    imageURL: "www.image.com",
+    lessons: [DUMMY_LESSON]
   };
 
   describe("/POST createCourse", () => {
@@ -132,8 +134,9 @@ describe("Course", () => {
       expect(getCoursesResponse[0].description).to.equal(
         VALID_NEW_COURSE.description
       );
+      expect(getCoursesResponse[0].summary).to.equal(VALID_NEW_COURSE.summary);
+      expect(getCoursesResponse[0].imageURL).to.equal(VALID_NEW_COURSE.imageURL);
       expect(getCoursesResponse[0].lessons).to.eql(VALID_NEW_COURSE.lessons);
-      expect(getCoursesResponse[0].link).to.equal(VALID_NEW_COURSE.link);
       courseId = getCoursesResponse[0]._id;
     });
   });
@@ -179,9 +182,10 @@ describe("Course", () => {
       expect(getCoursesResponse[0].description).to.equal(
         UPDATED_COURSE.description
       );
+      expect(getCoursesResponse[0].summary).to.equal(UPDATED_COURSE.summary);
+      expect(getCoursesResponse[0].imageURL).to.equal(UPDATED_COURSE.imageURL);
       // this checks that the lessons array has as many lessons are were added
       expect(getCoursesResponse[0].lessons).to.have.length(1);
-      expect(getCoursesResponse[0].link).to.equal(UPDATED_COURSE.link);
     });
   });
 
