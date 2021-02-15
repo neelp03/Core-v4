@@ -75,10 +75,14 @@ describe("Course", () => {
   const COURSE_WITHOUT_REQUIRED_FIELDS = {
     title: "intro to react"
   };
-
-  //think that this part of it is wrong
   const COURSE_WITH_INVALID_ID = {
-    id: "strawberry"
+    id: "strawberry",
+    title: "intro to react",
+    author: "Big Chungus",
+    description: "a workshop about react",
+    summary: "a small summary about react",
+    imageURL: "www.image.com",
+    lessons: []
   };
   const UPDATED_COURSE = {
     title: "intro to react",
@@ -169,6 +173,7 @@ describe("Course", () => {
         "/api/course/editCourse",
         { id: courseId, ...UPDATED_COURSE }
       );
+      console.log(result.body);
       expect(result).to.have.status(OK);
     });
     it("The update should be reflected in the database", async () => {

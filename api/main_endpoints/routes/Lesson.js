@@ -31,26 +31,26 @@ router.get("/getLessons", (req, res) => {
     });
 });
 
-// router.post('/createLesson', (req, res) => {
-//   if (!checkIfTokenSent(req)) {
-//     return res.sendStatus(FORBIDDEN);
-//   } else if (!checkIfTokenValid(req)) {
-//     return res.sendStatus(UNAUTHORIZED);
-//   }
-//   const newLesson = new Lesson({
-//     _id:  new mongoose.Types.ObjectId(),
-//     title: req.body.title,
-//     link: req.body.link,
-//     courseID:
-//   });
+router.post('/createLesson', (req, res) => {
+  if (!checkIfTokenSent(req)) {
+    return res.sendStatus(FORBIDDEN);
+  } else if (!checkIfTokenValid(req)) {
+    return res.sendStatus(UNAUTHORIZED);
+  }
+  const newLesson = new Lesson({
+    _id:  new mongoose.Types.ObjectId(),
+    title: req.body.title,
+    link: req.body.link,
+    courseID: ""
+  });
 
-//   Lesson.create(newLesson, (error, post) => {
-//     if (error) {
-//       return res.sendStatus(BAD_REQUEST);
-//     }
-//     return res.json(post);
-//   });
-// });
+  Lesson.create(newLesson, (error, post) => {
+    if (error) {
+      return res.sendStatus(BAD_REQUEST);
+    }
+    return res.json(post);
+  });
+});
 
 router.post("/editLesson", (req, res) => {
   if (!checkIfTokenSent(req)) {

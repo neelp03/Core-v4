@@ -67,14 +67,13 @@ router.post("/editCourse", (req, res) => {
 
   const newLesson = new Lesson({
     _id: new mongoose.Types.ObjectId(),
-    title: req.body.lessons.title,
-    link: req.body.lessons.link,
+    title: lessons.title,
+    link: lessons.link,
     courseID: req.body.id
   });
 
   Course.findOne({ _id: req.body.id })
     .then(course => {
-      console.log(course);
       course.title = title || course.title;
       course.author = author || course.author;
       course.description = description || course.description;
@@ -92,9 +91,6 @@ router.post("/editCourse", (req, res) => {
             message: "course was not updated"
           });
         });
-
-        console.log("updated course");
-        console.log(course);
     })
     .catch(error => {
       res.status(NOT_FOUND).send({ error, message: "course not found" });

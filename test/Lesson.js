@@ -106,6 +106,11 @@ describe("Lesson", () => {
   // });
 
   describe("/GET getLessons", () => {
+    const newLesson = new Lesson({
+      title: VALID_NEW_LESSON.title,
+      link: VALID_NEW_LESSON.link,
+      courseID: VALID_NEW_LESSON.courseID
+    });
     it("Should return an object of all lessons", async () => {
       setTokenStatus(true);
       const result = await test.sendGetRequest("/api/lesson/getLessons");
