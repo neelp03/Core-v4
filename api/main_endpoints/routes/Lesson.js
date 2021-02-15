@@ -61,6 +61,7 @@ router.post("/editLesson", (req, res) => {
   const { _id, title, link } = req.body;
   Lesson.findOne({ _id: _id })
     .then(lesson => {
+      console.log(lesson);
       lesson.title = title || lesson.title;
       lesson.link = link || lesson.link;
       lesson
@@ -74,6 +75,8 @@ router.post("/editLesson", (req, res) => {
             message: "lesson was not updated"
           });
         });
+        console.log("updated lesson");
+        console.log(lesson);
     })
     .catch(error => {
       res.status(NOT_FOUND).send({ error, message: "lesson not found" });

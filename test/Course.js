@@ -26,11 +26,6 @@ const {
 chai.should();
 chai.use(chaiHttp);
 
-const objectsEqual = (o1, o2) => {
-  Object.keys(o1).length === Object.keys(o2).length &&
-    Object.keys(o1).every(p => o1[p] === o2[p]);
-};
-
 describe("Course", () => {
   before(done => {
     initializeMock();
@@ -58,7 +53,7 @@ describe("Course", () => {
   });
 
   const token = "";
-  let courseId = "5555";
+  let courseId = "";
   
   const DUMMY_LESSON = {
     _id: "12345",
@@ -80,6 +75,8 @@ describe("Course", () => {
   const COURSE_WITHOUT_REQUIRED_FIELDS = {
     title: "intro to react"
   };
+
+  //think that this part of it is wrong
   const COURSE_WITH_INVALID_ID = {
     id: "strawberry"
   };
@@ -154,7 +151,7 @@ describe("Course", () => {
       expect(result).to.have.status(UNAUTHORIZED);
     });
     it(
-      "Should return 404 when a course by an " + "invalid id isn't found",
+      "Should return 404 when a course by an invalid id isn't found",
       async () => {
         setTokenStatus(true);
         const result = await test.sendPostRequestWithToken(

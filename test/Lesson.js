@@ -55,7 +55,8 @@ describe("Lesson", () => {
   let lessonId = "";
   const VALID_NEW_LESSON = {
     title: "intro to react",
-    link: "https://google.com"
+    link: "https://google.com",
+    courseID: "5555"
   };
   const LESSON_WITH_INVALID_TOKEN = {
     token: "invalid"
@@ -68,7 +69,8 @@ describe("Lesson", () => {
   };
   const UPDATED_LESSON = {
     title: "intro to react",
-    link: "https://google.com"
+    link: "https://google.com",
+    courseID: "5555"
   };
 
   // describe("/POST createLesson", () => {
@@ -113,6 +115,7 @@ describe("Lesson", () => {
       expect(getLessonsResponse).to.have.length(1);
       expect(getLessonsResponse[0].title).to.equal(VALID_NEW_LESSON.title);
       expect(getLessonsResponse[0].link).to.equal(VALID_NEW_LESSON.link);
+      expect(getLessonsResponse[0].courseID).to.equal(VALID_NEW_LESSON.courseID);
       lessonId = getLessonsResponse[0]._id;
     });
   });
@@ -155,6 +158,7 @@ describe("Lesson", () => {
       expect(getLessonsResponse).to.have.length(1);
       expect(getLessonsResponse[0].title).to.equal(UPDATED_LESSON.title);
       expect(getLessonsResponse[0].link).to.equal(UPDATED_LESSON.link);
+      expect(getLessonsResponse[0].courseID).to.equal(UPDATED_LESSON.courseID);
     });
   });
 
