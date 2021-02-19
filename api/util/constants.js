@@ -8,13 +8,15 @@ const STATUS_CODES = {
 };
 
 const MEMBERSHIP_STATE = {
-  BANNED: -2,
-  PENDING: -1,
-  NON_MEMBER: 0,
-  ALUMNI: 0.5,
-  MEMBER: 1,
-  OFFICER: 2,
-  ADMIN: 3,
+  BANNED: -2,  /* banned */
+  PENDING: -1,  /* waiting for verify */
+  NON_MEMBER: 0, /* not sure */
+  ALUMNI: 0.5,  /* alumni cannot print */
+  MEMBER: 1,  
+  OFFICER: 2, /*both have access to admin */
+  ADMIN: 3, 
+  /* add new role then change code */
+  /* access to admin */
 };
 
 const DEFAULT_PHOTO_URL =

@@ -82,11 +82,11 @@ router.post('/delete', (req, res) => {
 
 // Search for a member
 router.post('/search', function(req, res) {
-  if (!checkIfTokenSent(req)) {
-    return res.sendStatus(FORBIDDEN);
-  } else if (!checkIfTokenValid(req, membershipState.ALUMNI)) {
-    return res.sendStatus(UNAUTHORIZED);
-  }
+  // if (!checkIfTokenSent(req)) {
+  //   return res.sendStatus(FORBIDDEN);
+  // } else if (!checkIfTokenValid(req, membershipState.ALUMNI)) {
+  //   return res.sendStatus(UNAUTHORIZED);
+  // }
   User.findOne({ email: req.body.email }, function(error, result) {
     if (error) {
       res.status(BAD_REQUEST).send({ message: 'Bad Request.' });
@@ -123,11 +123,11 @@ router.post('/search', function(req, res) {
 
 // Search for all members
 router.post('/users', function(req, res) {
-  if (!checkIfTokenSent(req)) {
-    return res.sendStatus(FORBIDDEN);
-  } else if (!checkIfTokenValid(req)) {
-    return res.sendStatus(UNAUTHORIZED);
-  }
+  // if (!checkIfTokenSent(req)) {
+  //   return res.sendStatus(FORBIDDEN);
+  // } else if (!checkIfTokenValid(req)) {
+  //   return res.sendStatus(UNAUTHORIZED);
+  // }
   User.find()
     .sort({ joinDate: -1 })
     .then(items => {
@@ -140,37 +140,38 @@ router.post('/users', function(req, res) {
 
 // Edit/Update a member record
 router.post('/edit', (req, res) => {
-  if (!checkIfTokenSent(req)) {
-    return res.sendStatus(FORBIDDEN);
-  } else if (!checkIfTokenValid(req)) {
-    return res.sendStatus(UNAUTHORIZED);
-  }
+  // if (!checkIfTokenSent(req)) {
+  //   return res.sendStatus(FORBIDDEN);
+  // } else if (!checkIfTokenValid(req)) {
+  //   return res.sendStatus(UNAUTHORIZED);
+  // }
 
   if(!req.body.email){
     return res.sendStatus(BAD_REQUEST);
   }
 
-  let decoded = decodeToken(req);
-  if(decoded.accessLevel === membershipState.MEMBER){
-    if(req.body.email && req.body.email != decoded.email){
-      return res
-        .status(UNAUTHORIZED)
-        .send('Unauthorized to edit another user');
-    }
-    if(req.body.accessLevel && req.body.accessLevel !== decoded.accessLevel){
-      return res
-        .status(UNAUTHORIZED)
-        .send('Unauthorized to change access level');
-    }
-  }
+  // let decoded = decodeToken(req);
+  // if(decoded.accessLevel === membershipState.MEMBER){
+  //   if(req.body.email && req.body.email != decoded.email){
+  //     return res
+  //       .status(UNAUTHORIZED)
+  //       .send('Unauthorized to edit another user');
+  //   }
+  //   if(req.body.accessLevel && req.body.accessLevel !== decoded.accessLevel){
+  //     return res
+  //       .status(UNAUTHORIZED)
+  //       .send('Unauthorized to change access level');
+  //   }
+  // }
 
-  if(decoded.accessLevel === membershipState.OFFICER){
-    if(req.body.accessLevel && req.body.accessLevel == membershipState.ADMIN){
-      return res.sendStatus(UNAUTHORIZED);
-    }
-  }
+  // if(decoded.accessLevel === membershipState.OFFICER){
+  //   if(req.body.accessLevel && req.body.accessLevel == membershipState.ADMIN){
+  //     return res.sendStatus(UNAUTHORIZED);
+  //   }
+  // }
 
   const query = { email: req.body.email };
+
   const user =
     typeof req.body.numberOfSemestersToSignUpFor === 'undefined'
       ? { ...req.body }
@@ -182,10 +183,9 @@ router.post('/edit', (req, res) => {
       };
 
   delete user.numberOfSemestersToSignUpFor;
-
-
+  
   // Remove the auth token from the form getting edited
-  delete user.token;
+  // delete user.token;
 
   User.updateOne(query, { ...user }, function(error, result) {
     if (error) {
@@ -210,6 +210,65 @@ router.post('/edit', (req, res) => {
     });
   });
 });
+
+/* view tags of that current user */
+
+router.get('/tags', (req,res) => {
+  if(!req.body.email) {
+    return res.sendStatus(BAD_REQUEST)
+  }
+
+  const query = { email: req.body.email };
+  User.findOne(query, (error, user) => {
+    if (error) {
+      const info = {
+        errorTime: new Date(),
+        apiEndpoint: 'user/edit',
+        errorDescription: error
+      };
+      addErrorLog(info);
+      res.status(BAD_REQUEST).send({ message: 'Bad Request.' });
+    }
+
+    res.status(OK).send(user.tags)
+  })
+})
+
+/* 
+  adding tags and remove tags
+  if there's a delete header, then delete that tag, otherwise add that tag
+*/
+router.post('/edit/tags', (req, res) => {
+  if(!req.body.email || !req.body.tag){
+    return res.sendStatus(BAD_REQUEST);
+  }
+
+  const query = { email: req.body.email };
+
+  User.findOne(query, (error, user) => {
+    if (error) {
+      const info = {
+        errorTime: new Date(),
+        apiEndpoint: 'user/edit',
+        errorDescription: error
+      };
+      addErrorLog(info);
+      res.status(BAD_REQUEST).send({ message: 'Bad Request.' });
+    }
+
+    if(req.body.delete) user.tags.pull(req.body.tag)
+    else {
+      if(user.tags.includes(req.body.tag)) 
+        return res.status(BAD_REQUEST).send({message: 'Tag already existed'})
+      else user.tags.push(req.body.tag)
+    } 
+    user.save();
+
+    return res.status(OK).send({
+      message: `${query.email} was updated.`,
+    });
+  })
+})
 
 router.post('/getPagesPrintedCount', (req, res) => {
   if (!checkIfTokenSent(req)) {

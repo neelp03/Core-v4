@@ -53,7 +53,7 @@ const UserSchema = new Schema(
     doorCode: {
       type: String
     },
-
+    /* will get rid of accessLevel and use tags instead */
     accessLevel: {
       type: Number,
       default: membershipState.PENDING
@@ -70,6 +70,12 @@ const UserSchema = new Schema(
       type: Number,
       default: 0
     }
+    /*
+      new field tags, an array
+      change to routing to incorporate tags field
+    */
+    ,
+    tags: [{type:String}]
   },
   { collection: 'User' }
 );

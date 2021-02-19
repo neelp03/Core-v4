@@ -99,7 +99,8 @@ async function registerUser(userToAdd){
       middleInitial: userToAdd.middleInitial || '',
       lastName: userToAdd.lastName,
       email: userToAdd.email.toLowerCase(),
-      major: userToAdd.major || ''
+      major: userToAdd.major || '',
+      tags: []
     });
 
     const membershipValidUntil = getMemberValidationDate(

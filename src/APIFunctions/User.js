@@ -57,6 +57,7 @@ export async function getAllUsers(token) {
  * @returns {UserApiResponse} containing if the search was successful
  */
 export async function editUser(userToEdit, token) {
+  /* add tags */
   let status = new UserApiResponse();
   const {
     firstName,
