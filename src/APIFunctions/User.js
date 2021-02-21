@@ -57,7 +57,6 @@ export async function getAllUsers(token) {
  * @returns {UserApiResponse} containing if the search was successful
  */
 export async function editUser(userToEdit, token) {
-  /* add tags */
   let status = new UserApiResponse();
   const {
     firstName,
@@ -202,3 +201,22 @@ export async function connectToDiscord(email, token) {
   return status;
 }
 
+/** 
+ * This function takes in a tag paremeter and return the response
+ * @param {String} tag the tag to be added or removed
+ * @param {boolean} add, if true, then add the tag, otherwise remove the tag
+ * @returns {UserApiResponse} containing if the search was successful
+ */
+
+export async function tagsOperation(email, tag, add){
+  let status = new UserApiResponse();
+  var params = add ? {email, tag,delete:true} : {email, tag}
+  await axios.post(GENERAL_API_URL+"/api/User/edit/tags", [params])
+    .then(res => {
+      status.responseData = res.data;
+    })
+    .catch(() => {
+      status.error = true
+    })
+    return status;
+}
