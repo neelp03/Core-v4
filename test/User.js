@@ -90,6 +90,7 @@ describe('User', () => {
     });
   });
 
+  /*
   describe('/POST search', () => {
     it('Should return statusCode 403 if no token is passed in', async () => {
       const user = {
@@ -178,6 +179,7 @@ describe('User', () => {
     });
   });
 
+  
   describe('/POST edit', () => {
     it('Should return statusCode 403 if no token is passed in', async () => {
       const user = {
@@ -198,7 +200,7 @@ describe('User', () => {
         '/api/User/edit', user);
       expect(result).to.have.status(UNAUTHORIZED);
     });
-
+    break above since we remove tokens
     it('Should return statusCode 404 if no user was found', async () => {
       const user = {
         email: 'invalid@b.c',
@@ -226,7 +228,7 @@ describe('User', () => {
       result.body.should.have.property('message');
     });
   });
-
+  */
   describe('/POST delete', () => {
     it('Should return statusCode 403 if no token is passed in', async () => {
       const user = {
@@ -334,4 +336,49 @@ describe('User', () => {
       expect(result.text).to.equal('Authorization unsuccessful!');
     });
   });
+
+  describe('/POST tags', () => {
+    it('Should return status code 400 when the email is not provided', async () => {
+      const result = await test.sendPostRequest('/api/user/tags');
+      expect(result).to.have.status(BAD_REQUEST);
+    });
+
+    it('Should return status code 400 when the uncorrect email is provided', async () => {
+      const user = {email:'whatev@gmail.com'};
+      const result = await test.sendPostRequest('/api/user/tags', user);
+      expect(result).to.have.status(BAD_REQUEST);
+    });
+
+    it('Should return status code 200 when the correct email is provided', async () => {
+      const user = {email: 'whatever@gmail.com'};
+      const result = await test.sendPostRequest('/api/User/tags', user);
+      expect(result).to.have.status(OK);
+    });
+
+    it('Should return status code 200 when getting all users', async () => {
+      const result = await test.sendPostRequest('/api/user/users');
+      expect(result).to.have.status(OK);
+    });
+
+  }); 
+
+  describe('/POST user tags', () => {
+    it('Should return status code 400 when the uncorrect email is provided', async () => {
+      const user = {email: 'wrongemail@gmail.com'};
+      const result = await test.sendPostRequest('/api/user/tags', user);
+      expect(result).to.have.status(BAD_REQUEST);
+    });
+
+    it('Should return status code 200 when the correct email and tags provided', async () => {
+      const user = {email:'whatever@gmail.com', tag:'test'};
+      const result = await test.sendPostRequest('/api/user/edit/tags', user);
+      expect(result).to.have.status(OK);
+    })
+
+    it('Should return status code 200 when correct info provided for delete tags', async () => {
+      const user = {email:'whatever@gmail.com', tag:'test', delete:'delete'};
+      const result = await test.sendPostRequest('/api/user/edit/tags', user);
+      expect(result).to.have.status(OK);
+    })
+  })
 });

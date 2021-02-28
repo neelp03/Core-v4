@@ -204,14 +204,27 @@ export async function connectToDiscord(email, token) {
 /** 
  * This function takes in a tag paremeter and return the response
  * @param {String} tag the tag to be added or removed
- * @param {boolean} add, if true, then add the tag, otherwise remove the tag
+ * @param {boolean} remove, if true, then remove the tag, otherwise add 
  * @returns {UserApiResponse} containing if the search was successful
  */
 
-export async function tagsOperation(email, tag, add){
+export async function tagsOperation(email, tag){
   let status = new UserApiResponse();
-  var params = add ? {email, tag,delete:true} : {email, tag}
-  await axios.post(GENERAL_API_URL+"/api/User/edit/tags", [params])
+  console.log(email)
+  await axios.post(GENERAL_API_URL+"/User/edit/tags", {email,tag})
+    .then(res => {
+      status.responseData = res.data;
+    })
+    .catch(() => {
+      status.error = true
+    })
+    return status;
+}
+
+export async function deleteTags(email, tag){
+  let status = new UserApiResponse();
+  console.log(email)
+  await axios.post(GENERAL_API_URL+"/User/edit/tags", {email,tag, delete:true})
     .then(res => {
       status.responseData = res.data;
     })

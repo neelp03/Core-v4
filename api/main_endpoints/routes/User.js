@@ -213,7 +213,7 @@ router.post('/edit', (req, res) => {
 
 /* view tags of that current user */
 
-router.get('/tags', (req,res) => {
+router.post('/tags', (req,res) => {
   if(!req.body.email) {
     return res.sendStatus(BAD_REQUEST)
   }
@@ -229,8 +229,9 @@ router.get('/tags', (req,res) => {
       addErrorLog(info);
       res.status(BAD_REQUEST).send({ message: 'Bad Request.' });
     }
-
-    res.status(OK).send(user.tags)
+    if (!user)
+      return res.status(BAD_REQUEST).send({message: 'Cannot find account with that email'});
+    return res.status(OK).send(user.tags)
   })
 })
 
@@ -255,7 +256,10 @@ router.post('/edit/tags', (req, res) => {
       addErrorLog(info);
       res.status(BAD_REQUEST).send({ message: 'Bad Request.' });
     }
-
+    if (!user)
+      return res.status(BAD_REQUEST).send({message: 'Cannot find account with that email'});
+      
+    //if it has delete header, then delete that tag
     if(req.body.delete) user.tags.pull(req.body.tag)
     else {
       if(user.tags.includes(req.body.tag)) 
