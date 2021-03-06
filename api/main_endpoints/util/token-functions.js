@@ -41,7 +41,12 @@ function checkIfTokenValid(request, accessLevel = membershipState.MEMBER) {
   let response = decoded && decoded.accessLevel >= accessLevel;
   return response;
 }
+//create a function that get that person access level based on their tags
+/*
+  tags = ['member','book']
+  a member can have member and admin
 
+*/
 module.exports = {
   checkIfTokenSent,
   checkIfTokenValid,

@@ -341,6 +341,14 @@ describe('User', () => {
     it('Should return status code 400 when the email is not provided', async () => {
       const result = await test.sendPostRequest('/api/user/tags');
       expect(result).to.have.status(BAD_REQUEST);
+      //create user first
+      const addUser = {
+        email: 'whatever@gmail.com',
+        password: 'Passw0rd',
+        firstName: 'first-name',
+        lastName: 'last-name'
+      };
+      test.sendPostRequest('/api/Auth/register', addUser);
     });
 
     it('Should return status code 400 when the uncorrect email is provided', async () => {
@@ -370,7 +378,7 @@ describe('User', () => {
     });
 
     it('Should return status code 200 when the correct email and tags provided', async () => {
-      const user = {email:'whatever@gmail.com', tag:'test'};
+      const user = {email:'whatever@gmail.com', tag:'test-tag'};
       const result = await test.sendPostRequest('/api/user/edit/tags', user);
       expect(result).to.have.status(OK);
     })
