@@ -159,7 +159,7 @@ export default function Routing({ appProps }) {
               exact
               path={path}
               render={props => (
-                <NavBarWrapper component={Component} {...props} {...appProps} />
+              <NavBarWrapper component={Component} {...props} {...appProps} />
               )}
             />
           );
