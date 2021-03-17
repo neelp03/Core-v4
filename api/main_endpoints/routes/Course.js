@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const Course = require("../models/Course");
-const Lesson = require("../models/Course");
+const { Course } = require("../models/Course");
+const { Lesson } = require("../models/Course");
 const {
   checkIfTokenSent,
   checkIfTokenValid
@@ -19,18 +19,16 @@ const mongoose = require("mongoose");
 router.get("/getCourses", (req, res) => {
   Course.find({})
     .populate("lessons")
-      .then(items => res.status(OK).send(items))
-      .catch(error => {
-        const info = {
-          errorTime: new Date(),
-          apiEndpoint: "Course/getCourses",
-          errorDescription: error
-        };
-        addErrorLog(info);
-        res
-          .status(BAD_REQUEST)
-          .send({ error, message: "Getting course failed" });
-      });
+    .then(items => res.status(OK).send(items))
+    .catch(error => {
+      const info = {
+        errorTime: new Date(),
+        apiEndpoint: "Course/getCourses",
+        errorDescription: error
+      };
+      addErrorLog(info);
+      res.status(BAD_REQUEST).send({ error, message: "Getting course failed" });
+    });
 });
 
 router.post("/createCourse", (req, res) => {
@@ -63,14 +61,7 @@ router.post("/editCourse", (req, res) => {
   // } else if (!checkIfTokenValid(req)) {
   //   return res.sendStatus(UNAUTHORIZED);
   // }
-  const { title, author, description, summary, lessons, imageURL } = req.body;
-
-  const newLesson = new Lesson({
-    _id: new mongoose.Types.ObjectId(),
-    title: lessons.title,
-    link: lessons.link,
-    courseID: req.body.id
-  });
+  const { title, author, description, summary, imageURL } = req.body;
 
   Course.findOne({ _id: req.body.id })
     .then(course => {
@@ -78,7 +69,6 @@ router.post("/editCourse", (req, res) => {
       course.author = author || course.author;
       course.description = description || course.description;
       course.summary = summary || course.summary;
-      course.lessons.push(newLesson);
       course.imageURL = imageURL || course.imageURL;
       course
         .save()
@@ -98,11 +88,11 @@ router.post("/editCourse", (req, res) => {
 });
 
 router.post("/deleteCourse", (req, res) => {
-  if (!checkIfTokenSent(req)) {
-    return res.sendStatus(FORBIDDEN);
-  } else if (!checkIfTokenValid(req)) {
-    return res.sendStatus(UNAUTHORIZED);
-  }
+  // if (!checkIfTokenSent(req)) {
+  //   return res.sendStatus(FORBIDDEN);
+  // } else if (!checkIfTokenValid(req)) {
+  //   return res.sendStatus(UNAUTHORIZED);
+  // }
   Course.deleteOne({ _id: req.body.id })
     .then(course => {
       res.status(OK).json({ course: "course successfully deleted" });

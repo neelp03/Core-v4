@@ -1,8 +1,8 @@
 /* global describe it before after */
 // During the test the env variable is set to test
 process.env.NODE_ENV = "test";
-const Course = require("../api/main_endpoints/models/Course");
-const Lesson = require("../api/main_endpoints/models/Course");
+const { Course } = require("../api/main_endpoints/models/Course");
+// const {Lesson} = require("../api/main_endpoints/models/Course");
 const User = require("../api/main_endpoints/models/User");
 // Require the dev-dependencies
 const chai = require("chai");
@@ -189,8 +189,6 @@ describe("Course", () => {
       );
       expect(getCoursesResponse[0].summary).to.equal(UPDATED_COURSE.summary);
       expect(getCoursesResponse[0].imageURL).to.equal(UPDATED_COURSE.imageURL);
-      // this checks that the lessons array has as many lessons are were added
-      expect(getCoursesResponse[0].lessons).to.have.length(1);
     });
   });
 

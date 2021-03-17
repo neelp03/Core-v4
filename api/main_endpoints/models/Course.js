@@ -3,10 +3,6 @@ const Schema = mongoose.Schema;
 
 const LessonSchema = new Schema(
   {
-    _id: {
-      type: Schema.Types.ObjectId,
-      required: true
-    },
     title: {
       type: String,
       required: true
@@ -49,5 +45,8 @@ const CourseSchema = new Schema(
   { collection: "Course" }
 );
 
-module.exports = mongoose.model("Lesson", LessonSchema);
-module.exports = mongoose.model("Course", CourseSchema);
+const Lesson = mongoose.model("Lesson", LessonSchema);
+const Course = mongoose.model("Course", CourseSchema);
+
+module.exports = {Lesson: Lesson,
+                  Course: Course}
