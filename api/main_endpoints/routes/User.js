@@ -1,10 +1,12 @@
 'use strict';
 
 const express = require('express');
+const mongoose = require('mongoose');
 const router = express.Router();
 const passport = require('passport');
 require('../util/passport')(passport);
 const User = require('../models/User.js');
+const Tag = require('../models/Tag');
 const axios = require('axios');
 const { registerUser } = require('../util/registerUser');
 const {
@@ -231,7 +233,19 @@ router.post('/tags', (req,res) => {
     }
     if (!user)
       return res.status(BAD_REQUEST).send({message: 'Cannot find account with that email'});
-    return res.status(OK).send(user.tags)
+    // need to convert user's tag id to tag object
+    Tag.find().where('_id').in(user.tags).exec((error, tags) => {
+      if (error) {
+        const info = {
+          errorTime: new Date(),
+          apiEndpoint: 'user/edit',
+          errorDescription: error
+        };
+        addErrorLog(info);
+        res.status(BAD_REQUEST).send({ message: 'Bad Request.' });
+      }
+      return res.status(OK).send(tags);
+    })
   })
 })
 
@@ -240,17 +254,19 @@ router.post('/tags', (req,res) => {
   if there's a delete header, then delete that tag, otherwise add that tag
 */
 router.post('/edit/tags', (req, res) => {
-  if(!req.body.email || !req.body.tag){
+  // gives error if no email or no tag role are provided
+  if(!req.body.email || !req.body.role){
     return res.sendStatus(BAD_REQUEST);
   }
 
   const query = { email: req.body.email };
+  const tagRole = { role: req.body.role };
 
   User.findOne(query, (error, user) => {
     if (error) {
       const info = {
         errorTime: new Date(),
-        apiEndpoint: 'user/edit',
+        apiEndpoint: 'user/edit/tags',
         errorDescription: error
       };
       addErrorLog(info);
@@ -258,21 +274,66 @@ router.post('/edit/tags', (req, res) => {
     }
     if (!user)
       return res.status(BAD_REQUEST).send({message: 'Cannot find account with that email'});
-      
-    //if it has delete header, then delete that tag
-    if(req.body.delete) user.tags.pull(req.body.tag)
     else {
-      if(user.tags.includes(req.body.tag)) 
-        return res.status(BAD_REQUEST).send({message: 'Tag already existed'})
-      else user.tags.push(req.body.tag)
+      // find the tag id and assign it to user's tag
+      Tag.findOne(tagRole, (error, tag) => {
+        if (error) {
+          const info = {
+            errorTime: new Date(),
+            apiEndpoint: 'user/edit/tags',
+            errorDescription: error
+          };
+          addErrorLog(info);
+          return res.status(BAD_REQUEST).send({ message: 'Bad Request.' });
+        }
+        if (!tag)
+          return res.status(BAD_REQUEST).send({message: 'Cannot find the tag with that role'});
+        
+        //if it has a delete header, delete that tag
+        if(req.body.delete){
+          user.tags.pull(tag.id);
+        }
+        else{
+          user.tags.push(tag.id);
+        }
+        user.save();
+      });
+
     } 
+    return res.status(OK).send({
+      message: `${query.email} was updated.`,
+    });
+  });
+})
+
+// clear user's tag
+router.post('/edit/tags/clear', (req,res) => {
+  
+  if(!req.body.email){
+    return res.sendStatus(BAD_REQUEST);
+  }
+  
+  const query = {email: req.body.email};
+  User.findOne(query, (error, user) => {
+    if (error) {
+      const info = {
+        errorTime: new Date(),
+        apiEndpoint: 'user/edit/tags',
+        errorDescription: error
+      };
+      addErrorLog(info);
+      res.status(BAD_REQUEST).send({ message: 'Bad Request.' });
+    }
+    if (!user)
+      return res.status(BAD_REQUEST).send({message: 'Cannot find account with that email'});
+    user.tags = [];
     user.save();
 
     return res.status(OK).send({
       message: `${query.email} was updated.`,
     });
-  })
-})
+  });
+});
 
 router.post('/getPagesPrintedCount', (req, res) => {
   if (!checkIfTokenSent(req)) {

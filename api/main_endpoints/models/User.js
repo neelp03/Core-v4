@@ -75,7 +75,7 @@ const UserSchema = new Schema(
       change to routing to incorporate tags field
     */
     ,
-    tags: [{type:String}]
+    tags: [{type: Schema.Types.ObjectId}]
   },
   { collection: 'User' }
 );
