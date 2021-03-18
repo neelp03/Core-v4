@@ -292,10 +292,13 @@ router.post('/edit/tags', (req, res) => {
         //if it has a delete header, delete that tag
         if(req.body.delete){
           user.tags.pull(tag.id);
+          tag.users.pull(user.id);
         }
         else{
           user.tags.push(tag.id);
+          tag.users.push(user.id);
         }
+        tag.save();
         user.save();
       });
 

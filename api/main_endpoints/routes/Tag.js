@@ -10,6 +10,7 @@ const {
     CONFLICT
   } = require('../../util/constants').STATUS_CODES;
 const Tag = require('../models/Tag');
+const User = require('../models/User');
 
 // get all the tags
 router.get("/getTags", (req,res) => {
@@ -31,14 +32,31 @@ router.post("/add", (req,res) => {
         
 });
 
+// need to work on this
 router.post("/delete", (req,res) => {
     const query = {role: req.body.role};
-    Tag.deleteOne(query, (error, tag) => {
-        if(error){
+    // Tag.findOne(query, (error, tag) => {
+    //     if(error){
+    //         return res.status(BAD_REQUEST).send({ message: 'Bad Request'});
+    //     }
+    //     tag.deleteOne((error, result) => {
+    //         if(error){
+    //             return res.status(BAD_REQUEST).send({ message: 'Bad Request'});
+    //         }
+    //         res.status(OK).send({message:"Deleted that tag " + req.body.role});
+    //     })
+    // });
+
+    Tag.findOne(query)
+        .then(tag => {
+            return tag.deleteOne();
+        })
+        .then(result => {
+            return res.status(OK).send({message:"Deleted that tag " + req.body.role});
+        })
+        .catch(error => {
             return res.status(BAD_REQUEST).send({ message: 'Bad Request'});
-        }
-        res.status(OK).send({message:"Deleted that tag " + req.body.role});
-    });
+        });
 });
 
 module.exports = router;
