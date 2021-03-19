@@ -75,8 +75,8 @@ router.post("/editLesson", (req, res) => {
   // } else if (!checkIfTokenValid(req)) {
   //   return res.sendStatus(UNAUTHORIZED);
   // }
-  const { _id, title, link } = req.body;
-  Lesson.findOne({ _id: _id })
+  const { title, link } = req.body;
+  Lesson.findOne({ _id: req.body.id })
     .then(lesson => {
       console.log(lesson);
       lesson.title = title || lesson.title;
@@ -106,7 +106,7 @@ router.post("/deleteLesson", (req, res) => {
   // } else if (!checkIfTokenValid(req)) {
   //   return res.sendStatus(UNAUTHORIZED);
   // }
-  Lesson.deleteOne({ _id: req.body._id })
+  Lesson.deleteOne({ _id: req.body.id })
     .then(lesson => {
       res.status(OK).json({ lesson: "lesson successfully deleted" });
     })

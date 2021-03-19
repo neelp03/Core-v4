@@ -9,6 +9,7 @@ const chaiHttp = require("chai-http");
 const constants = require("../api/util/constants");
 const { OK, BAD_REQUEST, UNAUTHORIZED, NOT_FOUND } = constants.STATUS_CODES;
 const SceApiTester = require("./util/tools/SceApiTester");
+const mongoose = require("../api/node_modules/mongoose");
 
 let app = null;
 let test = null;
@@ -51,12 +52,14 @@ describe("Lesson", () => {
     resetMock();
   });
 
+  const courseid = mongoose.Types.ObjectId();
+
   const token = "";
   let lessonId = "";
   const VALID_NEW_LESSON = {
     title: "intro to react",
     link: "https://google.com",
-    courseID: "5555"
+    courseID: courseid
   };
   const LESSON_WITH_INVALID_TOKEN = {
     token: "invalid"
@@ -68,9 +71,9 @@ describe("Lesson", () => {
     id: "strawberry"
   };
   const UPDATED_LESSON = {
-    title: "intro to react",
+    title: "updated intro to react",
     link: "https://google.com",
-    courseID: "5555"
+    courseID: courseid
   };
 
   describe("/POST createLesson", () => {
@@ -106,11 +109,6 @@ describe("Lesson", () => {
   });
 
   describe("/GET getLessons", () => {
-    // const newLesson = new Lesson({
-    //   title: VALID_NEW_LESSON.title,
-    //   link: VALID_NEW_LESSON.link,
-    //   courseID: VALID_NEW_LESSON.courseID
-    // });
     it("Should return an object of all lessons", async () => {
       setTokenStatus(true);
       const result = await test.sendGetRequest("/api/lesson/getLessons");

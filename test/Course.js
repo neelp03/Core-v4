@@ -55,12 +55,11 @@ describe("Course", () => {
   const token = "";
   let courseId = "";
   
-  const DUMMY_LESSON = {
-    _id: "12345",
-    title: "div blocks",
-    link: "www.divblock.com",
-    courseID: courseId
-  };
+  // const DUMMY_LESSON = {
+  //   title: "div blocks",
+  //   link: "www.divblock.com",
+  //   courseID: courseId
+  // };
   const VALID_NEW_COURSE = {
     title: "intro to react",
     author: "Big Chungus",
@@ -85,12 +84,12 @@ describe("Course", () => {
     lessons: []
   };
   const UPDATED_COURSE = {
-    title: "intro to react",
+    title: "updated intro to react",
     author: "Big Chungus",
     description: "a workshop about react",
     summary: "a small summary about react",
     imageURL: "www.image.com",
-    lessons: [DUMMY_LESSON]
+    lessons: []
   };
 
   describe("/POST createCourse", () => {
