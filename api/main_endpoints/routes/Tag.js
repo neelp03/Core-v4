@@ -32,20 +32,8 @@ router.post("/add", (req,res) => {
         
 });
 
-// need to work on this
 router.post("/delete", (req,res) => {
     const query = {role: req.body.role};
-    // Tag.findOne(query, (error, tag) => {
-    //     if(error){
-    //         return res.status(BAD_REQUEST).send({ message: 'Bad Request'});
-    //     }
-    //     tag.deleteOne((error, result) => {
-    //         if(error){
-    //             return res.status(BAD_REQUEST).send({ message: 'Bad Request'});
-    //         }
-    //         res.status(OK).send({message:"Deleted that tag " + req.body.role});
-    //     })
-    // });
 
     Tag.findOne(query)
         .then(tag => {

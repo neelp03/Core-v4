@@ -22,19 +22,20 @@ const TagSchema = new Schema(
     }
 );
 
-// find all the user and delete the tag inside there
+/*
+    pre hook: find all the user and delete the tag reference inside there
+*/
 TagSchema.pre('deleteOne', { document: true, query: false}, function(next) {
-    console.log('Deleted ' + this);
-
     // get the list of users in order to delete tag from their tags array
     User.find({ '_id': { $in: this.users}}, (error, users) => {
+        if(error) 
+            return res.status(BAD_REQUEST).send({ message: 'Bad Request'});
         users.forEach((user, index) => {
             user.tags.pull(this.id);
             user.save();
         })
     })
     next()
-
 });
 
 module.exports = mongoose.model('Tag', TagSchema);

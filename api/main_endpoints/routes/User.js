@@ -289,7 +289,9 @@ router.post('/edit/tags', (req, res) => {
         if (!tag)
           return res.status(BAD_REQUEST).send({message: 'Cannot find the tag with that role'});
         
-        //if it has a delete header, delete that tag
+        /* if it has a delete header, delete that tag's id from user's tags
+           as well as delete user's id from tag's users
+        */
         if(req.body.delete){
           user.tags.pull(tag.id);
           tag.users.pull(user.id);
@@ -333,7 +335,7 @@ router.post('/edit/tags/clear', (req,res) => {
     user.save();
 
     return res.status(OK).send({
-      message: `${query.email} was updated.`,
+      message: `${query.email} 's tag was cleared.`,
     });
   });
 });

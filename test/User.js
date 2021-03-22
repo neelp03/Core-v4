@@ -341,7 +341,7 @@ describe('User', () => {
     it('Should return status code 400 when the email is not provided', async () => {
       const result = await test.sendPostRequest('/api/user/tags');
       expect(result).to.have.status(BAD_REQUEST);
-      //create user first
+      // create user first
       const addUser = {
         email: 'whatever@gmail.com',
         password: 'Passw0rd',
@@ -349,44 +349,22 @@ describe('User', () => {
         lastName: 'last-name'
       };
       test.sendPostRequest('/api/Auth/register', addUser);
+      // create tags to later add to users
+      const tag = {
+        role: 'Test',
+        level: 0,
+        color: 'red'
+      };
+      test.sendPostRequest('/api/tag/add', tag);
     });
 
-    it('Should return status code 400 when the uncorrect email is provided', async () => {
-      const user = {email:'whatev@gmail.com'};
-      const result = await test.sendPostRequest('/api/user/tags', user);
-      expect(result).to.have.status(BAD_REQUEST);
-    });
-
-    it('Should return status code 200 when the correct email is provided', async () => {
-      const user = {email: 'whatever@gmail.com'};
-      const result = await test.sendPostRequest('/api/User/tags', user);
+    it('Should return 200 when adding new tag to user', async () => {
+      const addTag = {
+        role: 'Test',
+        email: 'whatever@gmail.com'
+      }
+      const result = await test.sendPostRequest('/api/user/edit/tags', addTag);
       expect(result).to.have.status(OK);
     });
-
-    it('Should return status code 200 when getting all users', async () => {
-      const result = await test.sendPostRequest('/api/user/users');
-      expect(result).to.have.status(OK);
-    });
-
   }); 
-
-  describe('/POST user tags', () => {
-    it('Should return status code 400 when the uncorrect email is provided', async () => {
-      const user = {email: 'wrongemail@gmail.com'};
-      const result = await test.sendPostRequest('/api/user/tags', user);
-      expect(result).to.have.status(BAD_REQUEST);
-    });
-
-    it('Should return status code 200 when the correct email and tags provided', async () => {
-      const user = {email:'whatever@gmail.com', tag:'test-tag'};
-      const result = await test.sendPostRequest('/api/user/edit/tags', user);
-      expect(result).to.have.status(OK);
-    })
-
-    it('Should return status code 200 when correct info provided for delete tags', async () => {
-      const user = {email:'whatever@gmail.com', tag:'test', delete:'delete'};
-      const result = await test.sendPostRequest('/api/user/edit/tags', user);
-      expect(result).to.have.status(OK);
-    })
-  })
 });

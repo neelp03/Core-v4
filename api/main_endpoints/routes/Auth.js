@@ -118,6 +118,8 @@ router.post('/login', function(req, res) {
               lastName: user.lastName,
               email: user.email,
               accessLevel: user.accessLevel,
+              tags: [],
+              // change accessLevel to tag
               pagesPrinted: user.pagesPrinted
             };
             const token = jwt.sign(
