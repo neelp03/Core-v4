@@ -32,11 +32,11 @@ router.get("/getCourses", (req, res) => {
 });
 
 router.post("/createCourse", (req, res) => {
-  // if (!checkIfTokenSent(req)) {
-  //   return res.sendStatus(FORBIDDEN);
-  // } else if (!checkIfTokenValid(req)) {
-  //   return res.sendStatus(UNAUTHORIZED);
-  // }
+  if (!checkIfTokenSent(req)) {
+    return res.sendStatus(FORBIDDEN);
+  } else if (!checkIfTokenValid(req)) {
+    return res.sendStatus(UNAUTHORIZED);
+  }
 
   const createCourse = new Course({
     title: req.body.title,
@@ -56,11 +56,11 @@ router.post("/createCourse", (req, res) => {
 });
 
 router.post("/editCourse", (req, res) => {
-  // if (!checkIfTokenSent(req)) {
-  //   return res.sendStatus(FORBIDDEN);
-  // } else if (!checkIfTokenValid(req)) {
-  //   return res.sendStatus(UNAUTHORIZED);
-  // }
+  if (!checkIfTokenSent(req)) {
+    return res.sendStatus(FORBIDDEN);
+  } else if (!checkIfTokenValid(req)) {
+    return res.sendStatus(UNAUTHORIZED);
+  }
   const { title, author, description, summary, imageURL } = req.body;
 
   Course.findOne({ _id: req.body.id })
@@ -88,11 +88,11 @@ router.post("/editCourse", (req, res) => {
 });
 
 router.post("/deleteCourse", (req, res) => {
-  // if (!checkIfTokenSent(req)) {
-  //   return res.sendStatus(FORBIDDEN);
-  // } else if (!checkIfTokenValid(req)) {
-  //   return res.sendStatus(UNAUTHORIZED);
-  // }
+  if (!checkIfTokenSent(req)) {
+    return res.sendStatus(FORBIDDEN);
+  } else if (!checkIfTokenValid(req)) {
+    return res.sendStatus(UNAUTHORIZED);
+  }
 
   let lessons = [];
 
@@ -113,7 +113,7 @@ router.post("/deleteCourse", (req, res) => {
       }
     })
     .catch(error => {
-      res.status(NOT_FOUND).send({ error, message: "course not found" });
+      res.status(BAD_REQUEST).send({ error, message: "deleting course failed" });
     });
 
   Course.deleteOne({ _id: req.body.id })

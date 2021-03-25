@@ -31,11 +31,11 @@ router.get("/getLessons", (req, res) => {
 });
 
 router.post("/createLesson", (req, res) => {
-  // if (!checkIfTokenSent(req)) {
-  //   return res.sendStatus(FORBIDDEN);
-  // } else if (!checkIfTokenValid(req)) {
-  //   return res.sendStatus(UNAUTHORIZED);
-  // }
+  if (!checkIfTokenSent(req)) {
+    return res.sendStatus(FORBIDDEN);
+  } else if (!checkIfTokenValid(req)) {
+    return res.sendStatus(UNAUTHORIZED);
+  }
   const newLesson = new Lesson({
     title: req.body.title,
     link: req.body.link,
@@ -70,11 +70,11 @@ router.post("/createLesson", (req, res) => {
 });
 
 router.post("/editLesson", (req, res) => {
-  // if (!checkIfTokenSent(req)) {
-  //   return res.sendStatus(FORBIDDEN);
-  // } else if (!checkIfTokenValid(req)) {
-  //   return res.sendStatus(UNAUTHORIZED);
-  // }
+  if (!checkIfTokenSent(req)) {
+    return res.sendStatus(FORBIDDEN);
+  } else if (!checkIfTokenValid(req)) {
+    return res.sendStatus(UNAUTHORIZED);
+  }
   const { title, link } = req.body;
   Lesson.findOne({ _id: req.body.id })
     .then(lesson => {
@@ -101,11 +101,11 @@ router.post("/editLesson", (req, res) => {
 });
 
 router.post("/deleteLesson", (req, res) => {
-  // if (!checkIfTokenSent(req)) {
-  //   return res.sendStatus(FORBIDDEN);
-  // } else if (!checkIfTokenValid(req)) {
-  //   return res.sendStatus(UNAUTHORIZED);
-  // }
+  if (!checkIfTokenSent(req)) {
+    return res.sendStatus(FORBIDDEN);
+  } else if (!checkIfTokenValid(req)) {
+    return res.sendStatus(UNAUTHORIZED);
+  }
   Lesson.deleteOne({ _id: req.body.id })
     .then(lesson => {
       res.status(OK).json({ lesson: "lesson successfully deleted" });

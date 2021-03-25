@@ -52,7 +52,7 @@ describe("Lesson", () => {
     resetMock();
   });
 
-  const courseid = mongoose.Types.ObjectId();
+  const courseid = new mongoose.Types.ObjectId('602af6c411aea32142c0a2ff');
 
   const token = "";
   let lessonId = "";
@@ -103,6 +103,7 @@ describe("Lesson", () => {
           "/api/lesson/createLesson",
           VALID_NEW_LESSON
         );
+        console.log(result.body);
         expect(result).to.have.status(OK);
       }
     );
@@ -114,6 +115,9 @@ describe("Lesson", () => {
       const result = await test.sendGetRequest("/api/lesson/getLessons");
       expect(result).to.have.status(OK);
       const getLessonsResponse = result.body;
+      console.log(getLessonsResponse);
+      console.log("separator");
+      console.log(VALID_NEW_LESSON);
       getLessonsResponse.should.be.a("array");
       expect(getLessonsResponse).to.have.length(1);
       expect(getLessonsResponse[0].title).to.equal(VALID_NEW_LESSON.title);
