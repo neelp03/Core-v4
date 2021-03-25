@@ -93,6 +93,29 @@ router.post("/deleteCourse", (req, res) => {
   // } else if (!checkIfTokenValid(req)) {
   //   return res.sendStatus(UNAUTHORIZED);
   // }
+
+  let lessons = [];
+
+  Course.findOne({ _id: req.body.id })
+    .then(course => {
+      lessons = course.lessons;
+      console.log(lessons);
+      for (let i = 0; i < lessons.length; i++) {
+        Lesson.deleteOne({ _id: lessons[i] })
+          .then(lesson => {
+            res.status(OK).json({ lesson: "lesson successfully deleted" });
+          })
+          .catch(error => {
+            res
+              .status(BAD_REQUEST)
+              .send({ error, message: "deleting lesson failed" });
+          });
+      }
+    })
+    .catch(error => {
+      res.status(NOT_FOUND).send({ error, message: "course not found" });
+    });
+
   Course.deleteOne({ _id: req.body.id })
     .then(course => {
       res.status(OK).json({ course: "course successfully deleted" });
