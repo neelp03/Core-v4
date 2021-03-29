@@ -118,7 +118,7 @@ router.post('/login', function(req, res) {
               lastName: user.lastName,
               email: user.email,
               accessLevel: user.accessLevel,
-              tags: [],
+              tags: user.tags,
               // change accessLevel to tag
               pagesPrinted: user.pagesPrinted
             };

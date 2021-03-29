@@ -84,11 +84,11 @@ router.post('/delete', (req, res) => {
 
 // Search for a member
 router.post('/search', function(req, res) {
-  // if (!checkIfTokenSent(req)) {
-  //   return res.sendStatus(FORBIDDEN);
-  // } else if (!checkIfTokenValid(req, membershipState.ALUMNI)) {
-  //   return res.sendStatus(UNAUTHORIZED);
-  // }
+  if (!checkIfTokenSent(req)) {
+    return res.sendStatus(FORBIDDEN);
+  } else if (!checkIfTokenValid(req, membershipState.ALUMNI)) {
+    return res.sendStatus(UNAUTHORIZED);
+  }
   User.findOne({ email: req.body.email }, function(error, result) {
     if (error) {
       res.status(BAD_REQUEST).send({ message: 'Bad Request.' });
@@ -99,7 +99,7 @@ router.post('/search', function(req, res) {
         .status(NOT_FOUND)
         .send({ message: `${req.body.email} not found.` });
     }
-
+  
     const user = {
       firstName: result.firstName,
       middleInitial: result.middleInitial,
@@ -125,11 +125,11 @@ router.post('/search', function(req, res) {
 
 // Search for all members
 router.post('/users', function(req, res) {
-  // if (!checkIfTokenSent(req)) {
-  //   return res.sendStatus(FORBIDDEN);
-  // } else if (!checkIfTokenValid(req)) {
-  //   return res.sendStatus(UNAUTHORIZED);
-  // }
+  if (!checkIfTokenSent(req)) {
+    return res.sendStatus(FORBIDDEN);
+  } else if (!checkIfTokenValid(req)) {
+    return res.sendStatus(UNAUTHORIZED);
+  }
   User.find()
     .sort({ joinDate: -1 })
     .then(items => {
@@ -142,11 +142,11 @@ router.post('/users', function(req, res) {
 
 // Edit/Update a member record
 router.post('/edit', (req, res) => {
-  // if (!checkIfTokenSent(req)) {
-  //   return res.sendStatus(FORBIDDEN);
-  // } else if (!checkIfTokenValid(req)) {
-  //   return res.sendStatus(UNAUTHORIZED);
-  // }
+  if (!checkIfTokenSent(req)) {
+    return res.sendStatus(FORBIDDEN);
+  } else if (!checkIfTokenValid(req)) {
+    return res.sendStatus(UNAUTHORIZED);
+  }
 
   if(!req.body.email){
     return res.sendStatus(BAD_REQUEST);
@@ -213,7 +213,10 @@ router.post('/edit', (req, res) => {
   });
 });
 
-/* view tags of that current user */
+/* 
+  get user's tags, need a valid user's email 
+  need to convert tags' id in user.tags to actual tags
+*/
 
 router.post('/tags', (req,res) => {
   if(!req.body.email) {
@@ -221,11 +224,12 @@ router.post('/tags', (req,res) => {
   }
 
   const query = { email: req.body.email };
+
   User.findOne(query, (error, user) => {
     if (error) {
       const info = {
         errorTime: new Date(),
-        apiEndpoint: 'user/edit',
+        apiEndpoint: 'user/tags',
         errorDescription: error
       };
       addErrorLog(info);
@@ -238,7 +242,7 @@ router.post('/tags', (req,res) => {
       if (error) {
         const info = {
           errorTime: new Date(),
-          apiEndpoint: 'user/edit',
+          apiEndpoint: 'user/tags',
           errorDescription: error
         };
         addErrorLog(info);
@@ -250,7 +254,7 @@ router.post('/tags', (req,res) => {
 })
 
 /* 
-  adding tags and remove tags
+  adding tags and remove tags, need a valid user's email
   if there's a delete header, then delete that tag, otherwise add that tag
 */
 router.post('/edit/tags', (req, res) => {
@@ -323,7 +327,7 @@ router.post('/edit/tags/clear', (req,res) => {
     if (error) {
       const info = {
         errorTime: new Date(),
-        apiEndpoint: 'user/edit/tags',
+        apiEndpoint: 'user/edit/tags/clear',
         errorDescription: error
       };
       addErrorLog(info);

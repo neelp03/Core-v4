@@ -34,17 +34,13 @@ router.post("/add", (req,res) => {
 
 router.post("/delete", (req,res) => {
     const query = {role: req.body.role};
-
-    Tag.findOne(query)
-        .then(tag => {
-            return tag.deleteOne();
-        })
-        .then(result => {
-            return res.status(OK).send({message:"Deleted that tag " + req.body.role});
-        })
-        .catch(error => {
+    
+    Tag.findOneAndDelete(query, (error, result) => {
+        if(error) 
             return res.status(BAD_REQUEST).send({ message: 'Bad Request'});
-        });
+        else 
+            return res.status(OK).send({message:"Deleted that tag " + req.body.role});
+    })
 });
 
 module.exports = router;

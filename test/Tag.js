@@ -67,7 +67,7 @@ describe('Tag', () => {
         level: 1,
         color: 'red',
       };
-      const result = await test.sendPostRequest('/api/tag/add');
+      const result = await test.sendPostRequest('/api/tag/add', tag);
       expect(result).to.have.status(OK);
     });
 
