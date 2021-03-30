@@ -33,8 +33,10 @@ router.post("/add", (req,res) => {
 });
 
 router.post("/delete", (req,res) => {
+    if(!req.body.role)
+        return res.status(BAD_REQUEST).send({ message: 'Need tag role to delete' });
+
     const query = {role: req.body.role};
-    
     Tag.findOneAndDelete(query, (error, result) => {
         if(error) 
             return res.status(BAD_REQUEST).send({ message: 'Bad Request'});

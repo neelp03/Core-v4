@@ -260,7 +260,7 @@ router.post('/tags', (req,res) => {
 router.post('/edit/tags', (req, res) => {
   // gives error if no email or no tag role are provided
   if(!req.body.email || !req.body.role){
-    return res.sendStatus(BAD_REQUEST);
+    return res.status(BAD_REQUEST).send({ message: 'Need user email and tag role' });
   }
 
   const query = { email: req.body.email };
@@ -274,7 +274,7 @@ router.post('/edit/tags', (req, res) => {
         errorDescription: error
       };
       addErrorLog(info);
-      res.status(BAD_REQUEST).send({ message: 'Bad Request.' });
+      return res.status(BAD_REQUEST).send({ message: 'Bad Request.' });
     }
     if (!user)
       return res.status(BAD_REQUEST).send({message: 'Cannot find account with that email'});

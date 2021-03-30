@@ -60,19 +60,46 @@ describe('Tag', () => {
     resetMock();
   });
 
-  describe('/POST tag', () => {
+  describe('/POST tag/add', () => {
+    it('Should return 400 when adding new tag without role', async () => {
+      const tag = {
+        level: 1,
+        color: 'grey'
+      };
+      const result = await test.sendPostRequest('/api/tag/add', tag);
+      expect(result).to.have.status(BAD_REQUEST);
+    });
+
     it('Should return 200 when adding new tag', async () => {
       const tag = {
-        role: 'Testa',
+        role: 'Test',
         level: 1,
         color: 'red',
       };
       const result = await test.sendPostRequest('/api/tag/add', tag);
       expect(result).to.have.status(OK);
     });
+  });
 
+  describe('/GET getTags', () => {
     it('Should return 200 when view tag', async () => {
       const result = await test.sendGetRequest('/api/tag/getTags');
+      expect(result).to.have.status(OK);
+    });
+  })
+
+  describe('/POST delete', () => {
+    it('Should return 400 when deleting a tag without a role', async () => {
+      const tag = {};
+      const result = await test.sendPostRequest('/api/tag/delete', tag);
+      expect(result).to.have.status(BAD_REQUEST);
+    });
+
+    it('Should return 200 when deleting a tag', async () => {
+      const tag = {
+        role: 'Test'
+      };
+      const result = await test.sendPostRequest('/api/tag/delete', tag);
       expect(result).to.have.status(OK);
     })
   });

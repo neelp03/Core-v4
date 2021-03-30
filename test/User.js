@@ -337,7 +337,7 @@ describe('User', () => {
     });
   });
 
-  describe('/POST tags', () => {
+  describe('/POST user/edit/tags', () => {
     it('Should return status code 400 when the email is not provided', async () => {
       const result = await test.sendPostRequest('/api/user/tags');
       expect(result).to.have.status(BAD_REQUEST);
@@ -349,16 +349,10 @@ describe('User', () => {
         lastName: 'last-name'
       };
       test.sendPostRequest('/api/Auth/register', addUser);
-      // create tags to later add to users
-      const tag = {
-        role: 'Test',
-        level: 0,
-        color: 'red'
-      };
-      test.sendPostRequest('/api/tag/add', tag);
     });
 
     it('Should return 200 when adding new tag to user', async () => {
+      // Tag test already added in Tag test case
       const addTag = {
         role: 'Test',
         email: 'whatever@gmail.com'
@@ -366,5 +360,16 @@ describe('User', () => {
       const result = await test.sendPostRequest('/api/user/edit/tags', addTag);
       expect(result).to.have.status(OK);
     });
+
+    it('Should return 200 when removing an added tag from user', async () => {
+      const removeTag = {
+        role: 'Test',
+        email: 'whatever@gmail.com',
+        delete: true
+      }
+      const result = await test.sendPostRequest('/api/user/edit/tags', removeTag);
+      expect(result).to.have.status(OK);
+    });
+
   }); 
 });
