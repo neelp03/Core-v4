@@ -1,3 +1,21 @@
 .test {
   border: 1px grey solid;
+  margin-bottom: 20px;
+}
+
+.article-card-section {
+  /* border: 1px grey dashed; */
+  width: 70%;
+  height: 300px;
+  margin: auto;
+  /* padding: 15px; */
+}
+
+.article-card {
+  margin-bottom: 10px;
+  border: lightgrey dashed 1px;
+}
+
+.article-card:hover {
+  background-color: #fcfcfc;
 }

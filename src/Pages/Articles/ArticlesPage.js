@@ -3,6 +3,7 @@ import Header from '../../Components/Header/Header';
 import {getAllArticles, addArticle, editArticle, deleteArticle}
   from '../../APIFunctions/Article';
 import {Button} from 'reactstrap';
+import ArticleCard from './ArticleCard';
 import './articles-page.css';
 
 export default class ArticlesPage extends Component {
@@ -84,6 +85,11 @@ export default class ArticlesPage extends Component {
           <Button onClick = {this.deleteArticle} color = "warning">
             Delete
           </Button>
+        </div>
+        <div className = "article-card-section">
+          <div className="article-card">
+            <ArticleCard />
+          </div>
         </div>
       </div>
     );
