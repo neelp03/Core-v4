@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Header from '../../Components/Header/Header';
+import ArticleHeader from './ArticleHeader';
 import {getAllArticles, addArticle, editArticle, deleteArticle}
   from '../../APIFunctions/Article';
 import {Button} from 'reactstrap';
@@ -73,19 +74,21 @@ export default class ArticlesPage extends Component {
 
   render() {
     const headerProps = {
-      title: 'Blog Page'
+      heading: 'SCE Blogs',
+      subheading: 'Learn more about our members'
     };
     return (
       <div>
-        <Header {...headerProps}/>
-        <div className = "test">
+        {/* <Header {...headerProps}/> */}
+        <ArticleHeader {...headerProps}/>
+        {/* <div className = "test">
           <Button onClick = {this.addArticle}>Add</Button>
           <Button onClick = {this.getArticles} color = "primary">Get</Button>
           <Button onClick = {this.editArticle} color = "danger">Edit</Button>
           <Button onClick = {this.deleteArticle} color = "warning">
             Delete
           </Button>
-        </div>
+        </div> */}
         <div className = "article-card-section">
           <div className="article-card">
             <ArticleCard />

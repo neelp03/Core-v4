@@ -7,7 +7,6 @@ export default class ArticleCard extends Component {
     return ( 
       <div className="article-card-container">
         <div className="author-block">
-          
           <img className="author-image" 
             src="https://user-images.githubusercontent.com/25803515/112601743-0ade8000-8dd0-11eb-969e-6e300e2fee34.png"
             alt=""
