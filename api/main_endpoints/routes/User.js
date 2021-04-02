@@ -152,7 +152,8 @@ router.post('/edit', (req, res) => {
     return res.sendStatus(BAD_REQUEST);
   }
 
-  // let decoded = decodeToken(req);
+  let decoded = decodeToken(req);
+  
   // if(decoded.accessLevel === membershipState.MEMBER){
   //   if(req.body.email && req.body.email != decoded.email){
   //     return res
@@ -165,13 +166,35 @@ router.post('/edit', (req, res) => {
   //       .send('Unauthorized to change access level');
   //   }
   // }
+  let highestAccessLevel = 0;
+  
+  // for some reason has error
+  // Tag.find({'_id':{$in:decoded.tags}}, (error, tags) => {
+  //   if(error) return res.status(BAD_REQUEST).send('Error getting tags');
+  //   for(i  = 0; i < tags.length; i++){
+  //     if(tags[i].level > highestAccessLevel) {
+  //       highestAccessLevel = tags[i].level;
+  //     }
+  //   }
 
+  //   console.log("Inside " + highestAccessLevel);
+  // })
+  
+  // need to wait for tag first
+  console.log("Outside " + highestAccessLevel)
+  if(highestAccessLevel <= 50){
+    if(req.body.email && req.body.email != decoded.email){
+      return res
+         .status(UNAUTHORIZED)
+         .send('Unauthorized to edit another user');
+    }
+  }
   // if(decoded.accessLevel === membershipState.OFFICER){
   //   if(req.body.accessLevel && req.body.accessLevel == membershipState.ADMIN){
   //     return res.sendStatus(UNAUTHORIZED);
   //   }
   // }
-
+  console.log("Updating a user");
   const query = { email: req.body.email };
 
   const user =

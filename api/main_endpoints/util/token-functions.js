@@ -37,28 +37,63 @@ function decodeToken(request){
  * @param {boolean} role can use role instead of accessLevel
  * @returns {boolean} whether the user token is valid or not
  */
-function checkIfTokenValid(request, accessLevel = membershipState.MEMBER, role = '') {
+async function checkIfTokenValid(request, accessLevel = membershipState.MEMBER, role = '') {
+  
   let decoded = decodeToken(request);
+
   let response = false;
   
   // need to convert all tags id into tags first then check
-  return Tag.find({'_id':{$in:decoded.tags}}, (error, tags) => {
-    if(error) return response;
-    for(i = 0; i < tags.length; i++){
-      console.log(tags[i])
-      if(tags[i].level >= accessLevel || tags[i].role == role) {
-        response = true;
-        break;
-      }
+  // return Tag.find({'_id':{$in:decoded.tags}}, (error, tags) => {
+  //   if(error) return response;
+  //   // loop object from the function
+  //   for(i = 0; i < tags.length; i++){
+  //     if(tags[i].level >= accessLevel || tags[i].role == role) {
+  //       response = true;
+  //       break;
+  //     }
+  //   }
+  //   return response;
+  // });
+
+  // replace code
+  let tags = await getTags(decoded.tags);
+  for(i = 0; i < tags.length; i ++){
+    if(tags[i].level >= accessLevel || tags[i].role == role){
+      console.log("Inside")
+      response = true;
+      break;
     }
-    return response;
-  });
-  // let response = decoded && decoded.accessLevel >= accessLevel;
-  // return response;
+  }
+  console.log("Before return " + response);
+  return response;
+
+}
+
+/*
+  take an array of tag id and return the tag objects
+*/
+function getTags(tagsId){
+  return Tag.find({'_id': {$in: tagsId}}, (error, tags) => {
+    if(error) return null;
+    return tags;
+  })
+}
+
+// take array of tags and calculate the highest access level
+function getHighestAccessLevel(tags){
+  let highestAccessLevel = 0;
+  for(i = 0; i < tags.length; i ++){
+    if(tags[i] > highestAccessLevel)
+      highestAccessLevel = tags[i];
+  }
+  return highestAccessLevel;
 }
 
 module.exports = {
   checkIfTokenSent,
   checkIfTokenValid,
-  decodeToken
+  decodeToken,
+  getTags, 
+  getHighestAccessLevel
 };
