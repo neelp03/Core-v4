@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Header from '../../Components/Header/Header';
 import ArticleHeader from './ArticleHeader';
+import ArticleNavbar from './ArticleNavbar';
 import {getAllArticles, addArticle, editArticle, deleteArticle}
   from '../../APIFunctions/Article';
 import {Button} from 'reactstrap';
@@ -80,6 +81,8 @@ export default class ArticlesPage extends Component {
     return (
       <div>
         {/* <Header {...headerProps}/> */}
+        <ArticleNavbar />
+        <div className='article-navbar-spacing'/>
         <ArticleHeader {...headerProps}/>
         {/* <div className = "test">
           <Button onClick = {this.addArticle}>Add</Button>

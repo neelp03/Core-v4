@@ -1,5 +1,4 @@
 .header-container {
-  margin-top: 73px;
   /* border: 1px solid black; */
   padding: 60px 15%;
 }
@@ -22,10 +21,13 @@
   color: black;
   font-weight: 700;
   letter-spacing: -0.04em;
+  line-height: 1;
 }
 
 .text-subheading {
   /* border: 1px black dashed; */
+  margin-top: 15px;
+  margin-left: 2px;
   font-size: 18px;
   color: grey;
 }

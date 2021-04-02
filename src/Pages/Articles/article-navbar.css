@@ -1,0 +1,57 @@
+.navbar-container {
+  margin-top: 73px;
+  background-color: #f5f5f5;
+  border-bottom: 1px hsl(0, 0%, 77%) solid;
+  position: fixed;
+  width: 100%;
+  z-index: 2;
+}
+
+.navbar-container .components {
+  padding: 10px 10px;
+  margin: auto;
+  text-align: center;
+}
+
+.components input {
+  padding: 5px 10px;
+  /* border-color: #c4c4c4 1px solid; */
+  border: #c4c4c4 1px solid;
+  outline: 0 none;
+  margin: 0px 15px;
+  width: 50%;
+}
+
+.components input:focus {
+  border: #87b0c7 1px solid;
+}
+
+.components input:focus::placeholder {
+  color: transparent;
+}
+
+.components a {
+  background-color: #87b0c7;
+  color: white;
+  padding: 7.5px 8px;
+}
+
+.components a:hover {
+  color: white;
+  background: #87aec7de;
+  text-decoration: none;
+}
+
+@media screen and (max-width: 767px) {
+  .components input {
+    display: block;
+    margin: auto;
+    width: 90%;
+  }
+  .components a {
+    display: block;
+    width: fit-content;
+    margin: auto;
+    margin-top: 15px;
+  }
+}

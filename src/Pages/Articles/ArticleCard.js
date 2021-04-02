@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import "./articles-card.css";
+import "./article-card.css";
 
 export default class ArticleCard extends Component {
   state = {  }

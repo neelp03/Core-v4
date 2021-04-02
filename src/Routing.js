@@ -5,6 +5,7 @@ import './index.css';
 import PrivateRoute from './Components/Routing/PrivateRoute';
 import NavBarWrapper from './Components/Navbar/NavBarWrapper';
 
+import AddArticle from "./Pages/Articles/AddArticle";
 import Overview from './Pages/Overview/Overview';
 import EmailPage from './Pages/EmailList/EmailPage';
 import EventManager from './Pages/EventManager/EventManager';
@@ -40,6 +41,12 @@ export default function Routing({ appProps }) {
     appProps.user.accessLevel >= membershipState.OFFICER;
   const signedInRoutes = [
 
+    {
+      Component: AddArticle,
+      path: '/addArticle',
+      allowedIf: userIsMember || userIsOfficerOrAdmin,
+      redirect: '/',
+    },
     {
       Component: Overview,
       path: '/dashboard',
