@@ -42,32 +42,15 @@ async function checkIfTokenValid(request, accessLevel = membershipState.MEMBER, 
   let decoded = decodeToken(request);
 
   let response = false;
-  
-  // need to convert all tags id into tags first then check
-  // return Tag.find({'_id':{$in:decoded.tags}}, (error, tags) => {
-  //   if(error) return response;
-  //   // loop object from the function
-  //   for(i = 0; i < tags.length; i++){
-  //     if(tags[i].level >= accessLevel || tags[i].role == role) {
-  //       response = true;
-  //       break;
-  //     }
-  //   }
-  //   return response;
-  // });
 
-  // replace code
   let tags = await getTags(decoded.tags);
   for(i = 0; i < tags.length; i ++){
     if(tags[i].level >= accessLevel || tags[i].role == role){
-      console.log("Inside")
       response = true;
       break;
     }
   }
-  console.log("Before return " + response);
   return response;
-
 }
 
 /*
@@ -84,8 +67,8 @@ function getTags(tagsId){
 function getHighestAccessLevel(tags){
   let highestAccessLevel = 0;
   for(i = 0; i < tags.length; i ++){
-    if(tags[i] > highestAccessLevel)
-      highestAccessLevel = tags[i];
+    if(tags[i].level > highestAccessLevel)
+      highestAccessLevel = tags[i].level;
   }
   return highestAccessLevel;
 }

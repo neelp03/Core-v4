@@ -12,7 +12,9 @@ const { registerUser } = require('../util/registerUser');
 const {
   checkIfTokenSent,
   checkIfTokenValid,
-  decodeToken
+  decodeToken,
+  getTags,
+  getHighestAccessLevel
 } = require('../util/token-functions');
 const {
   OK,
@@ -141,7 +143,7 @@ router.post('/users', function(req, res) {
 });
 
 // Edit/Update a member record
-router.post('/edit', (req, res) => {
+router.post('/edit', async (req, res) => {
   if (!checkIfTokenSent(req)) {
     return res.sendStatus(FORBIDDEN);
   } else if (!checkIfTokenValid(req)) {
@@ -154,35 +156,11 @@ router.post('/edit', (req, res) => {
 
   let decoded = decodeToken(req);
   
-  // if(decoded.accessLevel === membershipState.MEMBER){
-  //   if(req.body.email && req.body.email != decoded.email){
-  //     return res
-  //       .status(UNAUTHORIZED)
-  //       .send('Unauthorized to edit another user');
-  //   }
-  //   if(req.body.accessLevel && req.body.accessLevel !== decoded.accessLevel){
-  //     return res
-  //       .status(UNAUTHORIZED)
-  //       .send('Unauthorized to change access level');
-  //   }
-  // }
   let highestAccessLevel = 0;
-  
-  // for some reason has error
-  // Tag.find({'_id':{$in:decoded.tags}}, (error, tags) => {
-  //   if(error) return res.status(BAD_REQUEST).send('Error getting tags');
-  //   for(i  = 0; i < tags.length; i++){
-  //     if(tags[i].level > highestAccessLevel) {
-  //       highestAccessLevel = tags[i].level;
-  //     }
-  //   }
 
-  //   console.log("Inside " + highestAccessLevel);
-  // })
-  
-  // need to wait for tag first
-  console.log("Outside " + highestAccessLevel)
-  if(highestAccessLevel <= 50){
+  let tags = await getTags(decoded.tags)
+  highestAccessLevel = getHighestAccessLevel(tags);
+  if(highestAccessLevel <= 50){//accesslevel for member, need to change this
     if(req.body.email && req.body.email != decoded.email){
       return res
          .status(UNAUTHORIZED)
@@ -193,8 +171,7 @@ router.post('/edit', (req, res) => {
   //   if(req.body.accessLevel && req.body.accessLevel == membershipState.ADMIN){
   //     return res.sendStatus(UNAUTHORIZED);
   //   }
-  // }
-  console.log("Updating a user");
+  // }          
   const query = { email: req.body.email };
 
   const user =
