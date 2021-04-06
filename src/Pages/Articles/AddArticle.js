@@ -4,7 +4,16 @@ import AddArticleForm from './AddArticleForm';
 import './add-article.css';
 
 export default class AddArticle extends Component {
-  state = {  }
+  constructor(props){
+    super(props);
+    this.state = {
+    
+    };
+    console.log(props);
+  }
+
+
+
   render() { 
     return ( 
       <div className= 'add-article-container'>
