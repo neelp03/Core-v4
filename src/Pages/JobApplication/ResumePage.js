@@ -83,7 +83,7 @@ class ResumePage extends Component {
                     onClick={() => this.handleToggle(type.fileName, type.file)}>
                         {type.fileName}
                   </div>
-                  <button className='delete-btn'>Delete</button>
+                  <button className='delete-btn'>Delete Resume</button>
               </Row>
               <hr />
               </div>
