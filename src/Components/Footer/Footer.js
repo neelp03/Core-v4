@@ -7,6 +7,7 @@ export default () => {
     <footer className='text-left bg-dark text-white p-4'>
       <Row className='footer-text'>
         <Col>
+          <h1>hi</h1>
           <b>Software & Computer Engineering Society</b>
           <p>San Jose State University</p>
           <p>Charles W. Davidson College of Engineering</p>
