@@ -210,7 +210,7 @@ router.post('/validateVerificationEmail', async (req, res) => {
   User.findOne({ email: req.body.email }, async function(error, result) {
     if (error) {
       res.sendStatus(BAD_REQUEST);
-    }
+    } 
     if (!result) {
       res.sendStatus(NOT_FOUND);
     }
