@@ -193,7 +193,7 @@ router.post('/generateHashedId', async (req, res) => {
       if (error) {
         // reject('Bcrypt failed')
         res.sendStatus(BAD_REQUEST);
-      }
+      } 
 
       bcrypt.hash(hashedId, salt, function(error, hash) { 
         if (error) {
