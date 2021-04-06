@@ -27,6 +27,10 @@ import PrintingAnalytics from './Pages/PrintingAnalytics/PrintingAnalytics.js';
 import { membershipState } from './Enums';
 import UploadPic from './Pages/UploadPic/UploadPic.js';
 
+import UploadPage from './Pages/JobApplication/UploadPage.js';
+import PDFPage from './Pages/JobApplication/PDFPage.js';
+import ResumePage from './Pages/JobApplication/ResumePage.js';
+
 export default function Routing({ appProps }) {
   const userIsAuthenticated = appProps.authenticated;
   const userIsMember =
@@ -111,12 +115,31 @@ export default function Routing({ appProps }) {
       redirect: '/',
       inAdminNavbar: true
     },
-    { Component: UploadPic,
+    {
+      Component: UploadPic,
       path: '/uploadPic',
       allowedIf: userIsOfficerOrAdmin,
       redirect: '/login',
       inAdminNavbar: true
-    }
+    },
+    {
+      Component: UploadPage,
+      path: '/jobPage',
+      allowedIf: !userIsAuthenticated,
+      // redirect: '/',
+    },
+    {
+      Component: PDFPage,
+      path: '/PDFPage',
+      allowedIf: !userIsAuthenticated,
+      // redirect: '/',
+    },
+    {
+      Component: ResumePage,
+      path: '/ResumePage',
+      allowedIf: !userIsAuthenticated,
+      // redirect: '/',
+    },
   ];
   const signedOutRoutes = [
     { Component: Home, path: '/' },

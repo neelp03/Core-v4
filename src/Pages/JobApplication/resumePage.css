@@ -1,0 +1,45 @@
+.header {
+    font-weight: 200;
+    font-size: 50px;
+    margin-top: 8%;
+    text-align: center;
+}
+.textbox {
+    margin-left:10%;
+    margin-top: 3%;
+    height: 100%;
+    width: 80%;
+}
+.input-container {
+    font-size: 23px;
+    background-color: lavender;
+    margin-top: 3%;
+    padding-top: 3%;
+    padding-left: 30%;
+    padding-right: 30%;
+    padding-bottom: 3%;
+}
+.custom-modal {
+    justify-content: center;
+    align-items: center;
+    display: inline-block;
+}
+.pdf {
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+}
+.close {
+    margin-left: auto;
+}
+.delete-btn {
+    margin-left: auto;
+}
+.modal-header {
+    display: flex;
+}
+.row {
+    display: flex;
+    font-size: smaller;
+    color:rgb(0, 132, 255);
+}
