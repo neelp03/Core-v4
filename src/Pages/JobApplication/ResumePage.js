@@ -4,8 +4,16 @@ import { Row, Modal, ModalHeader, ModalBody } from 'reactstrap';
 import { Document, Page, pdfjs } from "react-pdf";
 import annabel from './annabel.pdf';
 import nanar from './nanar.pdf';
+import Header from '../../Components/Header/Header';
+import 'react-pro-sidebar/dist/css/styles.css';
+import { Link } from 'react-router-dom';
+import { ProSidebar, Menu, MenuItem } from 'react-pro-sidebar';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+
+const headerProps = {
+    title: 'Resume Page'
+};
 
 class ResumePage extends Component {
   constructor(props) {
@@ -57,37 +65,55 @@ class ResumePage extends Component {
   render() {
     return (
       <div>
-        <div className = 'header'>Resume Page</div>
-        <Modal size='lg' contentClassName='custom-modal' isOpen={this.state.openModal}>
-            <ModalHeader className='modal-header'>
-                {this.state.fileName}
-                <button className='close' onClick={this.handleClose}>Close</button> 
-            </ModalHeader>
-            <ModalBody>
-                <Document
-                    className='pdf' 
-                    file={this.state.PDFFile}
-                    onLoadError={console.error}
-                    onLoadSuccess={this.onDocumentLoadSuccess}
-                >   
-                    <Page pageNumber={1} />
-                </Document>
-            </ModalBody>
-        </Modal>
-        <div className= 'input-container'>
-            <hr />
-          {this.state.pdfs.map((type, ind) => (
-              <div>
-              <Row key={ind} className='row'>
-                  <div 
-                    onClick={() => this.handleToggle(type.fileName, type.file)}>
-                        {type.fileName}
-                  </div>
-                  <button className='delete-btn'>Delete</button>
-              </Row>
-              <hr />
-              </div>
-          ))}
+        <Header {...headerProps} />
+        <div className='page-container'>
+            <ProSidebar className='side-nav'>
+                <Menu>
+                    <MenuItem>
+                        Resume Upload Page
+                        <Link to= '/UploadResumePage'/>
+                    </MenuItem>
+                    <MenuItem>
+                        Highlight Text Page
+                        <Link to= '/HighlighterPage'/>
+                    </MenuItem>
+                    <MenuItem>
+                        Resume Page
+                        <Link to= '/ResumePage'/>
+                    </MenuItem>
+                </Menu>
+            </ProSidebar>
+            <Modal size='lg' contentClassName='custom-modal' isOpen={this.state.openModal}>
+                <ModalHeader className='modal-header'>
+                    {this.state.fileName}
+                    <button className='close' onClick={this.handleClose}>Close</button> 
+                </ModalHeader>
+                <ModalBody>
+                    <Document
+                        className='pdf' 
+                        file={this.state.PDFFile}
+                        onLoadError={console.error}
+                        onLoadSuccess={this.onDocumentLoadSuccess}
+                    >   
+                        <Page pageNumber={1} />
+                    </Document>
+                </ModalBody>
+            </Modal>
+            <div className= 'resume-container'>
+                <hr />
+                {this.state.pdfs.map((type, ind) => (
+                <div>
+                    <Row key={ind} className='row'>
+                        <div 
+                            onClick={() => this.handleToggle(type.fileName, type.file)}>
+                                {type.fileName}
+                        </div>
+                        <button className='delete-btn'>Delete</button>
+                    </Row>
+                    <hr />
+                </div>
+                ))}
+            </div>
         </div>
       </div>
     );

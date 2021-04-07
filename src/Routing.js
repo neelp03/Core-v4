@@ -124,13 +124,13 @@ export default function Routing({ appProps }) {
     },
     {
       Component: UploadPage,
-      path: '/jobPage',
+      path: '/UploadResumePage',
       allowedIf: !userIsAuthenticated,
       // redirect: '/',
     },
     {
       Component: PDFPage,
-      path: '/PDFPage',
+      path: '/HighlighterPage',
       allowedIf: !userIsAuthenticated,
       // redirect: '/',
     },

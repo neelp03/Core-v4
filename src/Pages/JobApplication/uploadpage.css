@@ -1,22 +1,14 @@
-.header {
-    font-weight: 200;
-    font-size: 50px;
-    margin-top: 8%;
-    text-align: center;
-}
 .textbox {
     margin-left:10%;
     margin-top: 3%;
-    height: 100%;
-    width: 80%;
+    height: 20%;
+    width: 100%;
 }
-.input-container {
-    font-size: 23px;
-    background-color: lavender;
+.upload-container {
+    font-size: 18px;
     margin-top: 3%;
-    padding-top: 3%;
-    padding-left: 30%;
-    padding-right: 30%;
+    padding-left: 10%;
+    padding-right: 10%;
     padding-bottom: 3%;
 }
 .button {

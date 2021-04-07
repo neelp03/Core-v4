@@ -77,6 +77,7 @@
     "react-modal": "^3.12.1",
     "react-pdf": "^5.2.0",
     "react-pdf-selection": "^0.6.20",
+    "react-pro-sidebar": "^0.6.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.4",
     "reactstrap": "^8.6.0",

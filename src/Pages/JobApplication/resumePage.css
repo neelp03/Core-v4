@@ -1,23 +1,9 @@
-.header {
-    font-weight: 200;
-    font-size: 50px;
-    margin-top: 8%;
-    text-align: center;
-}
-.textbox {
-    margin-left:10%;
-    margin-top: 3%;
-    height: 100%;
-    width: 80%;
-}
-.input-container {
-    font-size: 23px;
-    background-color: lavender;
-    margin-top: 3%;
-    padding-top: 3%;
-    padding-left: 30%;
-    padding-right: 30%;
-    padding-bottom: 3%;
+.resume-container {
+    font-size: 18px;
+    margin-top: .5rem;
+    padding-left: 3rem;
+    padding-right: 3rem;
+    width: 80rem !important;
 }
 .custom-modal {
     justify-content: center;
@@ -42,4 +28,11 @@
     display: flex;
     font-size: smaller;
     color:rgb(0, 132, 255);
+}
+.side-nav {
+    height: 100vh !important;
+    min-height: 100vh !important;
+}
+.page-container {
+    display: flex;
 }
