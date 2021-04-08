@@ -102,7 +102,7 @@ router.post('/search', function(req, res) {
         .send({ message: `${req.body.email} not found.` });
     }
     // include tags, need to convert from ID to tags
-    let userTags = await getTags(result.tags);
+    let userTags = result.tags;
     console.log("User.js ",tags);
     const user = {
       firstName: result.firstName,
@@ -161,7 +161,7 @@ router.post('/edit', async (req, res) => {
   
   let highestAccessLevel = 0;
 
-  let tags = await getTags(decoded.tags)
+  let tags = decoded.tags;
   highestAccessLevel = getHighestAccessLevel(tags);
   if(highestAccessLevel <= 50){//accesslevel for member, need to change this
     if(req.body.email && req.body.email != decoded.email){

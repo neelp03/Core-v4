@@ -126,13 +126,14 @@ router.post('/login', function(req, res) {
 
             // Include fields from the User model that should
             // be passed to the JSON Web Token (JWT)
+            let tags = await getTags(user.tags)
             const userToBeSigned = {
               firstName: user.firstName,
               lastName: user.lastName,
               email: user.email,
               accessLevel: user.accessLevel,
-              tags: user.tags,
-              // change accessLevel to tag
+              // change accessLevel to tag but send the tags not the tag's id
+              tags,
               pagesPrinted: user.pagesPrinted
             };
             const token = jwt.sign(
