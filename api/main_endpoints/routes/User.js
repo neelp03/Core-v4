@@ -91,7 +91,7 @@ router.post('/search', function(req, res) {
   } else if (!checkIfTokenValid(req, membershipState.ALUMNI)) {
     return res.sendStatus(UNAUTHORIZED);
   }
-  User.findOne({ email: req.body.email }, function(error, result) {
+  User.findOne({ email: req.body.email }, async function(error, result) {
     if (error) {
       res.status(BAD_REQUEST).send({ message: 'Bad Request.' });
     }
@@ -101,7 +101,9 @@ router.post('/search', function(req, res) {
         .status(NOT_FOUND)
         .send({ message: `${req.body.email} not found.` });
     }
-  
+    // include tags, need to convert from ID to tags
+    let userTags = await getTags(result.tags);
+    console.log("User.js ",tags);
     const user = {
       firstName: result.firstName,
       middleInitial: result.middleInitial,
@@ -114,6 +116,7 @@ router.post('/search', function(req, res) {
       discordID: result.discordID,
       active: result.active,
       accessLevel: result.accessLevel,
+      tags: userTags,
       major: result.major,
       joinDate: result.joinDate,
       lastLogin: result.lastLogin,

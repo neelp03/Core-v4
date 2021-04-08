@@ -6,8 +6,6 @@ import MajorDropdown from './MajorDropdown';
 import { checkIfUserExists } from '../../APIFunctions/User';
 import { registerUser } from '../../APIFunctions/Auth';
 import { sendVerificationEmail } from '../../APIFunctions/Mailer';
-//import tags operations
-import {tagsOperation, deleteTags} from '../../APIFunctions/User';
 import GoogleRecaptcha from './GoogleRecaptcha';
 
 export default function MembershipForm(props) {
@@ -53,22 +51,6 @@ export default function MembershipForm(props) {
       handleChange: e => setPassword(e.target.value)
     }
   ];
-
-  //This function calls tagsOperation
-  async function addTags(){
-    const userResponse = tagsOperation('whatever@gmail.com','test',false)
-    if(userResponse.error){
-      return;
-    }
-    else alert(userResponse.responseData)
-  }
-
-  //this function call delete Tags
-  async function deleteTheTags(){
-    const userResponse = deleteTags('whatever@gmail.com','test')
-    if(userResponse.error) return;
-    else alert(userResponse.responseData);
-  }
   async function submitApplication() {
     const userResponse = await checkIfUserExists(email);
     if (userResponse.error) {
@@ -165,9 +147,6 @@ export default function MembershipForm(props) {
           >
             Submit application
           </Button>
-          {/* button for checking tags */}
-          <Button onClick = {addTags}>Check tag</Button>
-          <Button onClick = {deleteTheTags}>Delete tag</Button>
         </div>
         <hr />
         <p id='login'>

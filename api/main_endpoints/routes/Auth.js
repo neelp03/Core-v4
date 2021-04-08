@@ -10,7 +10,8 @@ const { registerUser } = require('../util/registerUser');
 const {
   checkIfTokenSent,
   checkIfTokenValid,
-  decodeToken
+  decodeToken,
+  getTags,
 } = require('../util/token-functions');
 const jwt = require('jsonwebtoken');
 const {
@@ -80,14 +81,26 @@ router.post('/login', function(req, res) {
           });
       } else {
         // Check if password matches database
-        user.comparePassword(req.body.password, function(error, isMatch) {
+        user.comparePassword(req.body.password, async function(error, isMatch) {
           if (isMatch && !error) {
             if (user.accessLevel === membershipState.BANNED) {
               return res
                 .status(UNAUTHORIZED)
                 .send({ message: 'User is banned.' });
             }
-
+            // let tags = await getTags(user.tags);
+            // let lowestAccessLevel = 0;
+            // let i = 0;
+            // for(i = 0; i< tags.length; i++){
+            //   if(tags[i].level < lowestAccessLevel)
+            //     lowestAccessLevel = tags[i].level
+            // }
+            // if(lowestAccessLevel == -100){ //-100 is banned accesslevel, need to change this
+            //   return res
+            //     .status(UNAUTHORIZED)
+            //     .send({message: 'User is banned. '})
+            // }
+            // console.log('Auth.js login ' + lowestAccessLevel)
             // Check if the user's email has been verified
             if(!user.emailVerified){
               return res

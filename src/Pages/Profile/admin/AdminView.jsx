@@ -91,6 +91,12 @@ export default function Editor(props) {
       label: 'Major',
       placeholder: user.major,
       handleChange: (e) => setMajor(e.target.value)
+    },
+    // adding field for tags
+    {
+      label: 'Tags',
+      placeholder: user.tags.role,
+      handleChange: console.log(user.tags)
     }
   ];
 

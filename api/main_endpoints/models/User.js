@@ -69,12 +69,7 @@ const UserSchema = new Schema(
     pagesPrinted: {
       type: Number,
       default: 0
-    }
-    /*
-      new field tags, an array
-      change to routing to incorporate tags field
-    */
-    ,
+    },
     tags: [{type: Schema.Types.ObjectId}]
   },
   { collection: 'User' }
