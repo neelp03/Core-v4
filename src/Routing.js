@@ -5,7 +5,7 @@ import './index.css';
 import PrivateRoute from './Components/Routing/PrivateRoute';
 import NavBarWrapper from './Components/Navbar/NavBarWrapper';
 
-import AddArticle from "./Pages/Articles/AddArticle";
+import AddArticle from "./Pages/Articles/AddArticle/AddArticle";
 import Overview from './Pages/Overview/Overview';
 import EmailPage from './Pages/EmailList/EmailPage';
 import EventManager from './Pages/EventManager/EventManager';

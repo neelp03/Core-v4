@@ -1,0 +1,94 @@
+.add-article-container {
+  /* margin-top: 73px; */
+  margin-top: 73px;
+  /* height: 2000px; */
+  /* border: 3px solid black; */
+}
+
+.title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 80px;
+}
+
+.header {
+  width: 90%;
+  /* border: 1px #c4c4c4 solid; */
+  margin: auto;
+  padding-top: 75px;
+}
+
+.header input {
+  width: 100%;
+  border: none;
+  margin-bottom: 10px;
+}
+
+.header input::placeholder {
+  color: #b3b3b1;
+}
+
+.header input:focus {
+  outline: none;
+}
+
+.header .title-input {
+  font-size: 40px;
+}
+
+.header .description-input {
+  font-size: 16px;
+}
+
+/* .add-article-container .form-container {
+  margin: auto;
+  margin-top: 30px;
+  width: 90%;
+  border: 1px #c4c4c4 solid;
+  background-color: #fdfdfd;
+} */
+
+.title-textarea {
+  font-size: 40px;
+  font-weight: 600;
+  margin-left: 2px;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  resize: none;
+  min-height: 40px;
+  line-height: 40px;
+  padding-bottom: 7.5px;
+}
+
+.description-textarea {
+  margin-left: 2px;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  resize: none;
+  min-height: 40px;
+  line-height: 20px;
+  padding-bottom: 7.5px;
+  padding-top: 7.5px;
+  margin-bottom: 15px;
+}
+
+.title-textarea[contentEditable]:hover,
+.description-textarea:hover {
+  cursor: text;
+}
+
+.title-textarea[contenteditable]:empty::before {
+  content: 'Title';
+  color: #b3b3b1;
+}
+
+.description-textarea[contenteditable]:empty::before {
+  content: 'Write description here';
+  color: #b3b3b1;
+}
+
+.title-textarea:focus,
+.description-textarea:focus {
+  outline: none;
+}
