@@ -11,18 +11,28 @@
     display: inline-block;
 }
 .pdf {
+    display: flex;
     align-self: center;
-    align-items: center;
     justify-content: center;
+    max-width: 100%;
 }
 .close {
     margin-left: auto;
+    font-size: 15px;
+}
+button.close {
+    background-color: rgb(243, 91, 91);
+    text-shadow: none;
+    opacity: 1;
+    color: rgba(29, 27, 27, 0.979);
+    padding: 15px;
 }
 .delete-btn {
     margin-left: auto;
 }
 .modal-header {
-    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 .row {
     display: flex;
@@ -35,4 +45,9 @@
 }
 .page-container {
     display: flex;
+}
+.page {
+    flex: 1;
+    justify-content: center;
+    align-items: center;
 }
