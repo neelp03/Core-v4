@@ -92,12 +92,6 @@ export default function Editor(props) {
       placeholder: user.major,
       handleChange: (e) => setMajor(e.target.value)
     },
-    // adding field for tags
-    {
-      label: 'Tags',
-      placeholder: user.tags.role,
-      handleChange: console.log(user.tags)
-    }
   ];
 
   const membership = [
@@ -135,6 +129,8 @@ export default function Editor(props) {
             setuserMembership(onChangeEvent);
           }}
           toggle={toggle}
+          // user tags
+          tags = {user.tagsObj}
         />
 
         <Modal

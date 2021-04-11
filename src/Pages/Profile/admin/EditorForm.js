@@ -55,6 +55,11 @@ export default function EditForm(props) {
                   />
                 </FormGroup>
               ))}
+              <Label>Tags</Label>
+              {/* display tags */}
+              {
+                props.tags.map(tag => <p>{tag.role}</p>)
+              }
               Change expiration date to
               <select
                 onChange={event => {

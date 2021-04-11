@@ -43,7 +43,6 @@ async function checkIfTokenValid(request, accessLevel = membershipState.MEMBER, 
 
   let response = false;
   let tags = decoded.tags;
-  //let tags = await getTags(decoded.tags);
   for(i = 0; i < tags.length; i ++){
     if(tags[i].level >= accessLevel || tags[i].role == role){
       response = true;

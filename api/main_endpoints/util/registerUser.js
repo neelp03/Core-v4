@@ -100,6 +100,7 @@ async function registerUser(userToAdd){
       lastName: userToAdd.lastName,
       email: userToAdd.email.toLowerCase(),
       major: userToAdd.major || '',
+      // need to automatically added the appropirate tags
       tags: []
     });
 

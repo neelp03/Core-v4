@@ -11,7 +11,6 @@ const {
   checkIfTokenSent,
   checkIfTokenValid,
   decodeToken,
-  getTags,
 } = require('../util/token-functions');
 const jwt = require('jsonwebtoken');
 const {
@@ -88,19 +87,19 @@ router.post('/login', function(req, res) {
                 .status(UNAUTHORIZED)
                 .send({ message: 'User is banned.' });
             }
-            // let tags = await getTags(user.tags);
-            // let lowestAccessLevel = 0;
-            // let i = 0;
-            // for(i = 0; i< tags.length; i++){
-            //   if(tags[i].level < lowestAccessLevel)
-            //     lowestAccessLevel = tags[i].level
-            // }
-            // if(lowestAccessLevel == -100){ //-100 is banned accesslevel, need to change this
-            //   return res
-            //     .status(UNAUTHORIZED)
-            //     .send({message: 'User is banned. '})
-            // }
-            // console.log('Auth.js login ' + lowestAccessLevel)
+            let tags = user.tags;
+            let lowestAccessLevel = 0;
+            let i = 0;
+            for(i = 0; i< tags.length; i++){
+              if(tags[i].level < lowestAccessLevel)
+                lowestAccessLevel = tags[i].level
+            }
+            if(lowestAccessLevel == -100){ //-100 is banned accesslevel, need to change this
+              return res
+                .status(UNAUTHORIZED)
+                .send({message: 'User is banned. '})
+            }
+            console.log('Auth.js login ' + lowestAccessLevel)
             // Check if the user's email has been verified
             if(!user.emailVerified){
               return res
@@ -126,14 +125,13 @@ router.post('/login', function(req, res) {
 
             // Include fields from the User model that should
             // be passed to the JSON Web Token (JWT)
-            let tags = await getTags(user.tags)
             const userToBeSigned = {
               firstName: user.firstName,
               lastName: user.lastName,
               email: user.email,
               accessLevel: user.accessLevel,
               // change accessLevel to tag but send the tags not the tag's id
-              tags,
+              tags: tags,
               pagesPrinted: user.pagesPrinted
             };
             const token = jwt.sign(

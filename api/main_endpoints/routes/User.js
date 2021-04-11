@@ -137,7 +137,12 @@ router.post('/users', function(req, res) {
   }
   User.find()
     .sort({ joinDate: -1 })
-    .then(items => {
+    .then(async items => {
+      //convert tags' id to actual tag object before sending them
+      for(var i =0; i < items.length; i ++){
+        let newTags = await getTags(items[i].tags)
+        items[i].set('tagsObj', newTags, {strict: false});
+      }
       res.status(OK).send(items);
     })
     .catch(() => {
