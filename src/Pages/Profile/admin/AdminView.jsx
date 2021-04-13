@@ -131,6 +131,7 @@ export default function Editor(props) {
           toggle={toggle}
           // user tags
           tags = {user.tagsObj}
+          email = {user.email}
         />
 
         <Modal

@@ -12,15 +12,40 @@ import {
   ModalBody,
   ModalFooter
 } from 'reactstrap';
+import {addTag, deleteTag} from '../../../APIFunctions/User.js';
 const enums = require('../../../Enums.js');
 
 export default function EditForm(props) {
   const [resetPages, setResetPages] = useState(false);
+  // tag
+  const [tag, setTag] = useState();
+
   function submitClicked() {
     if (resetPages) {
       props.setPagesPrinted(0);
     }
     props.handleSubmissionToggle();
+  }
+
+  // tag
+  function handleTagChange(e){
+    setTag(e.target.value)
+  }
+
+  async function handleTagOperation(add){
+    let apiResponse = null;
+    alert("Before sending "+ props.email + " " + tag)
+    if(add)
+      apiResponse = await addTag(props.email, tag)
+    else 
+      apiResponse = await deleteTag(props.email, tag)
+    if(apiResponse.error){
+      console.log(" Editor Form" ,apiResponse.responseData)
+      alert("Error adding/removing tag")
+    } 
+    else {
+      alert("Added tag")
+    }
   }
 
   return (
@@ -55,11 +80,18 @@ export default function EditForm(props) {
                   />
                 </FormGroup>
               ))}
-              <Label>Tags</Label>
-              {/* display tags */}
-              {
-                props.tags.map(tag => <p>{tag.role}</p>)
-              }
+              <div>
+                <Label>Tags</Label>
+                {/* display tags */}
+                {
+                  props.tags.map(tag => <p>{tag.role}</p>)
+                }
+                <h3>Add tags</h3>
+                <input type = "text" value={tag} onChange={handleTagChange}></input>
+                <Button onClick={() => {handleTagOperation(true)}}>Add tag</Button>
+                <Button onClick={() => {handleTagOperation(false)}}>Delete tag</Button>
+                <Button onClick={() => {addTag("testwhat@gmail.com","Admin")}}>Check</Button>
+              </div>
               Change expiration date to
               <select
                 onChange={event => {

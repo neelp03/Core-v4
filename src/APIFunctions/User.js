@@ -208,10 +208,9 @@ export async function connectToDiscord(email, token) {
  * @returns {UserApiResponse} containing if the search was successful
  */
 
-export async function tagsOperation(email, tag){
+export async function addTag(email, role){
   let status = new UserApiResponse();
-  console.log(email)
-  await axios.post(GENERAL_API_URL+"/User/edit/tags", {email,tag})
+  await axios.post(GENERAL_API_URL+"/User/edit/tags", {email, role})
     .then(res => {
       status.responseData = res.data;
     })
@@ -221,10 +220,10 @@ export async function tagsOperation(email, tag){
     return status;
 }
 
-export async function deleteTags(email, tag){
+export async function deleteTag(email, role){
   let status = new UserApiResponse();
   console.log(email)
-  await axios.post(GENERAL_API_URL+"/User/edit/tags", {email,tag, delete:true})
+  await axios.post(GENERAL_API_URL+"/User/edit/tags", {email, role, delete:true})
     .then(res => {
       status.responseData = res.data;
     })

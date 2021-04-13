@@ -267,8 +267,11 @@ router.post('/tags', (req,res) => {
 */
 router.post('/edit/tags', (req, res) => {
   // gives error if no email or no tag role are provided
+  console.log("routes user.js ", "test")
   if(!req.body.email || !req.body.role){
+    console.log("routes user.js", "need user emil and tag role ", req.body.email, "and", req.body.role )
     return res.status(BAD_REQUEST).send({ message: 'Need user email and tag role' });
+    
   }
 
   const query = { email: req.body.email };
