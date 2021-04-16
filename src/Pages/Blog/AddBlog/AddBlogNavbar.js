@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import './add-article-navbar.css';
+import './add-blog-navbar.css';
 
-export default function AddArticleNavbar(props) {
+export default function AddBlogNavbar(props) {
   return (
     <div className = 'add-navbar-container'>
       <div className = 'add-navbar-components'>
         <span>
-          Add Article
+          Add Blog
         </span>
         <button onClick = {props.handleSubmit}>
           Submit

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import AddArticleNavbar from "./AddArticleNavbar";
-import ArticleHeader from '../ArticleHeader';
-import AddArticleForm from './AddArticleForm';
+import AddBlogNavbar from "./AddBlogNavbar";
+import BlogHeader from '../BlogHeader';
+import AddBlogForm from './AddBlogForm';
 import TextEditor from '../../EmailList/TextEditor';
-import './add-article.css';
+import './add-blog.css';
 
-export default class AddArticle extends Component {
+export default class AddBlog extends Component {
   constructor(props){
     super(props);
     this.state = {
@@ -13,6 +13,8 @@ export default class AddArticle extends Component {
     };
     console.log(props);
   }
+
+  
 
   handleSubmit = () => {
     console.log("submit");
@@ -24,8 +26,8 @@ export default class AddArticle extends Component {
 
   render() { 
     return ( 
-      <div className= 'add-article-container'>
-        <AddArticleNavbar 
+      <div className= 'add-blog-container'>
+        <AddBlogNavbar 
           handleSubmit = {this.handleSubmit}
           handleClear = {this.handleClear}
         />

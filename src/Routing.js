@@ -5,7 +5,7 @@ import './index.css';
 import PrivateRoute from './Components/Routing/PrivateRoute';
 import NavBarWrapper from './Components/Navbar/NavBarWrapper';
 
-import AddArticle from "./Pages/Articles/AddArticle/AddArticle";
+import AddBlog from "./Pages/Blog/AddBlog/AddBlog";
 import Overview from './Pages/Overview/Overview';
 import EmailPage from './Pages/EmailList/EmailPage';
 import EventManager from './Pages/EventManager/EventManager';
@@ -16,7 +16,7 @@ import LedSign from './Pages/LedSign/LedSign';
 import Home from './Pages/Home/Home.js';
 import NotFoundPage from './Pages/NotFoundPage/NotFoundPage';
 import EventList from './Pages/Events/EventList';
-import ArticlesPage from './Pages/Articles/ArticlesPage';
+import BlogPage from './Pages/Blog/BlogPage';
 import PrintingSolids from './Pages/3DPrinting/3DPrintForm.js';
 import SolidsConsole from './Pages/3DPrintingConsole/3DConsole.js';
 import MembershipApplication from
@@ -42,8 +42,8 @@ export default function Routing({ appProps }) {
   const signedInRoutes = [
 
     {
-      Component: AddArticle,
-      path: '/addArticle',
+      Component: AddBlog,
+      path: '/addBlog',
       allowedIf: userIsMember || userIsOfficerOrAdmin,
       redirect: '/',
     },
@@ -129,7 +129,7 @@ export default function Routing({ appProps }) {
   const signedOutRoutes = [
     { Component: Home, path: '/' },
     { Component: EventList, path: '/events' },
-    { Component: ArticlesPage, path: '/blog'},
+    { Component: BlogPage, path: '/blog'},
     { Component: OfficerDB, path: '/officerDB' },
     { Component: Team, path: '/team' },
     { Component: VerifyEmailPage, path: '/verify' }

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import TextEditor from '../../EmailList/TextEditor';
-export default function AddArticleForm(props) {
+export default function AddBlogForm(props) {
   return (
     <form>
       <div>
-        Article Title
+        Blog Title
       </div>
       <input/>
       <TextEditor />

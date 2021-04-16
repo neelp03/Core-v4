@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const ArticleSchema = new Schema(
+const BlogSchema = new Schema(
   {
     title: {
       type: String,
@@ -20,7 +20,7 @@ const ArticleSchema = new Schema(
       default: Date.now
     },
   },
-  { collection: 'Article' }
+  { collection: 'Blog' }
 );
 
-module.exports = mongoose.model('Article', ArticleSchema);
+module.exports = mongoose.model('Blog', BlogSchema);

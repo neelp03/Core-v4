@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import "./article-card.css";
+import "./blog-card.css";
 
-export default class ArticleCard extends Component {
+export default class BlogCard extends Component {
   state = {  }
   render() { 
     return ( 
-      <div className="article-card-container">
+      <div className="blog-card-container">
         <div className="author-block">
           <img className="author-image" 
             src="https://user-images.githubusercontent.com/25803515/112601743-0ade8000-8dd0-11eb-969e-6e300e2fee34.png"
@@ -18,7 +18,7 @@ export default class ArticleCard extends Component {
         <div className="description-grid">
           <div className="description-text">
             <div className="description-title">
-              This is an article title
+              This is an blog title
             </div>
             <div className="description-info">
               Lorem ipsum. I am just going to write as much as I can here 

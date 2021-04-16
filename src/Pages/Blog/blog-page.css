@@ -1,4 +1,4 @@
-.article-card-section {
+.blog-card-section {
   /* border: 1px grey dashed; */
   width: 70%;
   height: 600px;
@@ -6,15 +6,15 @@
   /* padding: 15px; */
 }
 
-.article-card {
+.blog-card {
   margin-bottom: 10px;
   border: lightgrey dashed 1px;
 }
 
-.article-card:hover {
+.blog-card:hover {
   background-color: #fcfcfc;
 }
 
-.article-navbar-spacing {
+.blog-navbar-spacing {
   height: 120px;
 }
