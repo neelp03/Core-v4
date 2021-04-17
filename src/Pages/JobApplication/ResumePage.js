@@ -83,10 +83,10 @@ class ResumePage extends Component {
               </MenuItem>
             </Menu>
           </ProSidebar>
+
           <Modal size='lg' contentClassName='custom-modal' isOpen={this.state.openModal}>
             <ModalHeader className='modal-header'>
               {this.state.fileName}
-              {/* <Button color="danger" className='close' onClick={this.handleClose}>Close</Button> */}
             </ModalHeader>
             <ModalBody className='pdf'>
               <Document
@@ -101,7 +101,18 @@ class ResumePage extends Component {
               <Button className='close' onClick={this.handleClose}>Close</Button>
             </ModalFooter>
           </Modal>
+
           <div className='resume-container'>
+            <div>
+              <input id='fileButton' type='file' hidden />
+              <button className='button' className='upload-button'
+                onClick={this.fileUploadButton}>
+                Upload a Resume</button>
+              <br />
+              <div className='fileName'>
+                {this.state.fileUploadState}
+              </div>
+            </div>
             <hr />
             {this.state.pdfs.map((type, ind) => (
               <div>

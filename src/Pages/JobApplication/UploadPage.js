@@ -21,7 +21,7 @@ class UploadPage extends Component {
   }
 
   handleChange(event) {
-    this.setState({jobDescription: event.target.value});
+    this.setState({ jobDescription: event.target.value });
   }
 
   handleSubmit(event) {
@@ -39,45 +39,47 @@ class UploadPage extends Component {
 
   render() {
     return (
-      <div> 
+      <div>
         <Header {...headerProps} />
         <div className='page-container'>
           <ProSidebar className='side-nav'>
             <Menu>
               <MenuItem>
                 Resume Upload Page
-                <Link to= '/UploadResumePage'/>
+                <Link to='/UploadResumePage' />
               </MenuItem>
               <MenuItem>
                 Highlight Text Page
-                <Link to= '/HighlighterPage'/>
+                <Link to='/HighlighterPage' />
               </MenuItem>
               <MenuItem>
                 Resume Page
-                <Link to= '/ResumePage'/>
+                <Link to='/ResumePage' />
               </MenuItem>
             </Menu>
           </ProSidebar>
-          <div className = 'upload-container'>
-            <div>❶ Upload Your Resume</div>
-            <div>
-              <input id= 'fileButton' type= 'file' hidden />
-              <button className = 'button' className='button-u'
+          <div className='upload-container'>
+            <div>❶ Upload Your Resume (2 Options)</div>
+            <div className='resume-button-row'>
+              <input id='fileButton' type='file' hidden />
+              <button className='button' className='button-u'
                 onClick={this.fileUploadButton}>
                 Upload Resume Here</button>
-              <br/>
-              <div className = 'fileName'>
+              <div className='fileName'>
                 {this.state.fileUploadState}
               </div>
+              <button className='button' className='button-u'
+                onClick={this.fileUploadButton}>
+                Select Previous Resumes </button>
             </div>
-            <div><br/></div>
+            <div><br /></div>
             <div>❷ Paste the job description
                 into the text box below.</div>
-            <textarea className = 'textbox' value={this.state.jobDescription}
+            <textarea className='textbox' value={this.state.jobDescription}
               onChange={this.handleChange}></textarea>
-            <br/>
-            <br/>
-            <button className = 'button'>Submit</button>
+            <br />
+            <br />
+            <button className='button'>Submit</button>
           </div>
         </div>
       </div>

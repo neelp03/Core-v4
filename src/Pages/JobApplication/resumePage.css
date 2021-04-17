@@ -51,3 +51,16 @@ button.close {
     justify-content: center;
     align-items: center;
 }
+.upload-button {
+    font-size: medium;
+    margin-top: 2%;
+    width: 100%;
+    background-color: white;
+    color: black;
+    border: 2px solid #4c53af;
+    transition-duration: 0.4s;
+}
+.upload-button:hover {
+    background-color:  #4c53af;
+    color: white;
+}
