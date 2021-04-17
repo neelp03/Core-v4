@@ -2,6 +2,7 @@
 // During the test the env variable is set to test
 process.env.NODE_ENV = "test";
 const { Lesson } = require("../api/main_endpoints/models/Course");
+const { Course } = require("../api/main_endpoints/models/Course");
 const User = require("../api/main_endpoints/models/User");
 // Require the dev-dependencies
 const chai = require("chai");
@@ -35,6 +36,7 @@ describe("Lesson", () => {
     test = new SceApiTester(app);
     // Before each test we empty the database
     tools.emptySchema(Lesson);
+    tools.emptySchema(Course);
     tools.emptySchema(User);
     done();
   });
@@ -52,7 +54,19 @@ describe("Lesson", () => {
     resetMock();
   });
 
-  const courseid = new mongoose.Types.ObjectId('602af6c411aea32142c0a2ff');
+  const courseid = new mongoose.Types.ObjectId("602af6c411aea32142c0a2ff");
+
+
+  // attempts to create a new course
+  const VALID_NEW_COURSE = {
+    _id: new mongoose.Types.ObjectId("602af6c411aea32142c0a2ff"),
+    title: "intro to react",
+    author: "Big Chungus",
+    description: "a workshop about react",
+    summary: "a small summary about react",
+    imageURL: "www.image.com",
+    lessons: []
+  };
 
   const token = "";
   let lessonId = "";
@@ -98,12 +112,24 @@ describe("Lesson", () => {
         "fields are filled in",
       async () => {
         setTokenStatus(true);
+
+        // attempts to create a new course
+        const courseResult = await test.sendPostRequestWithToken(
+          token,
+          "/api/course/createCourse",
+          VALID_NEW_COURSE
+        );
+
+        // stops attempt lol
         const result = await test.sendPostRequestWithToken(
           token,
           "/api/lesson/createLesson",
           VALID_NEW_LESSON
         );
+        // result.courseID = courseResult._id;
         console.log(result.body);
+        // console.log("separate");
+        // console.log(courseResult.body);
         expect(result).to.have.status(OK);
       }
     );
@@ -122,7 +148,9 @@ describe("Lesson", () => {
       expect(getLessonsResponse).to.have.length(1);
       expect(getLessonsResponse[0].title).to.equal(VALID_NEW_LESSON.title);
       expect(getLessonsResponse[0].link).to.equal(VALID_NEW_LESSON.link);
-      expect(getLessonsResponse[0].courseID).to.equal(VALID_NEW_LESSON.courseID);
+      expect(getLessonsResponse[0].courseID).to.equal(
+        VALID_NEW_LESSON.courseID
+      );
       lessonId = getLessonsResponse[0]._id;
     });
   });
