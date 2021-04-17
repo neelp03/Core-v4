@@ -83,19 +83,17 @@ export default class BlogPage extends Component {
         {/* <Header {...headerProps}/> */}
         <BlogNavbar />
         <div className='blog-navbar-spacing'/>
+        <button onClick={this.getBlogs}>Get</button>
         <BlogHeader {...headerProps}/>
-        {/* <div className = "test">
-          <Button onClick = {this.addBlog}>Add</Button>
-          <Button onClick = {this.getBlogs} color = "primary">Get</Button>
-          <Button onClick = {this.editBlog} color = "danger">Edit</Button>
-          <Button onClick = {this.deleteBlog} color = "warning">
-            Delete
-          </Button>
-        </div> */}
         <div className = "blog-card-section">
-          <div className="blog-card">
-            <BlogCard />
-          </div>
+          {this.state.blogs.map((blog, index) => {
+            return(
+              <BlogCard
+                key={index}
+                blog={blog}
+              />
+            );
+          })}
         </div>
       </div>
     );

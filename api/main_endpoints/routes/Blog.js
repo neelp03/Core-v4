@@ -26,13 +26,14 @@ router.post('/editBlog', (req, res) => {
     return res.sendStatus(UNAUTHORIZED);
   }
 
-  const { _id, title, author, body, date } = req.body;
+  const { _id, title, author, description, content, date } = req.body;
 
   Blog.findOne({ _id })
     .then(blog => {
       blog.title = title || blog.title;
       blog.author = author || blog.author;
-      blog.body = body || blog.body;
+      blog.description = description || blog.description,
+      blog.content = content || blog.content;
       blog.date = date || blog.date;
       blog
         .save()
@@ -62,7 +63,8 @@ router.post('/addBlog', (req, res) => {
   const newBlog = new Blog({
     title: req.body.title,
     author: req.body.author,
-    body: req.body.body,
+    description: req.body.description,
+    content: req.body.content,
     date: req.body.date,
   });
 

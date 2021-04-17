@@ -11,7 +11,11 @@ const BlogSchema = new Schema(
       type: String,
       required: true
     },
-    body: {
+    description: {
+      type: String,
+      required: true
+    },
+    content: {
       type: String,
       required: true
     },

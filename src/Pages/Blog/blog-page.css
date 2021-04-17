@@ -6,15 +6,6 @@
   /* padding: 15px; */
 }
 
-.blog-card {
-  margin-bottom: 10px;
-  border: lightgrey dashed 1px;
-}
-
-.blog-card:hover {
-  background-color: #fcfcfc;
-}
-
 .blog-navbar-spacing {
   height: 120px;
 }

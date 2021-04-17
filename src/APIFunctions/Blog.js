@@ -26,7 +26,8 @@ export async function getAllBlogs(){
  * @param {Object} reqBlogToAdd - The blog that is to be added
  * @param {string} reqBlogToAdd.title - The title of the blog
  * @param {string} reqBlogToAdd.author - The author of the blog
- * @param {string} reqBlogToAdd.body - The body of the blog
+ * @param {string} reqBlogToAdd.description - The description of the blog
+ * @param {string} reqBlogToAdd.content - The content of the blog
  * @param {string} reqBlogToAdd.date - The date of the blog
  * @param {string} token - The user's jwt token for authentication
  * @returns {Promise<ApiResponse>} Containing any error information related
@@ -34,10 +35,11 @@ export async function getAllBlogs(){
  */
 export async function addBlog(reqBlogToAdd, token){
   let status = new ApiResponse();
-  const BlogToAdd = {
+  const blogToAdd = {
     title: reqBlogToAdd.title,
     author: reqBlogToAdd.author,
-    body: reqBlogToAdd.body,
+    description: reqBlogToAdd.description,
+    content: reqBlogToAdd.content,
     date: reqBlogToAdd.date,
   };
   await axios
@@ -57,7 +59,7 @@ export async function addBlog(reqBlogToAdd, token){
  * @param {Object} reqBlogToEdit - The blog that is to be edited
  * @param {string} reqBlogToEdit.title - The title of the blog
  * @param {string} reqBlogToEdit.author - The author of the blog
- * @param {string} reqBlogToEdit.body - The body of the blog
+ * @param {string} reqBlogToEdit.content - The content of the blog
  * @param {string} reqBlogToEdit.date - The date of the blog
  * @param {string} token - The user's jwt token for authentication
  * @returns {Promise<ApiResponse>} Containing any error information related
@@ -65,11 +67,12 @@ export async function addBlog(reqBlogToAdd, token){
  */
 export async function editBlog(reqBlogToEdit, token){
   let status = new ApiResponse();
-  const BlogToEdit = {
+  const blogToEdit = {
     _id: reqBlogToEdit._id,
     title: reqBlogToEdit.title,
     author: reqBlogToEdit.author,
-    body: reqBlogToEdit.body,
+    description: reqBlogToEdit.description,
+    content: reqBlogToEdit.content,
     date: reqBlogToEdit.date
   };
   await axios
