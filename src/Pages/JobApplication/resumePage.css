@@ -64,3 +64,6 @@ button.close {
     background-color:  #4c53af;
     color: white;
 }
+.pro-sidebar {
+    z-index: 0;
+}
