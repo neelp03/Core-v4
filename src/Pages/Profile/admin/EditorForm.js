@@ -13,6 +13,7 @@ import {
   ModalFooter
 } from 'reactstrap';
 import {addTag, deleteTag} from '../../../APIFunctions/User.js';
+import TagSection from './TagSection';
 const enums = require('../../../Enums.js');
 
 export default function EditForm(props) {
@@ -40,11 +41,12 @@ export default function EditForm(props) {
     else 
       apiResponse = await deleteTag(props.email, tag)
     if(apiResponse.error){
-      console.log(" Editor Form" ,apiResponse.responseData)
-      alert("Error adding/removing tag")
+      alert("Error adding/removing tag " + apiResponse.responseData)
+      console.log(apiResponse)
     } 
     else {
-      alert("Added tag")
+      alert("Successfully add/remove tag")
+      console.log(apiResponse)
     }
   }
 
@@ -86,11 +88,11 @@ export default function EditForm(props) {
                 {
                   props.tags.map(tag => <p>{tag.role}</p>)
                 }
-                <h3>Add tags</h3>
+                <h3>Add existing tags to user</h3>
+                <TagSection />
                 <input type = "text" value={tag} onChange={handleTagChange}></input>
                 <Button onClick={() => {handleTagOperation(true)}}>Add tag</Button>
                 <Button onClick={() => {handleTagOperation(false)}}>Delete tag</Button>
-                <Button onClick={() => {addTag("testwhat@gmail.com","Admin")}}>Check</Button>
               </div>
               Change expiration date to
               <select

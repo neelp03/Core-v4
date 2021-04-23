@@ -130,14 +130,15 @@ router.post('/search', function(req, res) {
 
 // Search for all members
 router.post('/users', function(req, res) {
-  if (!checkIfTokenSent(req)) {
-    return res.sendStatus(FORBIDDEN);
-  } else if (!checkIfTokenValid(req)) {
-    return res.sendStatus(UNAUTHORIZED);
-  }
+  // if (!checkIfTokenSent(req)) {
+  //   return res.sendStatus(FORBIDDEN);
+  // } else if (!checkIfTokenValid(req)) {
+  //   return res.sendStatus(UNAUTHORIZED);
+  // }
   User.find()
     .sort({ joinDate: -1 })
     .then(async items => {
+      // mongoose objects cannot change existing values, but you can add new values
       //convert tags' id to actual tag object before sending them
       for(var i =0; i < items.length; i ++){
         let newTags = await getTags(items[i].tags)
@@ -271,59 +272,53 @@ router.post('/edit/tags', (req, res) => {
   if(!req.body.email || !req.body.role){
     console.log("routes user.js", "need user emil and tag role ", req.body.email, "and", req.body.role )
     return res.status(BAD_REQUEST).send({ message: 'Need user email and tag role' });
-    
   }
 
   const query = { email: req.body.email };
   const tagRole = { role: req.body.role };
+  User.findOne(query)
+  .then(user => {
+    if(!user)
+      return res.status(BAD_REQUEST).send({message: 'Cannot find user with that email'});
 
-  User.findOne(query, (error, user) => {
-    if (error) {
-      const info = {
-        errorTime: new Date(),
-        apiEndpoint: 'user/edit/tags',
-        errorDescription: error
-      };
-      addErrorLog(info);
-      return res.status(BAD_REQUEST).send({ message: 'Bad Request.' });
-    }
-    if (!user)
-      return res.status(BAD_REQUEST).send({message: 'Cannot find account with that email'});
-    else {
-      // find the tag id and assign it to user's tag
-      Tag.findOne(tagRole, (error, tag) => {
-        if (error) {
-          const info = {
-            errorTime: new Date(),
-            apiEndpoint: 'user/edit/tags',
-            errorDescription: error
-          };
-          addErrorLog(info);
-          return res.status(BAD_REQUEST).send({ message: 'Bad Request.' });
-        }
-        if (!tag)
-          return res.status(BAD_REQUEST).send({message: 'Cannot find the tag with that role'});
-        
-        /* if it has a delete header, delete that tag's id from user's tags
-           as well as delete user's id from tag's users
-        */
-        if(req.body.delete){
-          user.tags.pull(tag.id);
-          tag.users.pull(user.id);
+    Tag.findOne(tagRole)
+    .then(tag => {
+      if(!tag){
+        return res.status(BAD_REQUEST).send({message: 'Cannot find that tag'})
+      }
+      //  if it has a delete header, delete that tag's id from user's tags
+      //  as well as delete user's id from tag's users
+      if(req.body.delete){
+        user.tags.pull(tag.id);
+        tag.users.pull(user.id);
+      }
+      else{
+        // check for trying to add duplicate tags
+        if(user.tags.includes(tag.id)){
+          return res.status(404).send({
+            message: `${query.email} trying to add duplicate tcoag`,
+          });
         }
         else{
           user.tags.push(tag.id);
           tag.users.push(user.id);
         }
-        tag.save();
-        user.save();
-      });
-
-    } 
-    return res.status(OK).send({
-      message: `${query.email} was updated.`,
-    });
-  });
+      }
+      tag.save();
+      user.save();
+      return res.status(OK).send({message: 'User updated'})
+    })
+  })
+  .catch(err => {
+    const info = {
+    errorTime: new Date(),
+    apiEndpoint: 'user/edit/tags',
+    errorDescription: error
+    };
+    addErrorLog(info);
+    return res.status(BAD_REQUEST).send({ message: 'Bad Request.' });
+    }
+  )
 })
 
 // clear user's tag

@@ -13,7 +13,7 @@ const Tag = require('../models/Tag');
 const User = require('../models/User');
 
 // get all the tags
-router.get("/getTags", (req,res) => {
+router.post("/getTags", (req,res) => {
     Tag.find({}, (error, tags) => {
         if(error){
             return res.status(BAD_REQUEST).send({ message: 'Bad Request'});
