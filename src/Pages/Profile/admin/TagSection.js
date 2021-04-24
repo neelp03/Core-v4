@@ -1,46 +1,83 @@
 import React, {useState, useEffect} from 'react';
-import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Label } from 'reactstrap';
 import {addTag, deleteTag} from '../../../APIFunctions/User.js';
 import {getAllTags} from '../../../APIFunctions/Tag';
 
-export default function TagSection(){
+export default function TagSection(props){
     const [dropdownOpen, setDropdownOpen] = useState(false);
-    const [tags, setTags] = useState(['haha','what']);
+    const [tags, setTags] = useState([]);
+    const [currentTagName, setTag] = useState('Choose tag');
+    const [add, setAdd] = useState(false);
+    const [buttonText, setButtonText] = useState('Add tag');
 
     const toggle = () => setDropdownOpen(!dropdownOpen)
 
-    // useEffect(async () => {
-    //     let tagsData = await getAllTags()
-    //     let newTags = [...tags]
-    //     for(let i = 0; i < tagsData.length; i ++){
-    //         newTags.push(tagsData[i])
-    //     }
-    //     setTags(newTags)
-    //     console.log(tags)
-    // },[])
+    /* 
+        Cannot call async function directly in useEffect
+        For more, visit: 
+        https://stackoverflow.com/questions/63570597/typeerror-func-apply-is-not-a-function
+    */
+    useEffect(() => {
+        (async () => {
+            const tagsData = await getAllTags()
+            setTags(tagsData.responseData)
+        })()
+    }, []);
+    
+    useEffect(() =>{
+        /*
+            when user doesn't have the current tag name
+            set add to true and set button text to add tag
+        */
+        let result = props.tags.filter(tag => tag.role === currentTagName)
+        if(result.length==0) {
+            setAdd(true)
+            setButtonText('Add tag')
+        } else {
+            console.log("We are inside delete")
+            setAdd(false)
+            setButtonText('Delete tag')
+        }
 
-    function addTags(){
-        let newTags = [...tags,'Test']
-        setTags(newTags)
+    }, [currentTagName])
+
+    async function handleTagOperation(){
+        if(currentTagName !== 'Choose tag' ){
+            let apiResponse = null;
+            alert("Before sending "+ props.email + " " + currentTagName)
+            if(add)
+            apiResponse = await addTag(props.email, currentTagName)
+            else 
+            apiResponse = await deleteTag(props.email, currentTagName)
+            if(apiResponse.error){
+            alert("Error adding/removing tag " + apiResponse.responseData)
+            console.log(apiResponse)
+            } 
+            else {
+            alert("Successfully add/remove tag")
+            console.log(apiResponse)
+            }
+        }
     }
+
     return(
         <div>
+            <Label>Tags</Label>
+            {
+                props.tags.map(tag => <p>{tag.role}</p>)
+            }
+            <h3>Modifying tags</h3>
             <Dropdown isOpen = {dropdownOpen} toggle = {toggle}>
                 <DropdownToggle>
-                    Dropdown
+                    {currentTagName}
                 </DropdownToggle>
                 <DropdownMenu>
                     {
-                        tags.map(tag => <DropdownItem>{tag}</DropdownItem>)
+                        tags.map(tag => <DropdownItem onClick={()=>{setTag(tag.role)}}>{tag.role}</DropdownItem>)
                     }
-                    <DropdownItem>Hi</DropdownItem>
-                    <DropdownItem>Hi</DropdownItem>
-                    <DropdownItem>Hi</DropdownItem>
-                    <DropdownItem>Hi</DropdownItem>
-                    <DropdownItem>Hi</DropdownItem>
                 </DropdownMenu>
             </Dropdown>
-            <button type="button" onClick={addTags}>Add new</button>
+            <button type="button" onClick={handleTagOperation} >{buttonText}</button>
         </div>
     )
 }

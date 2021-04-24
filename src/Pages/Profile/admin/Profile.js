@@ -20,6 +20,12 @@ export default function displayProfile(props) {
       <Badge color='primary'>
         {enums.membershipStateToString(props.user.accessLevel)}
       </Badge>
+      <Badge color='primary'>
+          hi
+      </Badge>
+      {
+        // loop through tags and display them
+      }
       <h3>
         {props.user.firstName[0].toUpperCase() +
           props.user.firstName.slice(1, props.user.firstName.length) +

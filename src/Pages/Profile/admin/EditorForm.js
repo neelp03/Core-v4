@@ -18,36 +18,12 @@ const enums = require('../../../Enums.js');
 
 export default function EditForm(props) {
   const [resetPages, setResetPages] = useState(false);
-  // tag
-  const [tag, setTag] = useState();
 
   function submitClicked() {
     if (resetPages) {
       props.setPagesPrinted(0);
     }
     props.handleSubmissionToggle();
-  }
-
-  // tag
-  function handleTagChange(e){
-    setTag(e.target.value)
-  }
-
-  async function handleTagOperation(add){
-    let apiResponse = null;
-    alert("Before sending "+ props.email + " " + tag)
-    if(add)
-      apiResponse = await addTag(props.email, tag)
-    else 
-      apiResponse = await deleteTag(props.email, tag)
-    if(apiResponse.error){
-      alert("Error adding/removing tag " + apiResponse.responseData)
-      console.log(apiResponse)
-    } 
-    else {
-      alert("Successfully add/remove tag")
-      console.log(apiResponse)
-    }
   }
 
   return (
@@ -83,16 +59,8 @@ export default function EditForm(props) {
                 </FormGroup>
               ))}
               <div>
-                <Label>Tags</Label>
-                {/* display tags */}
-                {
-                  props.tags.map(tag => <p>{tag.role}</p>)
-                }
-                <h3>Add existing tags to user</h3>
-                <TagSection />
-                <input type = "text" value={tag} onChange={handleTagChange}></input>
-                <Button onClick={() => {handleTagOperation(true)}}>Add tag</Button>
-                <Button onClick={() => {handleTagOperation(false)}}>Delete tag</Button>
+
+                <TagSection tags = {props.tags} email = {props.email}/>
               </div>
               Change expiration date to
               <select
