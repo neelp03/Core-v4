@@ -56,7 +56,7 @@ export default class AddBlog extends Component {
     const res = await addBlog(blog, this.props.user.token);
     if(!res.error){
       console.log("submitted!");
-      this.handleClear();
+      // this.handleClear();
     }
   }
 
@@ -65,7 +65,7 @@ export default class AddBlog extends Component {
     await this.getBlogs();
     document.getElementById('title-span').innerText = '';
     document.getElementById('description-span').innerText = '';
-    this.setState({loadedContent: "HUH"}, console.log("done: ", this.state.loadedContent));
+    this.setState({loadedContent: ""});
   }
 
   render() { 
@@ -87,7 +87,7 @@ export default class AddBlog extends Component {
             id = 'description-span'
           />
           <TextEditor
-            loadedContent={this.loadedContent}
+            loadedContent={this.state.loadedContent}
             handleEditorChange={this.handleEditorChange}
           />
         </div>

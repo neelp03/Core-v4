@@ -73,6 +73,10 @@ export default class BlogPage extends Component {
     console.log('delete res: ', res);
   }
 
+  cardOnClick = (id) =>{
+    console.log("hi: ", id);
+  }
+
   render() {
     const headerProps = {
       heading: 'SCE Blogs',
@@ -91,6 +95,7 @@ export default class BlogPage extends Component {
               <BlogCard
                 key={index}
                 blog={blog}
+                click={this.cardOnClick}
               />
             );
           })}

@@ -44,7 +44,7 @@ export default function Routing({ appProps }) {
     {
       Component: AddBlog,
       path: '/addBlog',
-      allowedIf: userIsMember || userIsOfficerOrAdmin,
+      allowedIf: userIsOfficerOrAdmin,
       redirect: '/',
     },
     {
