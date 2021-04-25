@@ -87,7 +87,7 @@ export default class BlogPage extends Component {
         {/* <Header {...headerProps}/> */}
         <BlogNavbar />
         <div className='blog-navbar-spacing'/>
-        <button onClick={this.getBlogs}>Get</button>
+        {/* <button onClick={this.getBlogs}>Get</button> */}
         <BlogHeader {...headerProps}/>
         <div className = "blog-card-section">
           {this.state.blogs.map((blog, index) => {

@@ -5,30 +5,26 @@
   /* border: 3px solid black; */
 }
 
+.spacer {
+  padding-top: 69px;
+}
+
 .title {
   font-family: 'Montserrat', sans-serif;
   font-size: 80px;
 }
 
-.header {
+.form {
   width: 90%;
   /* border: 1px #c4c4c4 solid; */
   margin: auto;
-  padding-top: 75px;
+  margin-top: 7px;
 }
 
-.header input {
+.header {
+  overflow: hidden;
   width: 100%;
-  border: none;
   margin-bottom: 10px;
-}
-
-.header input::placeholder {
-  color: #b3b3b1;
-}
-
-.header input:focus {
-  outline: none;
 }
 
 .header .title-input {
@@ -39,13 +35,41 @@
   font-size: 16px;
 }
 
-/* .add-article-container .form-container {
-  margin: auto;
-  margin-top: 30px;
-  width: 90%;
-  border: 1px #c4c4c4 solid;
-  background-color: #fdfdfd;
-} */
+.header-left {
+  /* border: 1px red solid; */
+  float: left;
+  width: 75%;
+}
+
+.header-right {
+  overflow: scroll;
+  float: right;
+  width: 25%;
+  text-align: right;
+}
+
+.header-right button {
+  background-color: white;
+  border: none;
+}
+
+.header-right button:hover {
+  background-color: #fcfcfc;
+}
+
+.header-right button:focus {
+  outline: none;
+}
+
+.header-right img {
+  overflow: none;
+  max-height: 100px;
+  width: auto;
+}
+
+.header-right img:hover {
+  opacity: 0.6;
+}
 
 .title-textarea {
   font-size: 40px;
@@ -91,4 +115,11 @@
 .title-textarea:focus,
 .description-textarea:focus {
   outline: none;
+}
+
+.img-preview {
+  width: auto;
+  max-height: 100px;
+  display: block;
+  margin: 5% auto;
 }
