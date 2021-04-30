@@ -1,14 +1,20 @@
 import React, {useState, useEffect} from 'react';
 import { Badge, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Label } from 'reactstrap';
-import {addTag, deleteTag} from '../../../APIFunctions/User.js';
+import {addTag, deleteTag, getUserTag} from '../../../APIFunctions/User.js';
 import {getAllTags} from '../../../APIFunctions/Tag';
 
 export default function TagSection(props){
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    // all the available tags from web
     const [tags, setTags] = useState([]);
-    const [currentTagName, setTag] = useState('Choose tag');
+    // user tags
+    const [userTags, setUserTags] = useState([]);
+    // the tag user is selecting
+    const [currentTag, setCurrentTag] = useState({role:'Choose tag'});
+    // to know whether to add or delete tag
     const [add, setAdd] = useState(false);
-    const [buttonText, setButtonText] = useState('Add tag');
+    // to know whether we added or modified tags or not
+    const [modified, setModified] = useState(false);
 
     const toggle = () => setDropdownOpen(!dropdownOpen)
 
@@ -20,42 +26,51 @@ export default function TagSection(props){
     useEffect(() => {
         (async () => {
             const tagsData = await getAllTags()
+            const userTags = await getUserTag(props.email)
+            console.log(userTags)
             setTags(tagsData.responseData)
+            setUserTags(props.tags)
         })()
     }, []);
-    
+
+    // useEffect(() => {
+    //     (async ()=>{
+    //         const pullUserTags = await getUserTag(props.email)
+    //     setTags(pullUserTags.responseData)
+    //     })()
+    // },[modified])
+
     useEffect(() =>{
         /*
-            when user doesn't have the current tag name
-            set add to true and set button text to add tag
+            loop through user's tags to see if they already has the current tag
+            if not, set add to true, otherwise false
         */
-        let result = props.tags.filter(tag => tag.role === currentTagName)
+        let result = props.tags.filter(tag => tag.role === currentTag.role)
         if(result.length==0) {
             setAdd(true)
-            setButtonText('Add tag')
         } else {
-            console.log("We are inside delete")
             setAdd(false)
-            setButtonText('Delete tag')
         }
 
-    }, [currentTagName])
+    }, [currentTag.role])
 
     async function handleTagOperation(){
-        if(currentTagName !== 'Choose tag' ){
+        if(currentTag.role !== 'Choose tag' ){
             let apiResponse = null;
-            alert("Before sending "+ props.email + " " + currentTagName)
+            alert("Before sending "+ props.email + " " + currentTag.role)
             if(add)
-            apiResponse = await addTag(props.email, currentTagName)
+                apiResponse = await addTag(props.email, currentTag.role)
             else 
-            apiResponse = await deleteTag(props.email, currentTagName)
+                apiResponse = await deleteTag(props.email, currentTag.role)
+
             if(apiResponse.error){
-            alert("Error adding/removing tag " + apiResponse.responseData)
-            console.log(apiResponse)
+                alert("Error adding/removing tag " + apiResponse.responseData)
+                console.log(apiResponse)
             } 
             else {
-            alert("Successfully add/remove tag")
-            console.log(apiResponse)
+                alert("Successfully add/remove tag")
+                window.location.reload();
+                //setModified(!modified)
             }
         }
     }
@@ -67,19 +82,20 @@ export default function TagSection(props){
                 https://reactstrap.github.io/components/badge/#
             */}
             {
-                props.tags.map(tag => <Badge style={{backgroundColor: tag.color}}>{tag.role}</Badge>)
+                userTags.map(tag => <Badge style={{backgroundColor: tag.color}}>{tag.role}</Badge>)
             }
             <Dropdown isOpen = {dropdownOpen} toggle = {toggle}>
                 <DropdownToggle>
-                    {currentTagName}
+                    {currentTag.role}
                 </DropdownToggle>
                 <DropdownMenu>
                     {
-                        tags.map(tag => <DropdownItem onClick={()=>{setTag(tag.role)}}>{tag.role}</DropdownItem>)
+                        tags.map(tag => <DropdownItem onClick={()=>{setCurrentTag(tag)}}>{tag.role}</DropdownItem>)
                     }
                 </DropdownMenu>
             </Dropdown>
-            <button type="button" onClick={handleTagOperation} >{buttonText}</button>
+            <button type="button" onClick={handleTagOperation} >{add ? 'Add tag':'Delete tag'}</button>
+            <p>Side note: It's a good idea to refresh the page first to make sure tags operation took place</p>
         </div>
     )
 }

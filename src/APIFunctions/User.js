@@ -231,3 +231,16 @@ export async function deleteTag(email, role){
     })
     return status;
 }
+
+// get tag of a particular user
+export async function getUserTag(email){
+  let status = new UserApiResponse();
+  await axios.post(GENERAL_API_URL+"/User/tags", {email})
+    .then(res => {
+      status.responseData = res.data
+    })
+    .catch(() => {
+      status.error = true
+    })
+    return status;
+}
