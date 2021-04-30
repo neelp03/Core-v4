@@ -16,16 +16,12 @@ export default function displayProfile(props) {
           src='images/SCE-glow.png'
         />
       </Container>
-
-      <Badge color='primary'>
-        {enums.membershipStateToString(props.user.accessLevel)}
-      </Badge>
-      <Badge color='primary'>
-          hi
-      </Badge>
+      {/* inline styling color for user's access level */}
       {
-        // loop through tags and display them
+        props.user.tagsObj.map(tag => <Badge style={{backgroundColor: tag.color}}>{tag.role}</Badge>)
       }
+      
+
       <h3>
         {props.user.firstName[0].toUpperCase() +
           props.user.firstName.slice(1, props.user.firstName.length) +

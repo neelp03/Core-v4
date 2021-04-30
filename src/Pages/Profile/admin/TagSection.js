@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Label } from 'reactstrap';
+import { Badge, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Label } from 'reactstrap';
 import {addTag, deleteTag} from '../../../APIFunctions/User.js';
 import {getAllTags} from '../../../APIFunctions/Tag';
 
@@ -62,11 +62,13 @@ export default function TagSection(props){
 
     return(
         <div>
-            <Label>Tags</Label>
+            {/* inline styling color for user's access level
+                as Badge doesn't support custom color
+                https://reactstrap.github.io/components/badge/#
+            */}
             {
-                props.tags.map(tag => <p>{tag.role}</p>)
+                props.tags.map(tag => <Badge style={{backgroundColor: tag.color}}>{tag.role}</Badge>)
             }
-            <h3>Modifying tags</h3>
             <Dropdown isOpen = {dropdownOpen} toggle = {toggle}>
                 <DropdownToggle>
                     {currentTagName}
