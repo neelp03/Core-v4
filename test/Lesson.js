@@ -59,7 +59,6 @@ describe("Lesson", () => {
 
   // attempts to create a new course
   const VALID_NEW_COURSE = {
-    _id: new mongoose.Types.ObjectId("602af6c411aea32142c0a2ff"),
     title: "intro to react",
     author: "Big Chungus",
     description: "a workshop about react",
@@ -113,23 +112,12 @@ describe("Lesson", () => {
       async () => {
         setTokenStatus(true);
 
-        // attempts to create a new course
-        const courseResult = await test.sendPostRequestWithToken(
-          token,
-          "/api/course/createCourse",
-          VALID_NEW_COURSE
-        );
-
-        // stops attempt lol
         const result = await test.sendPostRequestWithToken(
           token,
           "/api/lesson/createLesson",
           VALID_NEW_LESSON
         );
-        // result.courseID = courseResult._id;
         console.log(result.body);
-        // console.log("separate");
-        // console.log(courseResult.body);
         expect(result).to.have.status(OK);
       }
     );
