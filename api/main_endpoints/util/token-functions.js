@@ -60,7 +60,7 @@ function getTags(tagsId){
   return Tag.find({'_id': {$in: tagsId}}, (error, tags) => {
     if(error) return null;
     return tags;
-  })
+  });
 }
 
 // take array of tags and calculate the highest access level
@@ -77,6 +77,6 @@ module.exports = {
   checkIfTokenSent,
   checkIfTokenValid,
   decodeToken,
-  getTags, 
+  getTags,
   getHighestAccessLevel
 };

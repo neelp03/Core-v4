@@ -138,10 +138,11 @@ router.post('/users', function(req, res) {
   User.find()
     .sort({ joinDate: -1 })
     .then(async items => {
-      // mongoose objects cannot change existing values, but you can add new values
-      //convert tags' id to actual tag object before sending them
-      for(var i =0; i < items.length; i ++){
-        let newTags = await getTags(items[i].tags)
+      // mongoose objects cannot change existing values,
+      // but you can add new values
+      // convert tags' id to actual tag object before sending them
+      for(let i =0; i < items.length; i ++){
+        let newTags = await getTags(items[i].tags);
         items[i].set('tagsObj', newTags, {strict: false});
       }
       res.status(OK).send(items);
@@ -164,23 +165,22 @@ router.post('/edit', async (req, res) => {
   }
 
   let decoded = decodeToken(req);
-  
   let highestAccessLevel = 0;
 
   let tags = decoded.tags;
   highestAccessLevel = getHighestAccessLevel(tags);
-  if(highestAccessLevel <= 50){//accesslevel for member, need to change this
+  if(highestAccessLevel <= 50){// accesslevel for member, need to change this
     if(req.body.email && req.body.email != decoded.email){
       return res
-         .status(UNAUTHORIZED)
-         .send('Unauthorized to edit another user');
+        .status(UNAUTHORIZED)
+        .send('Unauthorized to edit another user');
     }
   }
   // if(decoded.accessLevel === membershipState.OFFICER){
   //   if(req.body.accessLevel && req.body.accessLevel == membershipState.ADMIN){
   //     return res.sendStatus(UNAUTHORIZED);
   //   }
-  // }          
+  // }
   const query = { email: req.body.email };
 
   const user =
@@ -194,7 +194,7 @@ router.post('/edit', async (req, res) => {
       };
 
   delete user.numberOfSemestersToSignUpFor;
-  
+
   // Remove the auth token from the form getting edited
   // delete user.token;
 
@@ -222,14 +222,14 @@ router.post('/edit', async (req, res) => {
   });
 });
 
-/* 
-  get user's tags, need a valid user's email 
+/*
+  get user's tags, need a valid user's email
   need to convert tags' id in user.tags to actual tags
 */
 
-router.post('/tags', (req,res) => {
+router.post('/tags', (req, res) => {
   if(!req.body.email) {
-    return res.sendStatus(BAD_REQUEST)
+    return res.sendStatus(BAD_REQUEST);
   }
 
   const query = { email: req.body.email };
@@ -245,7 +245,8 @@ router.post('/tags', (req,res) => {
       res.status(BAD_REQUEST).send({ message: 'Bad Request.' });
     }
     if (!user)
-      return res.status(BAD_REQUEST).send({message: 'Cannot find account with that email'});
+      return res.status(BAD_REQUEST)
+        .send({message: 'Cannot find account with that email'});
     // need to convert user's tag id to tag object
     Tag.find().where('_id').in(user.tags).exec((error, tags) => {
       if (error) {
@@ -258,11 +259,11 @@ router.post('/tags', (req,res) => {
         res.status(BAD_REQUEST).send({ message: 'Bad Request.' });
       }
       return res.status(OK).send(tags);
-    })
-  })
-})
+    });
+  });
+});
 
-/* 
+/*
   adding tags and remove tags, need a valid user's email
   if there's a delete header, then delete that tag, otherwise add that tag
 */
@@ -270,64 +271,62 @@ router.post('/edit/tags', (req, res) => {
   // gives error if no email or no tag role are provided
   console.log("routes user.js ", "test")
   if(!req.body.email || !req.body.role){
-    console.log("routes user.js", "need user emil and tag role ", req.body.email, "and", req.body.role )
+    console.log("routes user.js", "need user emil and tag role ", req.body.email, "and", req.body.role );
     return res.status(BAD_REQUEST).send({ message: 'Need user email and tag role' });
   }
 
   const query = { email: req.body.email };
   const tagRole = { role: req.body.role };
   User.findOne(query)
-  .then(user => {
-    if(!user)
-      return res.status(BAD_REQUEST).send({message: 'Cannot find user with that email'});
+    .then(user => {
+      if(!user)
+        return res.status(BAD_REQUEST).send({message: 'Cannot find user with that email'});
 
-    Tag.findOne(tagRole)
-    .then(tag => {
-      if(!tag){
-        return res.status(BAD_REQUEST).send({message: 'Cannot find that tag'})
-      }
-      //  if it has a delete header, delete that tag's id from user's tags
-      //  as well as delete user's id from tag's users
-      if(req.body.delete){
-        user.tags.pull(tag.id);
-        tag.users.pull(user.id);
-      }
-      else{
-        // check for trying to add duplicate tags
-        if(user.tags.includes(tag.id)){
-          return res.status(404).send({
-            message: `${query.email} trying to add duplicate tcoag`,
-          });
-        }
-        else{
-          user.tags.push(tag.id);
-          tag.users.push(user.id);
-        }
-      }
-      tag.save();
-      user.save();
-      return res.status(OK).send({message: 'User updated'})
+      Tag.findOne(tagRole)
+        .then(tag => {
+          if(!tag){
+            return res.status(BAD_REQUEST).send({message: 'Cannot find that tag'})
+          }
+          //  if it has a delete header, delete that tag's id from user's tags
+          //  as well as delete user's id from tag's users
+          if(req.body.delete){
+            user.tags.pull(tag.id);
+            tag.users.pull(user.id);
+          } else{
+            // check for trying to add duplicate tags
+            if(user.tags.includes(tag.id)){
+              return res.status(404).send({
+                message: `${query.email} trying to add duplicate tcoag`,
+              });
+            } else{
+              user.tags.push(tag.id);
+              tag.users.push(user.id);
+            }
+          }
+          tag.save();
+          user.save();
+          return res.status(OK).send({message: 'User updated'});
+        });
     })
-  })
-  .catch(err => {
-    const info = {
-    errorTime: new Date(),
-    apiEndpoint: 'user/edit/tags',
-    errorDescription: error
-    };
-    addErrorLog(info);
-    return res.status(BAD_REQUEST).send({ message: 'Bad Request.' });
+    .catch(err => {
+      const info = {
+        errorTime: new Date(),
+        apiEndpoint: 'user/edit/tags',
+        errorDescription: error
+      };
+      addErrorLog(info);
+      return res.status(BAD_REQUEST).send({ message: 'Bad Request.' });
     }
-  )
-})
+    );
+});
 
 // clear user's tag
-router.post('/edit/tags/clear', (req,res) => {
-  
+router.post('/edit/tags/clear', (req, res) => {
+
   if(!req.body.email){
     return res.sendStatus(BAD_REQUEST);
   }
-  
+
   const query = {email: req.body.email};
   User.findOne(query, (error, user) => {
     if (error) {
@@ -340,7 +339,8 @@ router.post('/edit/tags/clear', (req,res) => {
       res.status(BAD_REQUEST).send({ message: 'Bad Request.' });
     }
     if (!user)
-      return res.status(BAD_REQUEST).send({message: 'Cannot find account with that email'});
+      return res.status(BAD_REQUEST).
+        send({message: 'Cannot find account with that email'});
     user.tags = [];
     user.save();
 
