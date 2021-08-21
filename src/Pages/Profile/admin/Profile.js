@@ -20,7 +20,7 @@ export default function displayProfile(props) {
       {
         props.user.tagsObj.map(tag => <Badge style={{backgroundColor: tag.color}}>{tag.role}</Badge>)
       }
-      
+
 
       <h3>
         {props.user.firstName[0].toUpperCase() +

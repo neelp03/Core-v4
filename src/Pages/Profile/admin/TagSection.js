@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import { Badge, Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
+import { Badge, Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from
+  'reactstrap';
 import {addTag, deleteTag, getUserTag} from '../../../APIFunctions/User.js';
 import {getAllTags} from '../../../APIFunctions/Tag';
 import Select from 'react-select';
@@ -17,7 +18,7 @@ export default function TagSection(props){
   // to use React select
   const [options, setOptions] = useState([]);
 
-  const toggle = () => setDropdownOpen(!dropdownOpen)
+  const toggle = () => setDropdownOpen(!dropdownOpen);
 
   /*
         Cannot call async function directly in useEffect
