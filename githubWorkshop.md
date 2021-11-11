@@ -12,7 +12,7 @@
    - Merge
    - Rebase
    - Some tips
- 
+ We will use VSCode since it has built in Git support
  ## Clone a repo
  
 ![](/images/cloneRepo.png)
