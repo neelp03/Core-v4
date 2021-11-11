@@ -1,12 +1,12 @@
 ## Git vs GitHub:
    - Git: version control system that keeps track of your source code
    - Can be executed through CLI
-   - GitHub: hosting service that manages Git repositories
+   - GitHub: hosting service that manages Git repositories (repo)
    - There are many hosting services such as GitHub, Bitbucket, internal services at many companies
    - But they all support Git
 ## Things we will go over:
-   - Fork a repo
-   - Clone a repo
+   - Fork a repo (copy a online repo)
+   - Clone a repo (pulls down a full copy of a repo)
    - Branches
    - ADD, COMMIT, PUSH, PULL
    - Merge
