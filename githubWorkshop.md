@@ -12,7 +12,7 @@
    - Merge
    - Rebase
    - Some tips
- 
+ We will use VSCode since it has built in Git support
  ## Clone a repo
  
 ![](/images/cloneRepo.png)
@@ -55,6 +55,8 @@
 
 - ``` git commit --amend --no-edit``` Commiting changes without changing your previous commit message.
 
+add and commit will save the files to that particular branch
+
 *In the case that you enter VIM while trying to commit:*
 - MAC USERS: press esc follwed by :wq
 
@@ -63,7 +65,7 @@
 - ```git push origin <branch>'``` : Pushes the changes you made on your branch. 
 
 - ``` git push --force origin <branch>``` Force pushes the changes.
-- ``` git push origin <branch>``` Pulls the changes you just made. 
+- ``` git pull origin <branch>``` Pulls the changes you just made. 
 - ``` git push origin ``` Push everything to the online repo
 
 *Once your branch has been merged into the main repository, make sure to start a new project with  NEW BRANCH!*
@@ -78,7 +80,9 @@ Should do this if you need to rebase or switch to another branch by your friends
 ### 
 
 ### Merge
-- Once you push code, you should be able to merge into the default branch if you are the owner
+- Once you push code, you should be able to merge into the default branch if you are the owner or have have permission
+- Otherwise, create a pull request for people to review
+- Pull request will merge files from that branch into the default branch
 
 ### Git rebase
 - We use git rebase when master repo has new changes that your branch doesn't have => hard to merge once you push your branch
