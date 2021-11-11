@@ -55,7 +55,7 @@
 
 - ``` git commit --amend --no-edit``` Commiting changes without changing your previous commit message.
 
-**add and commit will save the files to that particular branch
+add and commit will save the files to that particular branch
 
 *In the case that you enter VIM while trying to commit:*
 - MAC USERS: press esc follwed by :wq
