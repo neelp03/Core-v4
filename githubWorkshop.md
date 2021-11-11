@@ -65,7 +65,7 @@ add and commit will save the files to that particular branch
 - ```git push origin <branch>'``` : Pushes the changes you made on your branch. 
 
 - ``` git push --force origin <branch>``` Force pushes the changes.
-- ``` git push origin <branch>``` Pulls the changes you just made. 
+- ``` git pull origin <branch>``` Pulls the changes you just made. 
 - ``` git push origin ``` Push everything to the online repo
 
 *Once your branch has been merged into the main repository, make sure to start a new project with  NEW BRANCH!*
