@@ -80,7 +80,8 @@ Should do this if you need to rebase or switch to another branch by your friends
 ### 
 
 ### Merge
-- Once you push code, you should be able to merge into the default branch if you are the owner
+- Once you push code, you should be able to merge into the default branch if you are the owner or have have permission
+- Otherwise, create a pull request for people to review
 
 ### Git rebase
 - We use git rebase when master repo has new changes that your branch doesn't have => hard to merge once you push your branch
