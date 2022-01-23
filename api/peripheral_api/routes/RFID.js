@@ -8,6 +8,48 @@ const {
 const { OK, BAD_REQUEST, UNAUTHORIZED, FORBIDDEN, NOT_FOUND } =
   require('../../util/constants').STATUS_CODES;
 
+const awsIot = require('aws-iot-device-sdk');
+const { STATUS_CODES } = require('http');
+
+const device = awsIot.device({
+   keyPath: '../../config/private.pem.key',
+  certPath: '../../config/cert.pem.crt',
+  caPath: '../../config/AmazonRootCA1.pem',
+  clientId: 'CentauriServer',
+  host: 'ae3c662b19597-ats.iot.us-west-1.amazonaws.com'
+});
+
+device
+  .on('connect', function() {
+    console.log('Connected to AWS IoT!');
+    device.subscribe('MessageForNode');
+  });
+
+device
+  .on('message', function(payload) {
+    RFID.findOne(
+      {
+        message: JSON.parse(payload.toString()).message})
+    .then((result) => {
+      if (result != null) {
+        device.publish('MessageForESP32', 
+        JSON.stringify({
+          message: OK
+        }));
+      } else {
+        device.publish('MessageForESP32', 
+        JSON.stringify({
+          message: NOT_FOUND
+        }));
+      }
+    })
+    .catch(() => {
+      device.publish('MessageForESP32', 
+        JSON.stringify({
+          message: NOT_FOUND
+        }));
+    });
+  });
 let add_RFID = false;
 let new_name = null;
 
@@ -43,11 +85,11 @@ router.post('/validateRFID', (req, res) => {
 });
 
 router.post('/createRFID', (req, res) => {
-  // if (!checkIfTokenSent(req)) {
-  //   return res.sendStatus(FORBIDDEN);
-  // } else if (!checkIfTokenValid(req, membershipState.OFFICER)) {
-  //   return res.sendStatus(UNAUTHORIZED);
-  // }
+  if (!checkIfTokenSent(req)) {
+    return res.sendStatus(FORBIDDEN);
+  } else if (!checkIfTokenValid(req, membershipState.OFFICER)) {
+    return res.sendStatus(UNAUTHORIZED);
+  }
   if (add_RFID) {
     return res.sendStatus(BAD_REQUEST);
   }
@@ -69,11 +111,11 @@ router.get('/getRFIDs', (req, res) => {
 });
 
 router.delete('/deleteRFID', (req, res) => {
-  // if (!checkIfTokenSent(req)) {
-  //   return res.sendStatus(FORBIDDEN);
-  // } else if (!checkIfTokenValid(req, membershipState.OFFICER)) {
-  //   return res.sendStatus(UNAUTHORIZED);
-  // }
+  if (!checkIfTokenSent(req)) {
+    return res.sendStatus(FORBIDDEN);
+  } else if (!checkIfTokenValid(req, membershipState.OFFICER)) {
+    return res.sendStatus(UNAUTHORIZED);
+  }
   RFID.deleteOne({ _id: req.body._id })
     .then((result) => {
       if (result.n < 1) {

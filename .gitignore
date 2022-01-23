@@ -79,6 +79,8 @@ util/common/security.js
 
 build
 
+#AWS IOT certificates and keys
+api/config/AWS-IOT/**
 # Config files
 config.js 
 config.json
