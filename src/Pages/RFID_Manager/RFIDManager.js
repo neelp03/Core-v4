@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
   createNewRFID,
-  readNewRFID,
   getAllRFIDs,
   deleteRFID
 } from '../../APIFunctions/RFID';

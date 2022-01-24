@@ -9,15 +9,17 @@ const { OK, BAD_REQUEST, UNAUTHORIZED, FORBIDDEN, NOT_FOUND } =
   require('../../util/constants').STATUS_CODES;
 
 const awsIot = require('aws-iot-device-sdk');
-const { STATUS_CODES } = require('http');
 
 const device = awsIot.device({
-   keyPath: '../../config/private.pem.key',
-  certPath: '../../config/cert.pem.crt',
-  caPath: '../../config/AmazonRootCA1.pem',
+  keyPath: '../../config/AWS-IOT/private.pem.key',
+  certPath: '../../config/AWS-IOT/cert.pem.crt',
+  caPath: '../../config/AWS-IOT/AmazonRootCA1.pem',
   clientId: 'CentauriServer',
   host: 'ae3c662b19597-ats.iot.us-west-1.amazonaws.com'
 });
+
+let add_RFID = false;
+let new_name = null;
 
 device
   .on('connect', function() {
@@ -25,64 +27,57 @@ device
     device.subscribe('MessageForNode');
   });
 
+// message = rfid byte sent by 
+// need to figure out how to change between validating and adding
+// and how to send the data to frontend while using pub sub
 device
   .on('message', function(payload) {
-    RFID.findOne(
-      {
-        message: JSON.parse(payload.toString()).message})
-    .then((result) => {
-      if (result != null) {
-        device.publish('MessageForESP32', 
-        JSON.stringify({
-          message: OK
-        }));
-      } else {
-        device.publish('MessageForESP32', 
-        JSON.stringify({
-          message: NOT_FOUND
-        }));
-      }
-    })
-    .catch(() => {
-      device.publish('MessageForESP32', 
-        JSON.stringify({
-          message: NOT_FOUND
-        }));
-    });
-  });
-let add_RFID = false;
-let new_name = null;
-
-router.post('/validateRFID', (req, res) => {
-  if (add_RFID) {
-    const newRFID = new RFID({
-      name: new_name,
-      byte: req.body.byte,
-    });
-    RFID.create(newRFID, (error) => {
-      if (error) {
-        res.status(BAD_REQUEST).send({check:false});
-      } else {
-        res.status(OK).send({check:true});
-      }
-      new_name = null;
-      add_RFID = false;
-      clearTimeout();
-    });
-  } else {
-    RFID.findOne({ byte : req.body.byte})
+    if (add_RFID) {
+      const newRFID = new RFID({
+        name: new_name,
+        byte: JSON.parse(payload.toString()).message,
+      });
+      RFID.create(newRFID, (error) => {
+        if (error) {
+          device.publish('MessageForESP32', 
+          JSON.stringify({
+            message: BAD_REQUEST
+          }));
+        } else {
+          device.publish('MessageForESP32', 
+          JSON.stringify({
+            message: OK
+          }));
+        }
+        new_name = null;
+        add_RFID = false;
+        clearTimeout();
+      });
+    } else {
+      RFID.findOne(
+        {
+          message: JSON.parse(payload.toString()).message})
       .then((result) => {
         if (result != null) {
-          res.sendStatus(OK);
+          device.publish('MessageForESP32', 
+          JSON.stringify({
+            message: OK
+          }));
         } else {
-          res.sendStatus(NOT_FOUND);
+          device.publish('MessageForESP32', 
+          JSON.stringify({
+            message: NOT_FOUND
+          }));
         }
       })
       .catch(() => {
-        res.sendStatus(NOT_FOUND);
+        device.publish('MessageForESP32', 
+          JSON.stringify({
+            message: NOT_FOUND
+          }));
       });
-  }
-});
+    }
+  });
 
 router.post('/createRFID', (req, res) => {
   if (!checkIfTokenSent(req)) {
@@ -102,6 +97,9 @@ router.post('/createRFID', (req, res) => {
   return res.sendStatus(OK);
 });
 
+//-------------------------------------------
+// stays same even after adding pub sub since
+// we are not interacting with esp32 
 router.get('/getRFIDs', (req, res) => {
   RFID.find()
     .then((items) => res.status(OK).send(items))

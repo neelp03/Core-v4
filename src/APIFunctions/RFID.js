@@ -6,9 +6,9 @@ let PERIPHERAL_API_URL = process.env.NODE_ENV === 'production' ?
   config.PERIPHERAL_API_URL_PROD : config.PERIPHERAL_API_URL;
 
 /**
- * Retrieve all events.
+ * Retrieve all RFIDs.
  * @returns {ApiResponse} Containing any error information related to the
- * request or the list of events
+ * request or the RFID
  */
 export async function getAllRFIDs() {
   let status = new ApiResponse();
@@ -25,7 +25,7 @@ export async function getAllRFIDs() {
 }
 
 /**
- * Changes the state of the ESP32
+ * Changes the state to adding RFID
  * @param {string} token - The user's jwt token for authentication
  * @returns {ApiResponse} Containing any error information related to the
  * request or the response data
