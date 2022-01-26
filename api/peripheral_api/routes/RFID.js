@@ -11,9 +11,9 @@ const { OK, BAD_REQUEST, UNAUTHORIZED, FORBIDDEN, NOT_FOUND } =
 const awsIot = require('aws-iot-device-sdk');
 
 const device = awsIot.device({
-  keyPath: '../../config/AWS-IOT/private.pem.key',
-  certPath: '../../config/AWS-IOT/cert.pem.crt',
-  caPath: '../../config/AWS-IOT/AmazonRootCA1.pem',
+  keyPath: '../api/config/AWS-IOT/private.pem.key',
+  certPath: '../api/config/AWS-IOT/cert.pem.crt',
+  caPath: '../api/config/AWS-IOT/AmazonRootCA1.pem',
   clientId: 'CentauriServer',
   host: 'ae3c662b19597-ats.iot.us-west-1.amazonaws.com'
 });
@@ -31,7 +31,7 @@ device
 // need to figure out how to change between validating and adding
 // and how to send the data to frontend while using pub sub
 device
-  .on('message', function(payload) {
+  .on('message', function(topic, payload) {
     if (add_RFID) {
       const newRFID = new RFID({
         name: new_name,
