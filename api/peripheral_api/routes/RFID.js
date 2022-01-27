@@ -56,25 +56,16 @@ device
     } else {
       RFID.findOne(
         {
-          message: JSON.parse(payload.toString()).message})
+          byte: JSON.parse(payload.toString()).message})
       .then((result) => {
         if (result != null) {
-          device.publish('MessageForESP32', 
-          JSON.stringify({
-            message: OK
-          }));
+          device.publish('MessageForESP32', JSON.stringify({message: OK}));
         } else {
-          device.publish('MessageForESP32', 
-          JSON.stringify({
-            message: NOT_FOUND
-          }));
+          device.publish('MessageForESP32', JSON.stringify({message: NOT_FOUND}));
         }
       })
       .catch(() => {
-        device.publish('MessageForESP32', 
-          JSON.stringify({
-            message: NOT_FOUND
-          }));
+        device.publish('MessageForESP32', JSON.stringify({message: BAD_REQUEST}));
       });
     }
   });
