@@ -7,6 +7,17 @@ const STATUS_CODES = {
   CONFLICT: 409
 };
 
+const TEAM_ROLES = {
+  PRESIDENT: 1,
+  VICE_PRESIDENT: 2,
+  TREASURER: 3,
+  EP_CHAIR: 4,
+  PR_CHAIR: 5,
+  DEV_LEADS: 6,
+  EPPR_TEAM: 7,
+  DEV_TEAM: 8
+};
+
 const MEMBERSHIP_STATE = {
   BANNED: -2,
   PENDING: -1,
@@ -49,4 +60,5 @@ module.exports = {
   MEMBERSHIP_STATE,
   teamType,
   consoleColors,
+  TEAM_ROLES
 };
